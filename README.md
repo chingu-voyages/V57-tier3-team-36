@@ -37,6 +37,7 @@ coding!
 - Sattyik Kundu: [Github](https://github.com/SattyikKundu)
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Peter Tasca: [Github](https://github.com/tascapeter514) / [LinkedIn](https://www.linkedin.com/in/peter-tasca/)
+  
  > Here’s a quick overview of my work availability and tech stack preferences:
     >
     > - **Availability:** I'm available full-time, although I have some obligations with freelance clients and volunteering at conferences. Can meet in the afternoon/late afternoon.
