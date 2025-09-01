@@ -37,6 +37,15 @@ coding!
 - Sattyik Kundu: [Github](https://github.com/SattyikKundu)
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Peter Tasca: [Github](https://github.com/tascapeter514) / [LinkedIn](https://www.linkedin.com/in/peter-tasca/)
+ > Here’s a quick overview of my work availability and tech stack preferences:
+    >
+    > - **Availability:** I'm available full-time, although I have some obligations with freelance clients and volunteering at conferences. Can meet in the afternoon/late afternoon.
+    > - **Frontend:** Typescript, React, Next.js, Vue, Tailwind
+    > - **Backend:** Node, Express, Python/Django, Next.js server components
+    > - **Helpful tools:** ShadUI, Supabase, Vitest, Redux Toolkit, Docker, Cypress/Playwright
+    > - **Deployment:** Vercel, Render.com, Netlify.
+    > - **Integrations:** Would be interested in any AI or ML integrations, but only if others are into the idea
+    > - **Industry trends:** Have worked on a few Next.js projects and I love the framework!
 - Kelly Ripple: [GitHub](https://github.com/kripple) / [LinkedIn](https://www.linkedin.com/in/kellymripple) / [Portfolio](https://kellyripple.com/)
 
     > Here’s a quick overview of my work availability and tech stack preferences:
