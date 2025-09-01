@@ -27,7 +27,7 @@ Meeting Agenda templates (located in the `/docs` directory in this repo):
 - Meeting - Sprint Retrospective, Review, and Planning --> ./docs/meeting-sprint_retrospective_review_and_planning.docx
 - Meeting - Sprint Open Topic Session --> ./docs/meeting-sprint_open_topic_session.docx
 
-## Our Team
+## Team Members
 
 Everyone on your team should add their name along with a link to their GitHub
 & optionally their LinkedIn profiles below. Do this in Sprint #1 to validate
@@ -37,7 +37,17 @@ coding!
 - Sattyik Kundu: [Github](https://github.com/SattyikKundu)
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Peter Tasca: [Github](https://github.com/tascapeter514) / [LinkedIn](https://www.linkedin.com/in/peter-tasca/)
-- Teammate name #2: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Kelly Ripple: [GitHub](https://github.com/kripple) / [LinkedIn](https://www.linkedin.com/in/kellymripple) / [Portfolio](https://kellyripple.com/)
+
+    > Here’s a quick overview of my work availability and tech stack preferences:
+    >
+    > - **Availability:** I’m available full-time and tend to work better later in the day. Mornings can be a struggle, and I’m often up late.
+    > - **Frontend:** I have a strong preference for TypeScript and React.
+    > - **Backend:** I lean toward Node.js with TypeScript.
+    > - **Helpful tools:** DaisyUI, RTK Query, and Playwright when they make sense, but I don’t consider them essential for every project.
+    > - **Deployment:** Most of my recent personal projects use Netlify edge functions and Neon Postgres, mainly because they are free and easy to use. I’m not tied to this deployment strategy and am open to other options.
+    > - **Integrations:** I’ve worked on payment workflows and external integrations and would be happy to explore more of that if it fits the project.
+    > - **Industry trends:** AI and React Native with Expo are getting a lot of attention lately. I’m interested in exploring these more but would prefer to do so only if the team shares that enthusiasm, since I have less experience in those areas. Next.js is also very popular right now, and I’d be happy to use it for our project. If we do, I have a strong preference for the AppRouter over other routing strategies.
 
   ...
 
