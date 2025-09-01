@@ -61,4 +61,4 @@ coding!
 
   ...
 
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Hyun Woo Kim: [GitHub](https://github.com/hynwkm) / [LinkedIn](https://www.linkedin.com/in/hyunwoo-kim/)
