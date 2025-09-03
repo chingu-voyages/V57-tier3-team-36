@@ -36,6 +36,7 @@ coding!
 
 - Sattyik Kundu: [Github](https://github.com/SattyikKundu)
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
+- Vincent Bui: [Github](https://github.com/VincentBui0) / [LinkedIn](https://www.linkedin.com/in/vincent-bui0/)
 - Peter Tasca: [Github](https://github.com/tascapeter514) / [LinkedIn](https://www.linkedin.com/in/peter-tasca/)
   
  > Here’s a quick overview of my work availability and tech stack preferences:
