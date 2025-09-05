@@ -1,4 +1,6 @@
-# voyage-tasks
+# App Name Goes Here
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 Your project's `readme` is as important to success as your code. For
 this reason you should put as much care into its creation and maintenance
@@ -12,6 +14,41 @@ And before we go there's "one more thing"! Once you decide what to include
 in your `readme` feel free to replace the text we've provided here.
 
 > Own it & Make it your Own!
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ## Team Documents
 
@@ -29,37 +66,9 @@ Meeting Agenda templates (located in the `/docs` directory in this repo):
 
 ## Team Members
 
-Everyone on your team should add their name along with a link to their GitHub
-& optionally their LinkedIn profiles below. Do this in Sprint #1 to validate
-your repo access and to practice PR'ing with your team _before_ you start
-coding!
-
 - Sattyik Kundu: [Github](https://github.com/SattyikKundu)
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Vincent Bui: [Github](https://github.com/VincentBui0) / [LinkedIn](https://www.linkedin.com/in/vincent-bui0/)
 - Peter Tasca: [Github](https://github.com/tascapeter514) / [LinkedIn](https://www.linkedin.com/in/peter-tasca/)
-  
- > Here’s a quick overview of my work availability and tech stack preferences:
-    >
-    > - **Availability:** I'm available full-time, although I have some obligations with freelance clients and volunteering at conferences. Can meet in the afternoon/late afternoon.
-    > - **Frontend:** Typescript, React, Next.js, Vue, Tailwind
-    > - **Backend:** Node, Express, Python/Django, Next.js server components
-    > - **Helpful tools:** ShadUI, Supabase, Vitest, Redux Toolkit, Docker, Cypress/Playwright
-    > - **Deployment:** Vercel, Render.com, Netlify.
-    > - **Integrations:** Would be interested in any AI or ML integrations, but only if others are into the idea
-    > - **Industry trends:** Have worked on a few Next.js projects and I love the framework!
 - Kelly Ripple: [GitHub](https://github.com/kripple) / [LinkedIn](https://www.linkedin.com/in/kellymripple) / [Portfolio](https://kellyripple.com/)
-
-    > Here’s a quick overview of my work availability and tech stack preferences:
-    >
-    > - **Availability:** I’m available full-time and tend to work better later in the day. Mornings can be a struggle, and I’m often up late.
-    > - **Frontend:** I have a strong preference for TypeScript and React.
-    > - **Backend:** I lean toward Node.js with TypeScript.
-    > - **Helpful tools:** DaisyUI, RTK Query, and Playwright when they make sense, but I don’t consider them essential for every project.
-    > - **Deployment:** Most of my recent personal projects use Netlify edge functions and Neon Postgres, mainly because they are free and easy to use. I’m not tied to this deployment strategy and am open to other options.
-    > - **Integrations:** I’ve worked on payment workflows and external integrations and would be happy to explore more of that if it fits the project.
-    > - **Industry trends:** AI and React Native with Expo are getting a lot of attention lately. I’m interested in exploring these more but would prefer to do so only if the team shares that enthusiasm, since I have less experience in those areas. Next.js is also very popular right now, and I’d be happy to use it for our project. If we do, I have a strong preference for the AppRouter over other routing strategies.
-
-  ...
-
 - Hyun Woo Kim: [GitHub](https://github.com/hynwkm) / [LinkedIn](https://www.linkedin.com/in/hyunwoo-kim/)
