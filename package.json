@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "tsc": "tsc --noEmit",
+    "test": "echo \"No tests configured yet. Please add a test runner and define your tests.\""
   },
   "dependencies": {
     "react": "19.1.0",
