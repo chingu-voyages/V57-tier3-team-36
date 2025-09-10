@@ -52,6 +52,20 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+## Authentication
+
+- GitHub OAuth
+- Drizzle
+- Neon
+- Postgres
+- better-auth
+
+# Generate migration files
+npx drizzle-kit generate
+
+# Push schema to database (for development)
+npx drizzle-kit push
+
 ## Team Documents
 
 You may find these helpful as you work together to organize your project.
