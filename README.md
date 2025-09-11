@@ -15,6 +15,21 @@ in your `readme` feel free to replace the text we've provided here.
 
 > Own it & Make it your Own!
 
+## Database Setup (Neon + Drizzle)
+
+This project uses **Neon** as the database and **Drizzle ORM** to manage schema and migrations.
+
+### 1. Set up your Neon database
+
+1. Go to [Neon](https://neon.tech/) and create a **new project** for development.
+2. Use `main default branch` branch for local development.
+3. Copy the connection URL (it looks like `postgresql://user:password@host/dbname?sslmode=require`).
+
+### 2. Configure environment variables `.env.local`
+
+1. In the project root, copy the example env file: `cp .env.example .env.local`.
+2. Open `.env.local` and replace the placeholder value of `DATABASE_URL` with your actual Neon connection URL.
+
 ## Local Development
 
 1. Install dependencies:
