@@ -7,7 +7,11 @@ type GithubPullRequestData = {
   title: string;
   user: GitHubUserData;
   html_url: string; // PR URL
+  created_at: string; // PR creation dateString
+  requested_reviewers: GitHubUserData[]; // Array of requested reviewers
+  updated_at: string; // PR last updated dateString
 };
+
 type GitHubUserData = {
   login: string;
   avatar_url: string;
@@ -71,13 +75,33 @@ export default function ListPrsPage() {
                 <h3 className="text-lg font-bold">{pr.title}</h3>
               </Link>
               <p className="text-sm text-gray-500">
-                Opened by: {pr.user.login}
+                Opened by: {pr.user.login} on{" "}
+                {new Date(pr.created_at).toLocaleDateString()}
               </p>
               <img
                 src={pr.user.avatar_url}
                 alt={`${pr.user.login}'s avatar`}
                 className="w-10 h-10 rounded-full mt-2"
               />
+              <div className="mt-4">
+                <h3 className="text-md">Requested Reviewers</h3>
+                {pr.requested_reviewers.length > 0 ? (
+                  <ul className="flex space-x-4">
+                    {pr.requested_reviewers.map((reviewer) => (
+                      <li key={reviewer.login} className="text-center">
+                        <img
+                          src={reviewer.avatar_url}
+                          alt={`${reviewer.login}'s avatar`}
+                          className="w-10 h-10 rounded-full mx-auto"
+                        />
+                        <p className="text-sm">{reviewer.login}</p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No reviewers requested</p>
+                )}
+              </div>
             </li>
           ))}
       </ul>
