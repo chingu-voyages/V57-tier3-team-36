@@ -1,7 +1,8 @@
 'use client';
 
 import { authClient } from '@/lib/authClient';
-import type { User, Session } from '@/lib/auth';
+import type { AuthContext } from '@/lib/auth';
+import { useRouter } from 'next/navigation'
 
 // https://docs.github.com/en/rest/authentication/endpoints-available-for-github-app-user-access-tokens
 
@@ -9,19 +10,18 @@ export function useAuth(): {
   loading: boolean;
   signIn: () => void;
   signOut: () => void;
-} & (
-  | { user: User; session: Session; isAuthenticated: true }
-  | { user?: User; session?: Session; isAuthenticated: false }
-) {
+} & AuthContext {
+  const router = useRouter()
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
   const session = data?.session;
 
   const authData = {
     loading: isPending,
-    signOut: () => {
-      authClient.signOut();
-      authClient.revokeSessions();
+    signOut: async () => {
+      await authClient.revokeSessions();
+      await authClient.signOut();
+      router.refresh();
     },
     signIn: () =>
       authClient.signIn.social({

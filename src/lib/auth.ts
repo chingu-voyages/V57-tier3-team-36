@@ -28,3 +28,7 @@ export const auth = betterAuth({
 });
 export type Session = (typeof auth.$Infer.Session)['session'];
 export type User = (typeof auth.$Infer.Session)['user'];
+
+export type AuthContext =
+  | { user: User; session: Session; isAuthenticated: true }
+  | { user?: User; session?: Session; isAuthenticated: false };

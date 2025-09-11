@@ -1,8 +1,12 @@
 import 'server-only';
 
 import { fetchGitHubRepos } from '@/lib/fetchGithubRepos';
+import { requireAuth } from '@/lib/requireAuth';
 
 export async function ReposList() {
+  const isAuthenticated = await requireAuth();
+  if (!isAuthenticated) return null;
+
   const repos = await fetchGitHubRepos();
 
   return (
