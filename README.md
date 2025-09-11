@@ -2,55 +2,91 @@
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Your project's `readme` is as important to success as your code. For
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
+## Local Development Setup
 
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point -
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
+### Prerequisites
 
-And before we go there's "one more thing"! Once you decide what to include
-in your `readme` feel free to replace the text we've provided here.
+- Node.js installed
+- A [Neon](https://neon.tech/) account (free)
 
-> Own it & Make it your Own!
+### Setup Steps
 
-## Database Setup (Neon + Drizzle)
-
-This project uses **Neon** as the database and **Drizzle ORM** to manage schema and migrations.
-
-### 1. Set up your Neon database
-
-1. Go to [Neon](https://neon.tech/) and create a **new project** for development.
-2. Use `main default branch` branch for local development.
-3. Copy the connection URL (it looks like `postgresql://user:password@host/dbname?sslmode=require`).
-
-### 2. Configure environment variables `.env.local`
-
-1. In the project root, copy the example env file: `cp .env.example .env.local`.
-2. Open `.env.local` and replace the placeholder value of `DATABASE_URL` with your actual Neon connection URL.
-
-## Local Development
-
-1. Install dependencies:
+#### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-2. Run the development server:
+#### 2. Create your database
+
+1. Go to [Neon](https://neon.tech/) and create a new project
+2. Copy the connection string (looks like `postgresql://user:pass@host/db?sslmode=require`)
+
+#### 3. Set up environment variables
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` and add these values:
+
+**Database:**
+
+```env
+DATABASE_URL=your_neon_connection_string_here
+```
+
+**Authentication (generate your own):**
+
+```bash
+# Generate a random secret for local development
+openssl rand -base64 32
+```
+
+```env
+BETTER_AUTH_SECRET=your_generated_secret_here
+```
+
+**GitHub OAuth (ask a teammate):**
+
+```env
+GITHUB_CLIENT_ID=ask_a_teammate_for_this_value
+GITHUB_CLIENT_SECRET=ask_a_teammate_for_this_value
+```
+
+⚠️ **Important:** Never commit `.env.local` or share these secrets publicly
+
+#### 4. Run database migrations
+
+```bash
+npm run db:migrate
+```
+
+#### 5. Start the app
 
 ```bash
 npm run dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Visit [http://localhost:3000](http://localhost:3000) - you're ready to code! 🚀
 
-## Other Scripts
+### Other Commands
 
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+| Command                                     | Purpose                                            |
+| ------------------------------------------- | -------------------------------------------------- |
+| `npm run build`                             | Build for production                               |
+| `npm run start`                             | Run production build                               |
+| `npm run lint`                              | Check code quality                                 |
+| `npm run setup`                             | Generate mock service worker (if not auto-created) |
+| `npm run db:generate && npm run db:migrate` | Run after making updates to the schema             |
+
+### Authentication Notes
+
+This app uses GitHub OAuth for authentication. The GitHub App has access to endpoints documented [here](https://docs.github.com/en/rest/authentication/endpoints-available-for-github-app-user-access-tokens).
+
+### API Mocking
+
+Enable or disable the mock service worker API mocks using the `ENABLE_API_MOCKING` environment variable in `.env.local`.
 
 ## Learn More
 
