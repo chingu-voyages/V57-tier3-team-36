@@ -23,10 +23,9 @@ export default function ListContributorsPage() {
     // We should validate the data
     const githubRepoClient = new GithubRepoClient();
     try {
-      const data = await githubRepoClient.getContributorsForRepo<any[]>(
-        username,
-        repo
-      );
+      const data = await githubRepoClient.getContributorsForRepo<
+        GithubContributorData[]
+      >(username, repo);
       console.log(data);
       setRepoContributorData(data);
       // You can set this data to state if you want to display it
