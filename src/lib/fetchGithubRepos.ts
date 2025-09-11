@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { getUserId } from '@/lib/getUserId';
 import { getAccessToken } from '@/lib/getAccessToken';
 

@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { getSession } from '@/lib/getSession';
 
 export async function requireAuth(): Promise<boolean> {

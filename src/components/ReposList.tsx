@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { fetchGitHubRepos } from '@/lib/fetchGithubRepos';
 import { requireAuth } from '@/lib/requireAuth';
 

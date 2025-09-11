@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { AuthButton } from '@/components/AuthButton';
 import { ReposList } from '@/components/ReposList';
 

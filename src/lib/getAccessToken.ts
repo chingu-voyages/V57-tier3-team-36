@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { auth } from '@/lib/auth';
 
 export async function getAccessToken(userId: string) {

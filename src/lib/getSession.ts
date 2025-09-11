@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { auth, type AuthContext } from '@/lib/auth';
 import { headers } from 'next/headers';
 

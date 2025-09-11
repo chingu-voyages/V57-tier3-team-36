@@ -1,6 +1,4 @@
-import 'server-only';
-
-import '@/app/globals.css';
+import './globals.css';
 
 if (
   process.env.NODE_ENV === 'development' &&
