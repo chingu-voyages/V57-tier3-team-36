@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: '.node-version'
           cache: npm
 
       - name: Install dependencies
@@ -31,11 +31,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Type check
-        run: npm run tsc
-
       - name: Run tests
         run: npm test
 
       - name: Build
         run: npm run build
+
+      - name: Type check
+        run: npm run tsc
+
