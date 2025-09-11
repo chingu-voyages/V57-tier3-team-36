@@ -12,6 +12,7 @@ type GitHubUserData = {
   login: string;
   avatar_url: string;
 };
+
 export default function ListPrsPage() {
   const [repoOpenPrData, setRepoOpenPrData] = useState<
     GithubPullRequestData[] | null

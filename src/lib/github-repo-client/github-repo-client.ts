@@ -7,4 +7,7 @@ export class GithubRepoClient extends BaseGithubApiClient {
   async getOpenPullRequestsForRepo<T>(owner: string, repo: string): Promise<T> {
     return this.get<T>(`/repos/${owner}/${repo}/pulls?state=open`);
   }
+  async getContributorsForRepo<T>(owner: string, repo: string): Promise<T> {
+    return this.get<T>(`/repos/${owner}/${repo}/contributors`);
+  }
 }

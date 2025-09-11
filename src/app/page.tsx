@@ -5,10 +5,13 @@ export default function Home() {
     <nav className="text-2xl">
       <ul className="flex flex-col gap-4">
         <li>
-          <Link href="/list-repos">List Repositories</Link>
+          <Link href="/repos/list">List Repositories</Link>
         </li>
         <li>
-          <Link href="/list-prs">List Pull Requests</Link>
+          <Link href="/repos/prs/list">List Pull Requests</Link>
+        </li>
+        <li>
+          <Link href="/repos/contributors">List Contributors</Link>
         </li>
       </ul>
     </nav>
