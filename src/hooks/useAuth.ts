@@ -3,6 +3,8 @@
 import { authClient } from '@/lib/authClient';
 import type { User, Session } from '@/lib/auth';
 
+// https://docs.github.com/en/rest/authentication/endpoints-available-for-github-app-user-access-tokens
+
 export function useAuth(): {
   loading: boolean;
   signIn: () => void;

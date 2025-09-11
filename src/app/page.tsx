@@ -1,6 +1,7 @@
-'use client';
+import 'server-only';
 
 import { AuthButton } from '@/components/AuthButton';
+import { ReposList } from '@/components/ReposList';
 
 export default function HomePage() {
   return (
@@ -9,6 +10,7 @@ export default function HomePage() {
         <h1>App Name Goes Here</h1>
         <AuthButton />
       </nav>
+      <ReposList />
     </div>
   );
 }
