@@ -1,3 +1,5 @@
+'use client';
+
 import { authClient } from '@/lib/authClient';
 import type { User, Session } from '@/lib/auth';
 
