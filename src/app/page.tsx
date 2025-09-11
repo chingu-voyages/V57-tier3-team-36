@@ -1,10 +1,17 @@
-import { SignOutButton } from '@/components/SignOutButton';
+import { AuthButton } from '@/components/AuthButton';
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      Home Page
-      <SignOutButton />
+    <div className="p-8">
+      <nav className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-bold">My App</h1>
+        <AuthButton />
+      </nav>
+
+      <main>
+        {/* Your home page content */}
+        <p>Welcome to our app!</p>
+      </main>
     </div>
   );
 }
