@@ -5,6 +5,14 @@ import { Geist, Geist_Mono } from 'next/font/google';
 
 import '@/app/globals.css';
 
+if (
+  process.env.NODE_ENV === 'development' &&
+  process.env.ENABLE_API_MOCKING === 'true'
+) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  require('../mocks');
+}
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],

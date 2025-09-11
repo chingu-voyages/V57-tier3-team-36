@@ -11,10 +11,15 @@ type Repo = {
 
 // TODO: Add pagination
 export async function fetchGitHubRepos(): Promise<Repo[]> {
-  const githubApiUrl = 'https://api.github.com';
   const emptyResponse = Promise.resolve([] as Repo[]);
 
   try {
+    const githubApiUrl = process.env.GITHUB_API_URL;
+    if (!githubApiUrl) {
+      console.log('Missing GITHUB_API_URL');
+      return emptyResponse;
+    }
+
     const userId = (
       await auth.api.getSession({
         headers: await headers(),

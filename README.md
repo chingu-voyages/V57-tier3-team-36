@@ -60,6 +60,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - Postgres
 - better-auth
 
+Auto-generate mock service worker - `npx msw init public/ --save`
+
 # Generate migration files
 npx drizzle-kit generate
 
