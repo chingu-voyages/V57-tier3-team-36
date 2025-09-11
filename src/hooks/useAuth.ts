@@ -30,10 +30,3 @@ export function useAuth(): {
     ? { ...authData, user, session, isAuthenticated: true }
     : { ...authData, isAuthenticated: false };
 }
-
-// const requestAdditionalScopes = async () => {
-//   await authClient.linkSocial({
-//     provider: 'google',
-//     scopes: ['https://www.googleapis.com/auth/drive.file'],
-//   });
-// };
