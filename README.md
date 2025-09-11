@@ -15,8 +15,6 @@ in your `readme` feel free to replace the text we've provided here.
 
 > Own it & Make it your Own!
 
-## Local Development
-
 ## Database Setup (Neon + Drizzle)
 
 This project uses **Neon** as the database and **Drizzle ORM** to manage schema and migrations.
@@ -30,8 +28,9 @@ This project uses **Neon** as the database and **Drizzle ORM** to manage schema 
 ### 2. Create `.env.local`
 
 1. In the project root, create a file called `.env.local`.
-2. Add your database URL:
+2. Add your database URL.
 
+## Local Development
 
 1. Install dependencies:
 
