@@ -8,7 +8,14 @@ export default function Home() {
           <Link href="/repos/list">List Repositories</Link>
         </li>
         <li>
-          <Link href="/repos/prs/list">List Pull Requests</Link>
+          <Link href="/repos/prs/status/open/list">
+            List Open Pull Requests
+          </Link>
+        </li>
+        <li>
+          <Link href="/repos/prs/status/closed/list">
+            List Closed Pull Requests
+          </Link>
         </li>
         <li>
           <Link href="/repos/contributors">List Contributors</Link>

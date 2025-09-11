@@ -1,14 +1,8 @@
 "use client";
 import { GithubRepoClient } from "@/lib/github-repo-client/github-repo-client";
+import type { GithubRepoData } from "@/types/github-api-data";
 import Link from "next/link";
 import { useState } from "react";
-type GithubRepoData = {
-  id: number;
-  name: string;
-  created_at: string;
-  description: string | null;
-  html_url: string; // Repo URL
-};
 
 export default function ListReposPage() {
   const [githubRepoData, setGithubRepoData] = useState<GithubRepoData[] | null>(

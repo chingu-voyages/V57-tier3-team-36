@@ -1,17 +1,12 @@
 "use client";
-
 import { GithubRepoClient } from "@/lib/github-repo-client/github-repo-client";
+import type { GitHubUserData } from "@/types/github-api-data";
+import Image from "next/image";
 import { useState } from "react";
-type GithubContributorData = {
-  id: number;
-  login: string;
-  contributions: number;
-  html_url: string; // Contributor URL
-  avatar_url: string; // Contributor Avatar URL
-};
+
 export default function ListContributorsPage() {
   const [repoContributorData, setRepoContributorData] = useState<
-    GithubContributorData[] | null
+    GitHubUserData[] | null
   >(null);
 
   const handleFetchContributorsForRepo = async (event: React.FormEvent) => {
@@ -24,7 +19,7 @@ export default function ListContributorsPage() {
     const githubRepoClient = new GithubRepoClient();
     try {
       const data = await githubRepoClient.getContributorsForRepo<
-        GithubContributorData[]
+        GitHubUserData[]
       >(username, repo);
       console.log(data);
       setRepoContributorData(data);
@@ -69,7 +64,7 @@ export default function ListContributorsPage() {
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  <img
+                  <Image
                     src={contributor.avatar_url}
                     alt={contributor.login}
                     className="w-10 h-10 rounded-full inline-block mr-2"

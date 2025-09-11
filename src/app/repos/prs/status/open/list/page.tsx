@@ -1,21 +1,9 @@
 "use client";
 import { GithubRepoClient } from "@/lib/github-repo-client/github-repo-client";
+import type { GithubPullRequestData } from "@/types/github-api-data";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-type GithubPullRequestData = {
-  id: number;
-  title: string;
-  user: GitHubUserData;
-  html_url: string; // PR URL
-  created_at: string; // PR creation dateString
-  requested_reviewers: GitHubUserData[]; // Array of requested reviewers
-  updated_at: string; // PR last updated dateString
-};
-
-type GitHubUserData = {
-  login: string;
-  avatar_url: string;
-};
 
 export default function ListPrsPage() {
   const [repoOpenPrData, setRepoOpenPrData] = useState<
@@ -78,7 +66,7 @@ export default function ListPrsPage() {
                 Opened by: {pr.user.login} on{" "}
                 {new Date(pr.created_at).toLocaleDateString()}
               </p>
-              <img
+              <Image
                 src={pr.user.avatar_url}
                 alt={`${pr.user.login}'s avatar`}
                 className="w-10 h-10 rounded-full mt-2"
@@ -89,7 +77,7 @@ export default function ListPrsPage() {
                   <ul className="flex space-x-4">
                     {pr.requested_reviewers.map((reviewer) => (
                       <li key={reviewer.login} className="text-center">
-                        <img
+                        <Image
                           src={reviewer.avatar_url}
                           alt={`${reviewer.login}'s avatar`}
                           className="w-10 h-10 rounded-full mx-auto"
