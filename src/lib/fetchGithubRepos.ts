@@ -1,45 +1,28 @@
 import 'server-only';
 
-import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
+import { getUserId } from '@/lib/getUserId';
+import { getAccessToken } from '@/lib/getAccessToken';
 
 type Repo = {
   id: number;
   name: string;
   description: string;
+  owner: {
+    login: string;
+  };
 };
 
 // TODO: Add pagination
 export async function fetchGitHubRepos(): Promise<Repo[]> {
   const emptyResponse = Promise.resolve([] as Repo[]);
+  const githubApiUrl = 'https://api.github.com';
 
   try {
-    const githubApiUrl = process.env.GITHUB_API_URL;
-    if (!githubApiUrl) {
-      console.log('Missing GITHUB_API_URL');
-      return emptyResponse;
-    }
+    const userId = await getUserId();
+    if (!userId) return emptyResponse;
 
-    const userId = (
-      await auth.api.getSession({
-        headers: await headers(),
-      })
-    )?.user.id;
-    if (!userId) {
-      console.log('Missing userId');
-      return emptyResponse;
-    }
-
-    const { accessToken } = await auth.api.getAccessToken({
-      body: {
-        providerId: 'github',
-        userId,
-      },
-    });
-    if (!accessToken) {
-      console.log('Missing accessToken');
-      return emptyResponse;
-    }
+    const accessToken = await getAccessToken(userId);
+    if (!accessToken) return emptyResponse;
 
     const url = `${githubApiUrl}/user/repos`;
     console.log(`Fetching from GitHub: ${url}`);

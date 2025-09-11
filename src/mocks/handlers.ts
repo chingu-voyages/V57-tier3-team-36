@@ -10,7 +10,7 @@ export const handlers = [
   http.get('https://api.github.com/user', () => passthrough()),
   http.get('https://api.github.com/user/emails', () => passthrough()),
 
-  http.get(`${process.env.GITHUB_API_URL}/user/repos`, () => {
+  http.get('https://api.github.com/user/repos', () => {
     return HttpResponse.json(publicRepos);
   }),
 ];
