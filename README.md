@@ -28,8 +28,7 @@ This project uses **Neon** as the database and **Drizzle ORM** to manage schema 
 ### 2. Configure environment variables `.env.local`
 
 1. In the project root, copy the example env file: `cp .env.example .env.local`.
-2. Open `.env.local` and replace the placeholder value of `DEV_DATABASE_URL` with your actual Neon connection URL.
-3.) (Optional) If you also have a production database, update `PRODUCTION_DATABASE_URL` in `.env.local` as well.
+2. Open `.env.local` and replace the placeholder value of `DATABASE_URL` with your actual Neon connection URL.
 
 ## Local Development
 
