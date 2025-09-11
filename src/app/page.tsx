@@ -6,8 +6,8 @@ export default async function Home() {
 
   async function create(formData: FormData) {
     "use server";
-    if (!process.env.DEV_DATABASE_URL) throw new Error("Missing DB URL")
-    const sql = neon(process.env.DEV_DATABASE_URL);
+    if (!process.env.PRODUCTION_DATABASE_URL) throw new Error("Missing DB URL")
+    const sql = neon(process.env.PRODUCTION_DATABASE_URL);
     await sql`CREATE TABLE IF NOT EXISTS comments (comment TEXT)`;
     const comment = formData.get("comment");
     await (sql.query as any)("INSERT INTO comments (comment) VALUES ($1)", [comment]);
