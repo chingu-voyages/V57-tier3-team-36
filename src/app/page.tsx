@@ -12,6 +12,10 @@ export default function Home() {
           height={38}
           priority
         />
+
+        {/* ADDED (daisyUI): a primary button */}
+        <button className="btn btn-primary">Dummy Daisy-UI component #1 (in page.tsx)</button>
+
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
@@ -50,7 +54,15 @@ export default function Home() {
             Read our docs
           </a>
         </div>
+
+        {/* ADDED (daisyUI): an info alert */}
+        <div className="alert alert-info">
+          <span>Dummy Daisy-UI component #2 (in page.tsx)</span>
+        </div>
+
       </main>
+
+
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
