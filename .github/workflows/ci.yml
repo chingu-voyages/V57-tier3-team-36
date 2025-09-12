@@ -39,6 +39,12 @@ jobs:
         run: npm test
 
       - name: Build
-        run: |
-          npx next telemetry disable
-          npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          DATABASE_URL: lorem
+          GITHUB_CLIENT_ID: ipsum
+          GITHUB_CLIENT_SECRET: dolor
+          NEXT_PUBLIC_BETTER_AUTH_URL: sit
+          BETTER_AUTH_SECRET: amet
+          ENABLE_API_MOCKING: consectetur
+        run: npm run build
