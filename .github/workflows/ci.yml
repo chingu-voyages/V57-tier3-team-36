@@ -14,7 +14,7 @@ concurrency:
 jobs:
   lint-test:
     name: Lint and Test
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,6 +39,7 @@ jobs:
 
       - name: Build
         env:
+          # disable sending telemetry data by printing to stderr instead
           NEXT_TELEMETRY_DEBUG: 1
-          DATABASE_URL: postgresql://lorem:ipsum@localhost/dolor
-        run: npm run build
+        # hide telemetry output
+        run: npm run build 2>&1 | grep -v '\[telemetry\]'
