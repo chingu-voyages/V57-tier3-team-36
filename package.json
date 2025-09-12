@@ -19,7 +19,6 @@
     "drizzle-kit": "^0.31.4",
     "drizzle-orm": "^0.44.5",
     "next": "15.5.2",
-    "next-auth": "^4.24.11",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "server-only": "^0.0.1"
