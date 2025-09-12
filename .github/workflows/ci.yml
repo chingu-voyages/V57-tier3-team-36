@@ -38,4 +38,7 @@ jobs:
         run: npm test
 
       - name: Build
+        env:
+          NEXT_TELEMETRY_DEBUG=1
+          DATABASE_URL: postgresql://lorem:ipsum@localhost/dolor
         run: npm run build
