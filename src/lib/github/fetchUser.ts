@@ -1,14 +1,12 @@
-import { getAccessToken } from '@/lib/getAccessToken';
-import { getUserId } from '@/lib/getUserId';
+import { getAccessToken } from '@/lib/auth/getAccessToken';
+import { getUserId } from '@/lib/auth/getUserId';
+import type { components } from '@octokit/openapi-types';
 
-type User = {
-  id: number;
-  login: string; // username
-  avatar_url?: string;
-};
+// GitHub username is the `login` property
+export type GitHubUser = components['schemas']['simple-user'];
 
-export async function fetchUser(): Promise<User> {
-  const emptyResponse = Promise.resolve({} as User);
+export async function fetchUser(): Promise<GitHubUser> {
+  const emptyResponse = Promise.resolve({} as GitHubUser);
   const githubApiUrl = 'https://api.github.com';
 
   try {

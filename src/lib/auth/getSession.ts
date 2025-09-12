@@ -1,4 +1,4 @@
-import { auth, type AuthContext } from '@/lib/auth';
+import { auth, type AuthContext } from '@/lib/auth/auth';
 import { headers } from 'next/headers';
 
 export async function getSession(): Promise<AuthContext> {

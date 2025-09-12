@@ -1,15 +1,15 @@
 'use client';
 
-import { authClient } from '@/lib/authClient';
-import type { AuthContext } from '@/lib/auth';
-import { useRouter } from 'next/navigation'
+import { authClient } from '@/lib/auth/authClient';
+import type { AuthContext } from '@/lib/auth/auth';
+import { useRouter } from 'next/navigation';
 
 export function useAuth(): {
   loading: boolean;
   signIn: () => void;
   signOut: () => void;
 } & AuthContext {
-  const router = useRouter()
+  const router = useRouter();
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
   const session = data?.session;

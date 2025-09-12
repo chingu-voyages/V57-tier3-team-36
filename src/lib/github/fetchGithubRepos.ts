@@ -1,18 +1,12 @@
-import { getUserId } from '@/lib/getUserId';
-import { getAccessToken } from '@/lib/getAccessToken';
+import { getUserId } from '@/lib/auth/getUserId';
+import { getAccessToken } from '@/lib/auth/getAccessToken';
+import type { components } from '@octokit/openapi-types';
 
-type Repo = {
-  id: number;
-  name: string;
-  description: string;
-  owner: {
-    login: string;
-  };
-};
+export type Repository = components['schemas']['repository'];
 
 // TODO: Add pagination
-export async function fetchGitHubRepos(): Promise<Repo[]> {
-  const emptyResponse = Promise.resolve([] as Repo[]);
+export async function fetchGitHubRepos(): Promise<Repository[]> {
+  const emptyResponse = Promise.resolve([] as Repository[]);
   const githubApiUrl = 'https://api.github.com';
 
   try {
