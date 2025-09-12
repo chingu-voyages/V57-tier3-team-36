@@ -1,12 +1,12 @@
-import { fetchUser } from '@/lib/github/fetchUser';
-import { fetchGitHubRepos } from '@/lib/github/fetchGithubRepos';
+import { fetchGitHubUser } from '@/lib/github/fetchGitHubUser';
+import { fetchGitHubRepos } from '@/lib/github/fetchGitHubRepos';
 import { requireAuth } from '@/lib/auth/requireAuth';
 
 export async function ReposList() {
   const isAuthenticated = await requireAuth();
   if (!isAuthenticated) return null;
 
-  const user = await fetchUser();
+  const user = await fetchGitHubUser();
   const repos = await fetchGitHubRepos();
 
   return (

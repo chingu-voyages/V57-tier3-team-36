@@ -5,7 +5,7 @@ import type { components } from '@octokit/openapi-types';
 // GitHub username is the `login` property
 export type GitHubUser = components['schemas']['simple-user'];
 
-export async function fetchUser(): Promise<GitHubUser> {
+export async function fetchGitHubUser(): Promise<GitHubUser> {
   const emptyResponse = Promise.resolve({} as GitHubUser);
   const githubApiUrl = 'https://api.github.com';
 
