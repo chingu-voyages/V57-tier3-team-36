@@ -1,7 +1,5 @@
 import 'server-only';
 
-import './globals.css';
-
 if (
   process.env.NODE_ENV === 'development' &&
   process.env.ENABLE_API_MOCKING === 'true'
