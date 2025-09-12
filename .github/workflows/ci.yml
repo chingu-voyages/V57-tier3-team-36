@@ -42,5 +42,4 @@ jobs:
           # disable sending telemetry data by printing to stderr instead
           # for more information: https://nextjs.org/telemetry
           NEXT_TELEMETRY_DEBUG: 1
-        # hide telemetry output
-        run: npm run build 2>&1 | sed '/\[telemetry\]/,/^$/d'
+        run: npm run build
