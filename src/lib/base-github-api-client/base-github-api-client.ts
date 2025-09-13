@@ -1,10 +1,13 @@
+import { getAccessToken } from "../auth/getAccessToken";
+
 export function BaseGithubApiClient() {
   const baseUrl: string = "https://api.github.com";
-  const authorizationHeader = `Bearer ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}`;
+
   async function get<T>(path: string): Promise<T> {
+    const bearerToken = await getBearerToken();
     const response = await fetch(`${baseUrl}${path}`, {
       headers: {
-        Authorization: authorizationHeader,
+        Authorization: bearerToken,
       },
     });
     if (!response.ok) {
@@ -18,17 +21,16 @@ export function BaseGithubApiClient() {
     path: string,
     pageNumber: number = 1
   ): Promise<{ data: T; nextPage?: number }> {
-    const composedPath = `${baseUrl}${path}?page=${pageNumber}`;
-    console.info(`Fetching from: ${composedPath}`);
-    const response = await fetch(composedPath, {
+    const bearerToken = await getBearerToken();
+    const response = await fetch(`${baseUrl}${path}?page=${pageNumber}`, {
       headers: {
-        Authorization: authorizationHeader,
+        Authorization: bearerToken,
       },
     });
     if (!response.ok) {
       throw new Error(`GitHub API request failed: ${response.statusText}`);
     }
-    const linkHeader = response.headers.get("Link");
+    const linkHeader = response.headers.get("Link"); // Link gives us pagination info
     let nextPage: number | undefined = undefined;
 
     if (linkHeader) {
@@ -44,6 +46,10 @@ export function BaseGithubApiClient() {
 
     const data = await response.json();
     return { data, nextPage };
+  }
+  async function getBearerToken() {
+    const accessToken = await getAccessToken();
+    return `Bearer ${accessToken}`;
   }
 
   return { get, getWithPagination };
