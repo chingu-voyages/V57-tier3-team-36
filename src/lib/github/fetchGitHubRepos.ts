@@ -1,20 +1,16 @@
-import { getUserId } from '@/lib/auth/getUserId';
 import { getAccessToken } from '@/lib/auth/getAccessToken';
-import type { components } from '@octokit/openapi-types';
-
-export type GitHubRepo = components['schemas']['repository'];
 
 // TODO: Add pagination
-export async function fetchGitHubRepos(): Promise<GitHubRepo[]> {
-  const emptyResponse = Promise.resolve([] as GitHubRepo[]);
+export async function fetchGitHubRepos(): Promise<
+  Result<GitHubRepo[], string>
+> {
   const githubApiUrl = 'https://api.github.com';
 
   try {
-    const userId = await getUserId();
-    if (!userId) return emptyResponse;
-
-    const accessToken = await getAccessToken(userId);
-    if (!accessToken) return emptyResponse;
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+      return { data: undefined, error: 'Missing user access token' };
+    }
 
     const url = `${githubApiUrl}/user/repos`;
     console.log(`Fetching from GitHub: ${url}`);
@@ -27,13 +23,18 @@ export async function fetchGitHubRepos(): Promise<GitHubRepo[]> {
     });
 
     if (!response.ok) {
-      console.log('Failed to fetch\n', response.status, response.statusText);
-      return emptyResponse;
+      return {
+        data: undefined,
+        error: `${response.status} ${response.statusText}`,
+      };
     }
 
-    return response.json();
+    const data = await response.json();
+    return { data };
   } catch (error) {
-    console.error('Failed to fetch repos:\n', error);
-    return emptyResponse;
+    return {
+      data: undefined,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
   }
 }
