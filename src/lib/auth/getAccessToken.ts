@@ -1,17 +1,19 @@
 import { auth } from '@/lib/auth/auth';
+import { getUserId } from '@/lib/auth/getUserId';
 
-export async function getAccessToken(userId: string) {
+export async function getAccessToken() {
   try {
+    const userId = await getUserId();
+    if (!userId) return null;
+
     const { accessToken } = await auth.api.getAccessToken({
       body: {
         providerId: 'github',
         userId,
       },
     });
-    if (!accessToken) {
-      console.log('Missing accessToken');
-      return null;
-    }
+    if (!accessToken) return null;
+
     return accessToken;
   } catch (error) {
     console.error('Failed to get access token:\n', error);

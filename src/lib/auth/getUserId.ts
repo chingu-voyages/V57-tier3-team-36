@@ -8,10 +8,7 @@ export async function getUserId() {
         headers: await headers(),
       })
     )?.user.id;
-    if (!userId) {
-      console.log('Missing userId');
-      return null;
-    }
+    if (!userId) return null;
     return userId;
   } catch (error) {
     console.error('Failed to get user id from session:\n', error);
