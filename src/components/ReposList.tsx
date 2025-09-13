@@ -6,8 +6,8 @@ export async function ReposList() {
   const isAuthenticated = await requireAuth();
   if (!isAuthenticated) return null;
 
-  const { data: user } = await fetchGitHubUser();
-  const { data: repos } = await fetchGitHubRepos();
+  const user = await fetchGitHubUser();
+  const repos = await fetchGitHubRepos();
 
   return (
     <div className="flex flex-col gap-4 w-full items-center">

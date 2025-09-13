@@ -1,12 +1,12 @@
 import { getAccessToken } from '@/lib/auth/getAccessToken';
 
-export async function fetchGitHubUser(): Promise<Result<GitHubUser, string>> {
+async function fetchGitHubUserResult(): Promise<Result<GitHubUser, string>> {
   const githubApiUrl = 'https://api.github.com';
 
   try {
     const accessToken = await getAccessToken();
     if (!accessToken) {
-      return { data: undefined, error: 'Missing user access token' };
+      return { status: 'error', error: 'Missing user access token' };
     }
 
     const response = await fetch(`${githubApiUrl}/user`, {
@@ -15,17 +15,22 @@ export async function fetchGitHubUser(): Promise<Result<GitHubUser, string>> {
 
     if (!response.ok) {
       return {
-        data: undefined,
+        status: 'error',
         error: `${response.status} ${response.statusText}`,
       };
     }
 
     const data = await response.json();
-    return { data };
+    return { status: 'success', data };
   } catch (error) {
     return {
-      data: undefined,
+      status: 'error',
       error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
+}
+
+export async function fetchGitHubUser() {
+  const result = await fetchGitHubUserResult();
+  return result.status === 'success' ? result.data : undefined;
 }
