@@ -1,7 +1,7 @@
 'use client';
 
 import { authClient } from '@/lib/auth/authClient';
-import type { AuthContext } from '@/lib/auth/auth';
+import type { AuthContext } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 
 export function useAuth(): {

@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth/auth';
+import { auth } from '@/lib/auth';
 import { getUserId } from '@/lib/auth/getUserId';
 
 export async function getAccessToken() {
