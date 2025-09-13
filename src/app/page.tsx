@@ -20,6 +20,9 @@ export default function Home() {
         <li>
           <Link href="/repos/contributors">List Contributors</Link>
         </li>
+        <li>
+          <Link href="/repos/branches">List Branches</Link>
+        </li>
       </ul>
     </nav>
   );

@@ -1,5 +1,6 @@
 "use client";
-import { GithubRepoClient } from "@/lib/github-repo-client/github-repo-client";
+
+import { getAllReposForUsername } from "@/lib/github-repo-actions/github-repo-actions";
 import type { GithubRepoData } from "@/types/github-api-data";
 import Link from "next/link";
 import { useState } from "react";
@@ -8,21 +9,39 @@ export default function ListReposPage() {
   const [githubRepoData, setGithubRepoData] = useState<GithubRepoData[] | null>(
     null
   );
+  const [pageNumber, setPageNumber] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(false);
 
   const handleGetReposForUsername = async (event: React.FormEvent) => {
+    // Get the name of the submit button that was clicked
+    const submitter = (event.nativeEvent as SubmitEvent)
+      .submitter as HTMLButtonElement | null;
+
+    console.log("submitter", submitter?.name);
     const formData = new FormData(event.target as HTMLFormElement);
     const username = formData.get("username") as string; // Github Username
 
     // We should validate the data
     event.preventDefault();
 
-    const githubRepoClient = new GithubRepoClient();
     try {
-      const data = await githubRepoClient.getAllReposForUsername<
-        GithubRepoData[]
-      >(username);
-      console.info(data);
-      setGithubRepoData(data);
+      const response = await getAllReposForUsername<GithubRepoData[]>(
+        username,
+        pageNumber
+      );
+
+      if (submitter?.name === "nextPage" && response.nextPage) {
+        console.log("Next page available:", response.nextPage);
+        setPageNumber((prev) => prev + 1);
+      } else if (submitter?.name === "previousPage" && pageNumber > 1) {
+        if (pageNumber === 1) return;
+        setPageNumber((prev) => prev - 1);
+      } else if (submitter?.name === "initiator") {
+        setPageNumber((prev) => prev + 1); // Reset to first page on new search
+        setHasNextPage(!!response.nextPage);
+      }
+      setGithubRepoData(response.data);
+      setHasNextPage(!!response.nextPage);
     } catch (error) {
       console.error("Error fetching repositories:", error);
     }
@@ -42,7 +61,19 @@ export default function ListReposPage() {
           placeholder="Enter GitHub username"
           className="px-2"
         />
-        <button type="submit">Fetch All Repos for this user</button>
+        <button type="submit" name="initiator">
+          Fetch Repos
+        </button>
+        {hasNextPage && (
+          <button type="submit" className="mt-2" name="nextPage">
+            Fetch Next Page
+          </button>
+        )}
+        {pageNumber > 1 && (
+          <button type="submit" className="mt-2" name="previousPage">
+            Fetch Previous Page
+          </button>
+        )}
       </form>
 
       <ul id="repo-list" className="mt-8">

@@ -1,5 +1,6 @@
 "use client";
-import { GithubRepoClient } from "@/lib/github-repo-client/github-repo-client";
+
+import { getClosedPullRequestsForRepo } from "@/lib/github-repo-actions/github-repo-actions";
 import type { GithubPullRequestData } from "@/types/github-api-data";
 import { useMemo, useState } from "react";
 
@@ -22,11 +23,12 @@ export default function ClosedPRsListPage() {
 
     // We should validate the data
     event.preventDefault();
-    const githubRepoClient = new GithubRepoClient();
+
     try {
-      const data = await githubRepoClient.getClosedPullRequestsForRepo<
-        GithubPullRequestData[]
-      >(username, repo);
+      const data = await getClosedPullRequestsForRepo<GithubPullRequestData[]>(
+        username,
+        repo
+      );
       console.log(data);
       setRepoClosedPrData(data);
     } catch (error) {

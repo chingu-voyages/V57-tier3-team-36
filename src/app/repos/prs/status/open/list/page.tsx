@@ -1,5 +1,6 @@
 "use client";
-import { GithubRepoClient } from "@/lib/github-repo-client/github-repo-client";
+
+import { getOpenPullRequestsForRepo } from "@/lib/github-repo-actions/github-repo-actions";
 import type { GithubPullRequestData } from "@/types/github-api-data";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,11 +17,12 @@ export default function ListPrsPage() {
 
     // We should validate the data
     event.preventDefault();
-    const githubRepoClient = new GithubRepoClient();
+
     try {
-      const data = await githubRepoClient.getOpenPullRequestsForRepo<
-        GithubPullRequestData[]
-      >(username, repo);
+      const data = await getOpenPullRequestsForRepo<GithubPullRequestData[]>(
+        username,
+        repo
+      );
       console.log(data);
       setRepoOpenPrData(data);
     } catch (error) {

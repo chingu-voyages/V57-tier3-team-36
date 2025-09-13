@@ -1,5 +1,6 @@
 "use client";
-import { GithubRepoClient } from "@/lib/github-repo-client/github-repo-client";
+
+import { getContributorsForRepo } from "@/lib/github-repo-actions/github-repo-actions";
 import type { GitHubUserData } from "@/types/github-api-data";
 import Image from "next/image";
 import { useState } from "react";
@@ -16,11 +17,12 @@ export default function ListContributorsPage() {
     const repo = formData.get("repo") as string; // Github Repo
 
     // We should validate the data
-    const githubRepoClient = new GithubRepoClient();
+
     try {
-      const data = await githubRepoClient.getContributorsForRepo<
-        GitHubUserData[]
-      >(username, repo);
+      const data = await getContributorsForRepo<GitHubUserData[]>(
+        username,
+        repo
+      );
       console.log(data);
       setRepoContributorData(data);
       // You can set this data to state if you want to display it
