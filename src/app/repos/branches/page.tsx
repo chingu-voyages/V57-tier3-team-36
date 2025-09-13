@@ -12,7 +12,9 @@ type GitHubBranchData = {
   protected: boolean;
 };
 export default function ListBranchesPage() {
-  const [githubRepoData, setGithubRepoData] = useState<any[] | null>(null);
+  const [githubRepoData, setGithubRepoData] = useState<
+    GitHubBranchData[] | null
+  >(null);
   const handleFetch = async (event: React.FormEvent) => {
     const formData = new FormData(event.target as HTMLFormElement);
     const username = formData.get("username") as string; // Github Username
@@ -22,12 +24,12 @@ export default function ListBranchesPage() {
     event.preventDefault();
 
     try {
-      const data = await getBranchesForRepo<GitHubBranchData[]>(
+      const response = await getBranchesForRepo<GitHubBranchData[]>(
         username,
         reponame
       );
-      console.info(data);
-      setGithubRepoData(data);
+      console.info(response);
+      setGithubRepoData(response.data);
     } catch (error) {
       console.error("Error fetching branches:", error);
     }

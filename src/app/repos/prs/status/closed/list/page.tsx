@@ -12,7 +12,7 @@ export default function ClosedPRsListPage() {
   >(null);
 
   const [isFilterMergedChecked, setIsFilterMergedChecked] = useState(false);
-  const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleStatusChange = () => {
     setIsFilterMergedChecked((prev) => !prev);
   };
 

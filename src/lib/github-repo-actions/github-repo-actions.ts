@@ -33,7 +33,8 @@ export async function getClosedPullRequestsForRepo<T>(
 export async function getBranchesForRepo<T>(
   owner: string,
   repo: string
-): Promise<T[]> {
-  // return this.getPaginated<T>(`/repos/${owner}/${repo}/branches`);
-  return [];
+): Promise<{ data: T; nextPage?: number }> {
+  return githubApiClient.getWithPagination<T>(
+    `/repos/${owner}/${repo}/branches`
+  );
 }
