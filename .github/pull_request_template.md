@@ -4,7 +4,7 @@
 <!-- Add relevant motivation and context -->
 <!-- List any dependencies required for this change -->
 
-Addresses: [MGF-#](https://v57-tier3-team-36.atlassian.net/browse/MGF-#)
+Addresses: [ECG-#](https://dsd-east-coast-goats.atlassian.net/browse/ECG-#)
 
 ## Type of change
 
