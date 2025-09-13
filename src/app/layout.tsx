@@ -1,17 +1,21 @@
-import "./globals.css";
+import './globals.css';
 
+if (
+  process.env.NODE_ENV === 'development' &&
+  process.env.ENABLE_API_MOCKING === 'true'
+) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  require('../mocks');
+}
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

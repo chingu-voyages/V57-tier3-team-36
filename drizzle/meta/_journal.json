@@ -8,6 +8,13 @@
       "when": 1757605505900,
       "tag": "0000_daily_nemesis",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1757632157206,
+      "tag": "0001_careful_thunderbolts",
+      "breakpoints": true
     }
   ]
 }
