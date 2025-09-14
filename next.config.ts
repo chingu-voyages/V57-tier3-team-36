@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next';
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
@@ -8,14 +8,24 @@ const nextConfig: NextConfig = {
 
   // Only load MSW in development.
   async rewrites() {
-    return process.env.NODE_ENV === 'development'
+    return process.env.NODE_ENV === "development"
       ? [
           {
-            source: '/mockServiceWorker.js',
-            destination: '/mockServiceWorker.js',
+            source: "/mockServiceWorker.js",
+            destination: "/mockServiceWorker.js",
           },
         ]
       : [];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        port: "",
+        pathname: "/u/**",
+      },
+    ],
   },
 };
 
