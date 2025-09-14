@@ -1,14 +1,13 @@
 "use client";
 
 import { getClosedPullRequestsForRepo } from "@/lib/github-repo-actions/github-repo-actions";
-import type { GithubPullRequestData } from "@/types/github-api-data";
 import { useMemo, useState } from "react";
 
 export default function ClosedPRsListPage() {
   // We should differentiate between closed PRs and merged PRs?
 
   const [repoClosedPrData, setRepoClosedPrData] = useState<
-    GithubPullRequestData[] | null
+    GitHubPullRequest[] | null
   >(null);
 
   const [isFilterMergedChecked, setIsFilterMergedChecked] = useState(false);
@@ -25,10 +24,7 @@ export default function ClosedPRsListPage() {
     event.preventDefault();
 
     try {
-      const data = await getClosedPullRequestsForRepo<GithubPullRequestData[]>(
-        username,
-        repo
-      );
+      const data = await getClosedPullRequestsForRepo(username, repo);
       console.log(data);
       setRepoClosedPrData(data);
     } catch (error) {

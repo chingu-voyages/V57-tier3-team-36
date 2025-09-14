@@ -3,18 +3,10 @@
 import { getBranchesForRepo } from "@/lib/github-repo-actions/github-repo-actions";
 import { useState } from "react";
 
-type GitHubBranchData = {
-  name: string;
-  commit: {
-    sha: string;
-    url: string;
-  };
-  protected: boolean;
-};
 export default function ListBranchesPage() {
-  const [githubRepoData, setGithubRepoData] = useState<
-    GitHubBranchData[] | null
-  >(null);
+  const [githubRepoData, setGithubRepoData] = useState<GitHubBranch[] | null>(
+    null
+  );
   const handleFetch = async (event: React.FormEvent) => {
     const formData = new FormData(event.target as HTMLFormElement);
     const username = formData.get("username") as string; // Github Username
@@ -24,10 +16,7 @@ export default function ListBranchesPage() {
     event.preventDefault();
 
     try {
-      const response = await getBranchesForRepo<GitHubBranchData[]>(
-        username,
-        reponame
-      );
+      const response = await getBranchesForRepo(username, reponame);
       console.info(response);
       setGithubRepoData(response.data);
     } catch (error) {
@@ -56,7 +45,7 @@ export default function ListBranchesPage() {
       <div>
         {githubRepoData && (
           <ul>
-            {githubRepoData.map((branch: GitHubBranchData) => (
+            {githubRepoData.map((branch: GitHubBranch) => (
               <li key={branch.name}>
                 <strong>Branch Name:</strong> {branch.name} <br />
                 <strong>Commit SHA:</strong> {branch.commit.sha} <br />

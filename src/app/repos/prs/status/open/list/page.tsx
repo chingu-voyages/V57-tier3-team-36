@@ -1,14 +1,13 @@
 "use client";
 
 import { getOpenPullRequestsForRepo } from "@/lib/github-repo-actions/github-repo-actions";
-import type { GithubPullRequestData } from "@/types/github-api-data";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function ListPrsPage() {
   const [repoOpenPrData, setRepoOpenPrData] = useState<
-    GithubPullRequestData[] | null
+    GitHubPullRequest[] | null
   >(null);
   const handleGetPrsForRepoUsername = async (event: React.FormEvent) => {
     const formData = new FormData(event.target as HTMLFormElement);
@@ -19,10 +18,7 @@ export default function ListPrsPage() {
     event.preventDefault();
 
     try {
-      const data = await getOpenPullRequestsForRepo<GithubPullRequestData[]>(
-        username,
-        repo
-      );
+      const data = await getOpenPullRequestsForRepo(username, repo);
       console.log(data);
       setRepoOpenPrData(data);
     } catch (error) {
@@ -75,7 +71,7 @@ export default function ListPrsPage() {
               />
               <div className="mt-4">
                 <h3 className="text-md">Requested Reviewers</h3>
-                {pr.requested_reviewers.length > 0 ? (
+                {pr.requested_reviewers && pr.requested_reviewers.length > 0 ? (
                   <ul className="flex space-x-4">
                     {pr.requested_reviewers.map((reviewer) => (
                       <li key={reviewer.login} className="text-center">

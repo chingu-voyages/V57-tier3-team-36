@@ -1,12 +1,12 @@
 "use client";
 
 import { getAllReposForUsername } from "@/lib/github-repo-actions/github-repo-actions";
-import type { GithubRepoData } from "@/types/github-api-data";
+
 import Link from "next/link";
 import { useState } from "react";
 
 export default function ListReposPage() {
-  const [githubRepoData, setGithubRepoData] = useState<GithubRepoData[] | null>(
+  const [githubRepoData, setGithubRepoData] = useState<GitHubRepo[] | null>(
     null
   );
   const [pageNumber, setPageNumber] = useState(1);
@@ -17,7 +17,6 @@ export default function ListReposPage() {
     const submitter = (event.nativeEvent as SubmitEvent)
       .submitter as HTMLButtonElement | null;
 
-    console.log("submitter", submitter?.name);
     const formData = new FormData(event.target as HTMLFormElement);
     const username = formData.get("username") as string; // Github Username
 
@@ -25,10 +24,7 @@ export default function ListReposPage() {
     event.preventDefault();
 
     try {
-      const response = await getAllReposForUsername<GithubRepoData[]>(
-        username,
-        pageNumber
-      );
+      const response = await getAllReposForUsername(username, pageNumber);
 
       if (submitter?.name === "nextPage" && response.nextPage) {
         console.log("Next page available:", response.nextPage);
@@ -88,7 +84,10 @@ export default function ListReposPage() {
                 <h3 className="text-lg font-bold">{repo.name}</h3>
               </Link>
               <p className="text-sm text-gray-500">
-                Created at: {new Date(repo.created_at).toLocaleDateString()}
+                Created at:{" "}
+                {repo.created_at
+                  ? new Date(repo.created_at).toLocaleDateString()
+                  : "Unknown"}
               </p>
               <p className="mt-2">{repo.description || "No description"}</p>
             </li>

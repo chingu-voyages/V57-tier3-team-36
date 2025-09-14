@@ -1,13 +1,13 @@
 "use client";
 
 import { getContributorsForRepo } from "@/lib/github-repo-actions/github-repo-actions";
-import type { GitHubUserData } from "@/types/github-api-data";
+
 import Image from "next/image";
 import { useState } from "react";
 
 export default function ListContributorsPage() {
   const [repoContributorData, setRepoContributorData] = useState<
-    GitHubUserData[] | null
+    GitHubContributor[] | null
   >(null);
 
   const handleFetchContributorsForRepo = async (event: React.FormEvent) => {
@@ -19,11 +19,7 @@ export default function ListContributorsPage() {
     // We should validate the data
 
     try {
-      const data = await getContributorsForRepo<GitHubUserData[]>(
-        username,
-        repo
-      );
-      console.log(data);
+      const data = await getContributorsForRepo(username, repo);
       setRepoContributorData(data);
       // You can set this data to state if you want to display it
     } catch (error) {
@@ -67,8 +63,10 @@ export default function ListContributorsPage() {
                   className="text-blue-600 hover:underline"
                 >
                   <Image
-                    src={contributor.avatar_url}
-                    alt={contributor.login}
+                    src={contributor.avatar_url!}
+                    width={40}
+                    height={40}
+                    alt={contributor.login!}
                     className="w-10 h-10 rounded-full inline-block mr-2"
                   />
                   {contributor.login} ({contributor.contributions}{" "}
