@@ -3,38 +3,44 @@ import { BaseGithubApiClient } from "../base-github-api-client/base-github-api-c
 
 const githubApiClient = BaseGithubApiClient();
 
-export async function getAllReposForUsername<T>(
+export async function getAllReposForUsername(
   owner: string,
   pageNumber: number = 1
-): Promise<{ data: T; nextPage?: number }> {
-  return githubApiClient.getWithPagination<T>(
+): Promise<{ data: GitHubRepo[]; nextPage?: number }> {
+  return githubApiClient.getWithPagination<GitHubRepo[]>(
     `/users/${owner}/repos`,
     pageNumber
   );
 }
-export async function getOpenPullRequestsForRepo<T>(
+export async function getOpenPullRequestsForRepo(
   owner: string,
   repo: string
-): Promise<T> {
-  return githubApiClient.get<T>(`/repos/${owner}/${repo}/pulls?state=open`);
+): Promise<GitHubPullRequest[]> {
+  return githubApiClient.get<GitHubPullRequest[]>(
+    `/repos/${owner}/${repo}/pulls?state=open`
+  );
 }
-export async function getContributorsForRepo<T>(
+export async function getContributorsForRepo(
   owner: string,
   repo: string
-): Promise<T> {
-  return githubApiClient.get<T>(`/repos/${owner}/${repo}/contributors`);
+): Promise<GitHubContributor[]> {
+  return githubApiClient.get<GitHubContributor[]>(
+    `/repos/${owner}/${repo}/contributors`
+  );
 }
-export async function getClosedPullRequestsForRepo<T>(
+export async function getClosedPullRequestsForRepo(
   owner: string,
   repo: string
-): Promise<T> {
-  return githubApiClient.get<T>(`/repos/${owner}/${repo}/pulls?state=closed`);
+): Promise<GitHubPullRequest[]> {
+  return githubApiClient.get<GitHubPullRequest[]>(
+    `/repos/${owner}/${repo}/pulls?state=closed`
+  );
 }
-export async function getBranchesForRepo<T>(
+export async function getBranchesForRepo(
   owner: string,
   repo: string
-): Promise<{ data: T; nextPage?: number }> {
-  return githubApiClient.getWithPagination<T>(
+): Promise<{ data: GitHubBranch[]; nextPage?: number }> {
+  return githubApiClient.getWithPagination<GitHubBranch[]>(
     `/repos/${owner}/${repo}/branches`
   );
 }
