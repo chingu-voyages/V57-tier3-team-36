@@ -1,15 +1,19 @@
 "use client";
 
+import { usePagination } from "@/hooks/use-pagination";
 import { getOpenPullRequestsForRepo } from "@/lib/github-repo-actions/github-repo-actions";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function ListPrsPage() {
-  const [repoOpenPrData, setRepoOpenPrData] = useState<
-    GitHubPullRequest[] | null
-  >(null);
+  const { navigate, fetchResults, nextPage, previousPage } =
+    usePagination<GitHubPullRequest[]>();
   const handleGetPrsForRepoUsername = async (event: React.FormEvent) => {
+    const submitter = (event.nativeEvent as SubmitEvent)
+      .submitter as HTMLButtonElement | null;
+
+    if (!submitter) return;
+
     const formData = new FormData(event.target as HTMLFormElement);
     const username = formData.get("username") as string; // Github Username
     const repo = formData.get("repo") as string; // Github Repo
@@ -18,9 +22,12 @@ export default function ListPrsPage() {
     event.preventDefault();
 
     try {
-      const data = await getOpenPullRequestsForRepo(username, repo);
-      console.log(data);
-      setRepoOpenPrData(data);
+      await navigate(
+        getOpenPullRequestsForRepo,
+        submitter.name,
+        username,
+        repo
+      );
     } catch (error) {
       console.error("Error fetching pull requests:", error);
     }
@@ -47,11 +54,21 @@ export default function ListPrsPage() {
           placeholder="Enter GitHub repo"
           className="px-2"
         />
-        <button type="submit">Fetch All PRs for this repo</button>
+        <button type="submit">Fetch PRs for this repo</button>
+        {!!nextPage && (
+          <button type="submit" className="mt-2" name="next">
+            Fetch Next Page
+          </button>
+        )}
+        {!!previousPage && (
+          <button type="submit" className="mt-2" name="previous">
+            Fetch Previous Page
+          </button>
+        )}
       </form>
       <ul id="pr-list" className="mt-8">
-        {repoOpenPrData &&
-          repoOpenPrData.map((pr) => (
+        {fetchResults &&
+          fetchResults.map((pr) => (
             <li key={pr.id} className="mb-4 border-1 p-2 rounded-md shadow">
               <Link
                 href={pr.html_url}

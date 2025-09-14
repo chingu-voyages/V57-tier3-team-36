@@ -1,13 +1,18 @@
 "use client";
 
+import { usePagination } from "@/hooks/use-pagination";
 import { getBranchesForRepo } from "@/lib/github-repo-actions/github-repo-actions";
-import { useState } from "react";
 
 export default function ListBranchesPage() {
-  const [githubRepoData, setGithubRepoData] = useState<GitHubBranch[] | null>(
-    null
-  );
+  const { navigate, fetchResults, nextPage, previousPage } =
+    usePagination<GitHubBranch[]>();
+
   const handleFetch = async (event: React.FormEvent) => {
+    const submitter = (event.nativeEvent as SubmitEvent)
+      .submitter as HTMLButtonElement | null;
+
+    if (!submitter) return;
+
     const formData = new FormData(event.target as HTMLFormElement);
     const username = formData.get("username") as string; // Github Username
     const reponame = formData.get("reponame") as string; // Github Repository Name
@@ -16,9 +21,7 @@ export default function ListBranchesPage() {
     event.preventDefault();
 
     try {
-      const response = await getBranchesForRepo(username, reponame);
-      console.info(response);
-      setGithubRepoData(response.data);
+      await navigate(getBranchesForRepo, submitter.name, username, reponame);
     } catch (error) {
       console.error("Error fetching branches:", error);
     }
@@ -31,21 +34,33 @@ export default function ListBranchesPage() {
           name="username"
           type="text"
           placeholder="Enter GitHub username"
-          className="px-2"
+          className="px-2 bg-black"
         />
         <label htmlFor="reponame">Enter GitHub Repository Name:</label>
         <input
           name="reponame"
           type="text"
           placeholder="Enter GitHub repository name"
-          className="px-2"
+          className="px-2 bg-black"
         />
-        <button type="submit">Fetch Branches</button>
+        <button type="submit" name="initial">
+          Fetch Branches
+        </button>
+        {!!nextPage && (
+          <button type="submit" className="mt-2" name="next">
+            Fetch Next Page
+          </button>
+        )}
+        {!!previousPage && (
+          <button type="submit" className="mt-2" name="previous">
+            Fetch Previous Page
+          </button>
+        )}
       </form>
       <div>
-        {githubRepoData && (
+        {fetchResults && (
           <ul>
-            {githubRepoData.map((branch: GitHubBranch) => (
+            {fetchResults.map((branch: GitHubBranch) => (
               <li key={branch.name}>
                 <strong>Branch Name:</strong> {branch.name} <br />
                 <strong>Commit SHA:</strong> {branch.commit.sha} <br />

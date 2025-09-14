@@ -1,27 +1,26 @@
 "use client";
 
+import { usePagination } from "@/hooks/use-pagination";
 import { getContributorsForRepo } from "@/lib/github-repo-actions/github-repo-actions";
 
 import Image from "next/image";
-import { useState } from "react";
 
 export default function ListContributorsPage() {
-  const [repoContributorData, setRepoContributorData] = useState<
-    GitHubContributor[] | null
-  >(null);
-
+  const { navigate, fetchResults, nextPage, previousPage } =
+    usePagination<GitHubContributor[]>();
   const handleFetchContributorsForRepo = async (event: React.FormEvent) => {
-    event.preventDefault();
+    const submitter = (event.nativeEvent as SubmitEvent)
+      .submitter as HTMLButtonElement | null;
+    if (!submitter) return;
+
     const formData = new FormData(event.target as HTMLFormElement);
     const username = formData.get("username") as string; // Github Username
     const repo = formData.get("repo") as string; // Github Repo
 
+    event.preventDefault();
     // We should validate the data
-
     try {
-      const data = await getContributorsForRepo(username, repo);
-      setRepoContributorData(data);
-      // You can set this data to state if you want to display it
+      await navigate(getContributorsForRepo, submitter.name, username, repo);
     } catch (error) {
       console.error("Error fetching contributors:", error);
     }
@@ -37,21 +36,35 @@ export default function ListContributorsPage() {
           name="username"
           type="text"
           placeholder="Enter GitHub username"
-          className="px-2"
+          className="px-2 bg-black"
+          defaultValue={"microsoft"}
         />
         <label htmlFor="repo">Enter GitHub Repo:</label>
         <input
           name="repo"
           type="text"
           placeholder="Enter GitHub repo"
-          className="px-2"
+          className="px-2 bg-black"
+          defaultValue={"vscode"}
         />
-        <button type="submit">Fetch All Contributors for this repo</button>
+        <button type="submit" name="initial">
+          Fetch All Contributors for this repo
+        </button>
+        {!!nextPage && (
+          <button type="submit" className="mt-2" name="next">
+            Fetch Next Page
+          </button>
+        )}
+        {!!previousPage && (
+          <button type="submit" className="mt-2" name="previous">
+            Fetch Previous Page
+          </button>
+        )}
       </form>
       <div>
-        {repoContributorData && (
+        {fetchResults && (
           <ul>
-            {repoContributorData.map((contributor) => (
+            {fetchResults.map((contributor) => (
               <li
                 key={contributor.id}
                 className="mb-4 border-1 p-2 rounded-md shadow"

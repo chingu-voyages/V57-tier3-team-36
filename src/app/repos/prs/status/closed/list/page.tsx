@@ -1,14 +1,14 @@
 "use client";
 
+import { usePagination } from "@/hooks/use-pagination";
 import { getClosedPullRequestsForRepo } from "@/lib/github-repo-actions/github-repo-actions";
 import { useMemo, useState } from "react";
 
 export default function ClosedPRsListPage() {
   // We should differentiate between closed PRs and merged PRs?
 
-  const [repoClosedPrData, setRepoClosedPrData] = useState<
-    GitHubPullRequest[] | null
-  >(null);
+  const { navigate, fetchResults, nextPage, previousPage } =
+    usePagination<GitHubPullRequest[]>();
 
   const [isFilterMergedChecked, setIsFilterMergedChecked] = useState(false);
   const handleStatusChange = () => {
@@ -20,25 +20,36 @@ export default function ClosedPRsListPage() {
     const username = formData.get("username") as string; // Github Username
     const repo = formData.get("repo") as string; // Github Repo
 
+    const submitter = (event.nativeEvent as SubmitEvent)
+      .submitter as HTMLButtonElement | null;
+
+    if (!submitter) return;
     // We should validate the data
     event.preventDefault();
 
     try {
-      const data = await getClosedPullRequestsForRepo(username, repo);
-      console.log(data);
-      setRepoClosedPrData(data);
+      await navigate(
+        getClosedPullRequestsForRepo,
+        submitter.name,
+        username,
+        repo
+      );
     } catch (error) {
       console.error("Error fetching pull requests:", error);
     }
   };
 
   const filteredPrStatuses = useMemo(() => {
-    if (!repoClosedPrData) return null;
+    if (!fetchResults) return null;
     if (isFilterMergedChecked) {
-      return repoClosedPrData!.filter((pr) => pr.merged_at !== null);
+      const filteredClosedResults = fetchResults!.filter(
+        (pr) => pr.merged_at !== null
+      );
+      console.log({ filteredClosedResults });
+      return filteredClosedResults;
     }
-    return repoClosedPrData;
-  }, [isFilterMergedChecked, repoClosedPrData]);
+    return fetchResults;
+  }, [isFilterMergedChecked, fetchResults]);
 
   return (
     <div>
@@ -65,16 +76,28 @@ export default function ClosedPRsListPage() {
           name="username"
           type="text"
           placeholder="Enter GitHub username"
-          className="px-2"
+          className="px-2 bg-black"
         />
         <label htmlFor="repo">Enter GitHub Repo:</label>
         <input
           name="repo"
           type="text"
           placeholder="Enter GitHub repo"
-          className="px-2"
+          className="px-2 bg-black"
         />
-        <button type="submit">Fetch All PRs for this repo</button>
+        <button type="submit" name="initial">
+          Fetch All PRs for this repo
+        </button>
+        {!!nextPage && (
+          <button type="submit" className="mt-2" name="next">
+            Fetch Next Page
+          </button>
+        )}
+        {!!previousPage && (
+          <button type="submit" className="mt-2" name="previous">
+            Fetch Previous Page
+          </button>
+        )}
       </form>
       <div>
         {filteredPrStatuses && (
