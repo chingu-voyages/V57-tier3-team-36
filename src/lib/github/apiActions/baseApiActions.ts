@@ -11,7 +11,7 @@ export type GitHubPaginatedResponse<T> = {
   pagination?: GitHubPagination;
 };
 export function BaseGithubApiActions() {
-  const baseUrl: string = "https://api.github.com";
+  const baseUrl = "https://api.github.com";
 
   async function get<T>(path: string): Promise<T> {
     const bearerToken = await getBearerToken();
