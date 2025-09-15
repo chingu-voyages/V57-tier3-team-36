@@ -1,6 +1,6 @@
 "use server";
 
-import { BaseGithubApiActions } from "@/lib/github/apiActions/baseApiActions";
+import { BaseGithubApiActions } from "@/lib/github/baseApiActions";
 
 type GitHubActionParams = {
   owner: string;
