@@ -45,10 +45,10 @@ export function BaseGithubApiActions() {
       throw new Error(`GitHub API request failed: ${response.statusText}`);
     }
     const linkHeader = response.headers.get("Link"); // Link gives us pagination info
-    let nextPage: number | undefined = undefined;
-    let previousPage: number | undefined = undefined;
-    let firstPage: number | undefined = undefined;
-    let lastPage: number | undefined = undefined;
+    let nextPage: number | undefined;
+    let previousPage: number | undefined;
+    let firstPage: number | undefined;
+    let lastPage: number | undefined;
 
     const data = await response.json();
 
