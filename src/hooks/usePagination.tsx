@@ -27,38 +27,32 @@ export function usePagination<T>() {
     direction: "initial" | "next" | "previous" | string, // these refer to the names of the navigation HTML buttons in the UI - initial is the first load. We can refactor this.
     ...args: any[]
   ) {
-    switch (direction) {
-      case "initial":
-        const initialResponse = await gitHubActionFunction(...args);
-        setNextPage(initialResponse.pagination?.nextPage);
-        setFetchResults(initialResponse.data);
-        break;
-      case "next":
-        if (!nextPage) return;
-        const navigateToNextPageResponse = await gitHubActionFunction(
-          ...args,
-          nextPage
-        );
-        setNextPage(navigateToNextPageResponse.pagination?.nextPage);
-        setPreviousPage(navigateToNextPageResponse.pagination?.previousPage);
-        setFetchResults(navigateToNextPageResponse.data);
-        break;
-      case "previous":
-        if (!previousPage) return;
-        const navigatedToPreviousPageResponse = await gitHubActionFunction(
-          ...args,
-          previousPage
-        );
-        setNextPage(navigatedToPreviousPageResponse.pagination?.nextPage);
-        setPreviousPage(
-          navigatedToPreviousPageResponse.pagination?.previousPage
-        );
-        setFetchResults(navigatedToPreviousPageResponse.data);
-        break;
-      default:
-        throw new Error(
-          "Invalid navigation direction: navigation direction must be 'initial', 'next', or 'previous'"
-        );
+    if (direction === "initial") {
+      const initialResponse = await gitHubActionFunction(...args);
+      setNextPage(initialResponse.pagination?.nextPage);
+      setFetchResults(initialResponse.data);
+    } else if (direction === "next") {
+      if (!nextPage) return;
+      const navigateToNextPageResponse = await gitHubActionFunction(
+        ...args,
+        nextPage
+      );
+      setNextPage(navigateToNextPageResponse.pagination?.nextPage);
+      setPreviousPage(navigateToNextPageResponse.pagination?.previousPage);
+      setFetchResults(navigateToNextPageResponse.data);
+    } else if (direction === "previous") {
+      if (!previousPage) return;
+      const navigatedToPreviousPageResponse = await gitHubActionFunction(
+        ...args,
+        previousPage
+      );
+      setNextPage(navigatedToPreviousPageResponse.pagination?.nextPage);
+      setPreviousPage(navigatedToPreviousPageResponse.pagination?.previousPage);
+      setFetchResults(navigatedToPreviousPageResponse.data);
+    } else {
+      throw new Error(
+        "Invalid navigation direction: navigation direction must be 'initial', 'next', or 'previous'"
+      );
     }
   }
 
