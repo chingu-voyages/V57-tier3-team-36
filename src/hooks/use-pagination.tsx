@@ -2,6 +2,7 @@
 import { GitHubPaginatedResponse } from "@/lib/base-github-api-client/base-github-api-client";
 import { useState } from "react";
 
+// A custom hook to manage pagination state and navigation for paginated GitHub API calls
 export function usePagination<T>() {
   const [nextPage, setNextPage] = useState<number | undefined>(undefined);
   const [previousPage, setPreviousPage] = useState<number | undefined>(
@@ -9,12 +10,19 @@ export function usePagination<T>() {
   );
   const [fetchResults, setFetchResults] = useState<T | null>(null);
 
+  /**
+   *
+   * @param gitHubActionFunction one of the action functions from github-repo-actions.ts that supports pagination
+   * @param direction initial | next | previous - the direction to navigate
+   * @param args any extra arguments required by the gitHubActionFunction
+   * @returns
+   */
   async function navigate(
     // This should accept a function of any signature
     gitHubActionFunction: (
       ...args: any[]
     ) => Promise<GitHubPaginatedResponse<T>>,
-    direction: "initial" | "next" | "previous" | string,
+    direction: "initial" | "next" | "previous" | string, // these refer to the names of the navigation HTML buttons in the UI - initial is the first load. We can refactor this.
     ...args: any[]
   ) {
     switch (direction) {
