@@ -5,10 +5,8 @@ import { useState } from "react";
 
 // A custom hook to manage pagination state and navigation for paginated GitHub API calls
 export function usePagination<T>() {
-  const [nextPage, setNextPage] = useState<number | undefined>(undefined);
-  const [previousPage, setPreviousPage] = useState<number | undefined>(
-    undefined
-  );
+  const [nextPage, setNextPage] = useState<number>();
+  const [previousPage, setPreviousPage] = useState<number>();
   const [fetchResults, setFetchResults] = useState<T | null>(null);
 
   /**
