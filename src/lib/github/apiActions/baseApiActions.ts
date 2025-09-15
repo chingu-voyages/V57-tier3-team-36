@@ -49,30 +49,40 @@ export function BaseGithubApiActions() {
     let previousPage: number | undefined = undefined;
     let firstPage: number | undefined = undefined;
     let lastPage: number | undefined = undefined;
+
+    const data = await response.json();
+
     if (linkHeader) {
       const links = parseLinkHeader(linkHeader);
-      if (links && links.next) {
+      if (!links) {
+        // If no links are found, return the data without pagination
+        return {
+          data,
+          pagination: { nextPage, firstPage, lastPage, previousPage },
+        };
+      }
+      if (links.next) {
         const url = new URL(links.next);
         const pageParam = url.searchParams.get("page");
         if (pageParam) {
           nextPage = parseInt(pageParam, 10);
         }
       }
-      if (links && links.prev) {
+      if (links.prev) {
         const url = new URL(links.prev);
         const pageParam = url.searchParams.get("page");
         if (pageParam) {
           previousPage = parseInt(pageParam, 10);
         }
       }
-      if (links && links.first) {
+      if (links.first) {
         const url = new URL(links.first);
         const pageParam = url.searchParams.get("page");
         if (pageParam) {
           firstPage = parseInt(pageParam, 10);
         }
       }
-      if (links && links.last) {
+      if (links.last) {
         const url = new URL(links.last);
         const pageParam = url.searchParams.get("page");
         if (pageParam) {
@@ -81,7 +91,6 @@ export function BaseGithubApiActions() {
       }
     }
 
-    const data = await response.json();
     return {
       data,
       pagination: { nextPage, firstPage, lastPage, previousPage },
