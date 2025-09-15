@@ -5,56 +5,63 @@ import {
   GitHubPaginatedResponse,
 } from "@/lib/github/apiActions/baseApiActions";
 
+type GitHubPaginatedActionParams = {
+  owner: string;
+  repo: string;
+  pageNumber?: number;
+};
 const githubApiClient = BaseGithubApiActions();
 
 export async function getAuthenticatedGitHubUser(): Promise<GitHubUser> {
   return githubApiClient.get<GitHubUser>("/user");
 }
 
-export async function getAllReposForUsername(
-  owner: string,
-  pageNumber: number = 1
-): Promise<GitHubPaginatedResponse<GitHubRepo[]>> {
+export async function getAllReposForUsername({
+  owner,
+  pageNumber = 1,
+}: GitHubPaginatedActionParams): Promise<
+  GitHubPaginatedResponse<GitHubRepo[]>
+> {
   return githubApiClient.getWithPagination<GitHubRepo[]>(
     `/users/${owner}/repos`,
     pageNumber
   );
 }
-export async function getOpenPullRequestsForRepo(
-  owner: string,
-  repo: string,
-  pageNumber: number = 1
-): Promise<GitHubPaginatedResponse<GitHubPullRequest[]>> {
+
+export async function getPullRequestsForRepo({
+  owner,
+  repo,
+  pageNumber = 1,
+  state,
+}: GitHubPaginatedActionParams & { state: "open" | "closed" }): Promise<
+  GitHubPaginatedResponse<GitHubPullRequest[]>
+> {
   return githubApiClient.getWithPagination<GitHubPullRequest[]>(
-    `/repos/${owner}/${repo}/pulls?state=open`,
+    `/repos/${owner}/${repo}/pulls?state=${state}`,
     pageNumber
   );
 }
-export async function getContributorsForRepo(
-  owner: string,
-  repo: string,
-  pageNumber: number = 1
-): Promise<GitHubPaginatedResponse<GitHubContributor[]>> {
+
+export async function getContributorsForRepo({
+  owner,
+  repo,
+  pageNumber = 1,
+}: GitHubPaginatedActionParams): Promise<
+  GitHubPaginatedResponse<GitHubContributor[]>
+> {
   return githubApiClient.getWithPagination<GitHubContributor[]>(
     `/repos/${owner}/${repo}/contributors`,
     pageNumber
   );
 }
-export async function getClosedPullRequestsForRepo(
-  owner: string,
-  repo: string,
-  pageNumber: number = 1
-): Promise<GitHubPaginatedResponse<GitHubPullRequest[]>> {
-  return githubApiClient.getWithPagination<GitHubPullRequest[]>(
-    `/repos/${owner}/${repo}/pulls?state=closed`,
-    pageNumber
-  );
-}
-export async function getBranchesForRepo(
-  owner: string,
-  repo: string,
-  pageNumber: number = 1
-): Promise<GitHubPaginatedResponse<GitHubBranch[]>> {
+
+export async function getBranchesForRepo({
+  owner,
+  repo,
+  pageNumber = 1,
+}: GitHubPaginatedActionParams): Promise<
+  GitHubPaginatedResponse<GitHubBranch[]>
+> {
   return githubApiClient.getWithPagination<GitHubBranch[]>(
     `/repos/${owner}/${repo}/branches`,
     pageNumber
