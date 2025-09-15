@@ -1,6 +1,6 @@
 import { requireAuth } from "@/lib/auth/requireAuth";
+import { fetchGitHubRepos } from "@/lib/github-repo-actions/fetchGitHubRepos";
 import { getAuthenticatedGitHubUser } from "@/lib/github-repo-actions/github-repo-actions";
-import { fetchGitHubRepos } from "@/lib/github/fetchGitHubRepos";
 
 export async function ReposList() {
   const isAuthenticated = await requireAuth();
