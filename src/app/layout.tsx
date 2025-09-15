@@ -1,4 +1,6 @@
+import Footer from '@/components/Footer';
 import './globals.css';
+import Header from '@/components/Header';
 
 if (
   process.env.NODE_ENV === 'development' &&
@@ -15,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
