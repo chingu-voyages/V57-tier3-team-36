@@ -3,7 +3,7 @@
 import {
   BaseGithubApiActions,
   GitHubPaginatedResponse,
-} from "./baseApiActions";
+} from "@/lib/github/apiActions/baseApiActions";
 
 const githubApiClient = BaseGithubApiActions();
 
