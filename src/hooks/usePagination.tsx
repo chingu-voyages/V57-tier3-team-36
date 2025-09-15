@@ -3,7 +3,10 @@
 import { GitHubPaginatedResponse } from "@/lib/github/apiActions/baseApiActions";
 import { useState } from "react";
 
-// A custom hook to manage pagination state and navigation for paginated GitHub API calls
+/**
+ * A custom hook to manage pagination state and navigation for paginated GitHub API calls
+ * @returns an object containing the current pagination state and a function to navigate between pages
+ */
 export function usePagination<T>() {
   const [nextPage, setNextPage] = useState<number>();
   const [previousPage, setPreviousPage] = useState<number>();
