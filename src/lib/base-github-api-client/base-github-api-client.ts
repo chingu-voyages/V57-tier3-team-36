@@ -12,6 +12,21 @@ export type GitHubPaginatedResponse<T> = {
 };
 export function BaseGithubApiClient() {
   const baseUrl: string = "https://api.github.com";
+
+  async function get<T>(path: string): Promise<T> {
+    const bearerToken = await getBearerToken();
+    const response = await fetch(`${baseUrl}${path}`, {
+      headers: {
+        Authorization: bearerToken,
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`GitHub API request failed: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  }
+
   async function getWithPagination<T>(
     path: string,
     pageNumber: number = 1
@@ -77,7 +92,7 @@ export function BaseGithubApiClient() {
     return `Bearer ${accessToken}`;
   }
 
-  return { getWithPagination };
+  return { getWithPagination, get };
 }
 
 function parseLinkHeader(header: string): { [key: string]: string } {
