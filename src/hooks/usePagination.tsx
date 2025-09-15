@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any*/
 
-import { GitHubPaginatedResponse } from "@/lib/github/api-actions/base-api-actions";
+import { GitHubPaginatedResponse } from "@/lib/github/apiActions/baseApiActions";
 import { useState } from "react";
 
 // A custom hook to manage pagination state and navigation for paginated GitHub API calls
