@@ -1,5 +1,4 @@
 import { AuthButton } from '@/components/AuthButton';
-import { ReposList } from '@/components/ReposList';
 
 export default function HomePage() {
   return (
@@ -19,8 +18,6 @@ export default function HomePage() {
         <div className="alert alert-info">
           <span>Dummy Daisy-UI component #2 (in page.tsx)</span>
         </div>
-
-        <ReposList />
       </main>
     </div>
   );
