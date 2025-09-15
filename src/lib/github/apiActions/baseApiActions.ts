@@ -1,4 +1,4 @@
-import { getAccessToken } from "@/lib/auth/getAccessToken";
+import { getBearerAccessToken } from "@/lib/auth/getBearerAccessToken";
 
 export type GitHubPagination = {
   nextPage?: number;
@@ -14,7 +14,12 @@ export function BaseGithubApiActions() {
   const baseUrl = "https://api.github.com";
 
   async function get<T>(path: string): Promise<T> {
-    const bearerToken = await getBearerToken();
+    const bearerToken = await getBearerAccessToken();
+
+    if (!bearerToken) {
+      throw new Error("Missing user access token");
+    }
+
     const response = await fetch(`${baseUrl}${path}`, {
       headers: {
         Authorization: bearerToken,
@@ -31,7 +36,11 @@ export function BaseGithubApiActions() {
     path: string,
     pageNumber: number = 1
   ): Promise<GitHubPaginatedResponse<T>> {
-    const bearerToken = await getBearerToken();
+    const bearerToken = await getBearerAccessToken();
+
+    if (!bearerToken) {
+      throw new Error("Missing user access token");
+    }
     const queryIndicator = path.includes("?") ? "&" : "?";
     const response = await fetch(
       `${baseUrl}${path}${queryIndicator}page=${pageNumber}`,
@@ -95,10 +104,6 @@ export function BaseGithubApiActions() {
       data,
       pagination: { nextPage, firstPage, lastPage, previousPage },
     };
-  }
-  async function getBearerToken() {
-    const accessToken = await getAccessToken();
-    return `Bearer ${accessToken}`;
   }
 
   return { getWithPagination, get };

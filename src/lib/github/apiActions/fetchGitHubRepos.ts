@@ -1,13 +1,15 @@
-import { getAccessToken } from '@/lib/auth/getAccessToken';
+import { getBearerAccessToken } from "@/lib/auth/getBearerAccessToken";
 
 // TODO: Add pagination
 async function fetchGitHubReposResult(): Promise<Result<GitHubRepo[], string>> {
-  const githubApiUrl = 'https://api.github.com';
+  const githubApiUrl = "https://api.github.com";
 
   try {
-    const accessToken = await getAccessToken();
-    if (!accessToken) {
-      return { status: 'error', error: 'Missing user access token' };
+    const bearerAccessToken = await getBearerAccessToken();
+
+    // TODO: if these functions fail, do we error out or return an object?
+    if (!bearerAccessToken) {
+      return { status: "error", error: "Missing user access token" };
     }
 
     const url = `${githubApiUrl}/user/repos`;
@@ -15,29 +17,29 @@ async function fetchGitHubReposResult(): Promise<Result<GitHubRepo[], string>> {
 
     const response = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
-        Accept: 'application/vnd.github+json',
+        Authorization: bearerAccessToken,
+        Accept: "application/vnd.github+json",
       },
     });
 
     if (!response.ok) {
       return {
-        status: 'error',
+        status: "error",
         error: `${response.status} ${response.statusText}`,
       };
     }
 
     const data = await response.json();
-    return { status: 'success', data };
+    return { status: "success", data };
   } catch (error) {
     return {
-      status: 'error',
-      error: error instanceof Error ? error.message : 'Unknown error',
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
 
 export async function fetchGitHubRepos() {
   const result = await fetchGitHubReposResult();
-  return result.status === 'success' ? result.data : undefined;
+  return result.status === "success" ? result.data : undefined;
 }
