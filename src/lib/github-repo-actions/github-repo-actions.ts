@@ -6,6 +6,10 @@ import {
 
 const githubApiClient = BaseGithubApiClient();
 
+export async function getAuthenticatedGitHubUser(): Promise<GitHubUser> {
+  return githubApiClient.get<GitHubUser>("/user");
+}
+
 export async function getAllReposForUsername(
   owner: string,
   pageNumber: number = 1
