@@ -19,7 +19,10 @@ const eslintConfig = [
       'out/**',
       'build/**',
       'next-env.d.ts',
+      'public/mockServiceWorker.js',
     ],
+  },
+  {
     rules: {
       'no-unused-vars': 'warn',
     },
