@@ -1,13 +1,13 @@
-import { getBearerAccessToken } from "@/lib/auth/getBearerAccessToken";
+import { getBearerAccessToken } from '@/lib/auth/getBearerAccessToken';
 
 export function BaseGithubApiActions() {
-  const baseUrl = "https://api.github.com";
+  const baseUrl = 'https://api.github.com';
 
   async function get<T>(path: string): Promise<T> {
     const bearerToken = await getBearerAccessToken();
 
     if (!bearerToken) {
-      throw new Error("Missing user access token");
+      throw new Error('Missing user access token');
     }
 
     const response = await fetch(`${baseUrl}${path}`, {

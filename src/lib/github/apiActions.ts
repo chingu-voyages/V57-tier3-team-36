@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { BaseGithubApiActions } from "@/lib/github/baseApiActions";
+import { BaseGithubApiActions } from '@/lib/github/baseApiActions';
 
 type GitHubActionParams = {
   owner: string;
@@ -10,7 +10,7 @@ type GitHubActionParams = {
 const githubApiClient = BaseGithubApiActions();
 
 export async function getAuthenticatedGitHubUser(): Promise<GitHubUser> {
-  return githubApiClient.get<GitHubUser>("/user");
+  return githubApiClient.get<GitHubUser>('/user');
 }
 
 export async function getAllReposForUsername(
@@ -23,7 +23,7 @@ export async function getPullRequestsForRepo({
   owner,
   repo,
   state,
-}: GitHubActionParams & { state: "open" | "closed" }): Promise<
+}: GitHubActionParams & { state: 'open' | 'closed' }): Promise<
   GitHubPullRequest[]
 > {
   return githubApiClient.get<GitHubPullRequest[]>(
