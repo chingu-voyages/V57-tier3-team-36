@@ -1,3 +1,5 @@
+'use server';
+
 import { getServerSession } from '@/lib/auth/getServerSession';
 
 export async function requireAuth(): Promise<boolean> {

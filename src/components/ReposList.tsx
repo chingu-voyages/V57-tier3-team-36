@@ -1,13 +1,13 @@
-import { requireAuth } from "@/lib/auth/requireAuth";
-import { getAuthenticatedGitHubUser } from "@/lib/github/apiActions";
-import { fetchGitHubRepos } from "@/lib/github/fetchGitHubRepos";
+import { requireAuth } from '@/lib/auth/requireAuth';
+import { createApi } from '@/lib/github/server';
 
 export async function ReposList() {
   const isAuthenticated = await requireAuth();
   if (!isAuthenticated) return null;
 
-  const user = await getAuthenticatedGitHubUser();
-  const repos = await fetchGitHubRepos();
+  const api = await createApi();
+  const user = await api.getAuthenticatedGitHubUser();
+  const repos = await api.getUserRepos();
 
   return (
     <div className="flex flex-col gap-4 w-full items-center">

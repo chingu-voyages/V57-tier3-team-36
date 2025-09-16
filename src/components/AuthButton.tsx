@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
-import * as api from '@/lib/github/api';
+import { api } from '@/lib/github/client';
 import { useEffect } from 'react';
 
 export function AuthButton() {

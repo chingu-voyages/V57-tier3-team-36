@@ -1,38 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { githubApiPath, githubApiUrl } from '@/lib/github/constants';
-import { getServerSession } from '@/lib/auth/getServerSession';
-import { auth } from '@/lib/auth';
+import { requireAuth } from '@/lib/auth/requireAuth';
+import { getBearerAccessToken } from '@/lib/auth/getBearerAccessToken';
 
-export async function GET(
+const unauthorized = NextResponse.json(
+  {
+    success: false,
+    error: '401 Unauthorized',
+  } as const,
+  { status: 401 },
+);
+
+export async function GET<T>(
   request: NextRequest,
-): Promise<NextResponse<unknown>> {
+): Promise<NextResponse<Result<T>>> {
   try {
-    const data = await getServerSession();
+    const isAuthenticated = await requireAuth();
+    if (!isAuthenticated) return unauthorized;
 
-    if (!data.isAuthenticated) {
-      return NextResponse.json(
-        {
-          error: '401 Unauthorized',
-        },
-        { status: 401 },
-      );
-    }
+    const bearerToken = await getBearerAccessToken();
+    if (!bearerToken) return unauthorized;
 
     const headers = new Headers({
       Accept: request.headers.get('accept') || 'application/vnd.github.v3+json',
+      Authorization: bearerToken,
+      'User-Agent': `${process.env.APP_NAME}/${process.env.APP_VERSION} (+${process.env.NEXT_PUBLIC_BASE_URL})`,
     });
-    const userId = data.user.id;
-
-    const { accessToken } = await auth.api.getAccessToken({
-      body: {
-        providerId: 'github',
-        userId,
-      },
-    });
-    headers.set('Authorization', `Bearer ${accessToken}`);
-
-    const userAgent = `${process.env.APP_NAME}/${process.env.APP_VERSION} (+${process.env.NEXT_PUBLIC_BASE_URL})`;
-    headers.set('User-Agent', userAgent);
 
     const requestUrl = new URL(request.url);
     const pathname = requestUrl.pathname;
@@ -72,16 +65,19 @@ export async function GET(
 
     const responseData = await githubResponse.json();
 
-    return NextResponse.json(responseData, {
-      status: githubResponse.status,
-      headers: responseHeaders,
-    });
+    return NextResponse.json(
+      { data: responseData, success: true },
+      {
+        status: githubResponse.status,
+        headers: responseHeaders,
+      },
+    );
   } catch (error) {
     return NextResponse.json(
       {
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error',
-      },
+        error: error instanceof Error ? error.message : 'Internal server error',
+        success: false,
+      } as const,
       { status: 500 },
     );
   }
