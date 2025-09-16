@@ -1,6 +1,8 @@
-import { getSession } from '@/lib/auth/getSession';
+'use server';
+
+import { getServerSession } from '@/lib/auth/getServerSession';
 
 export async function requireAuth(): Promise<boolean> {
-  const { isAuthenticated } = await getSession();
+  const { isAuthenticated } = await getServerSession();
   return isAuthenticated;
 }
