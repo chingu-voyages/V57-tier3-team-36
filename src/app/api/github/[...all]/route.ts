@@ -8,11 +8,11 @@ const unauthorized = NextResponse.json(
     success: false,
     error: '401 Unauthorized',
   } as const,
-  { status: 401 },
+  { status: 401 }
 );
 
 export async function GET<T>(
-  request: NextRequest,
+  request: NextRequest
 ): Promise<NextResponse<Result<T>>> {
   try {
     const isAuthenticated = await requireAuth();
@@ -70,7 +70,7 @@ export async function GET<T>(
       {
         status: githubResponse.status,
         headers: responseHeaders,
-      },
+      }
     );
   } catch (error) {
     return NextResponse.json(
@@ -78,7 +78,7 @@ export async function GET<T>(
         error: error instanceof Error ? error.message : 'Internal server error',
         success: false,
       } as const,
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

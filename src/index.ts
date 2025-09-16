@@ -1,6 +1,6 @@
 import { loadEnvConfig } from '@next/env';
 import { drizzle } from 'drizzle-orm/neon-http';
-import * as schema from './db/schema'
+import * as schema from './db/schema';
 
 const projectDir = process.cwd();
 loadEnvConfig(projectDir);

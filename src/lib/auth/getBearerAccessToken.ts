@@ -1,5 +1,5 @@
-import { auth } from "@/lib/auth";
-import { getUserId } from "@/lib/auth/getUserId";
+import { auth } from '@/lib/auth';
+import { getUserId } from '@/lib/auth/getUserId';
 
 export async function getBearerAccessToken() {
   try {
@@ -8,7 +8,7 @@ export async function getBearerAccessToken() {
 
     const { accessToken } = await auth.api.getAccessToken({
       body: {
-        providerId: "github",
+        providerId: 'github',
         userId,
       },
     });
@@ -16,7 +16,7 @@ export async function getBearerAccessToken() {
 
     return `Bearer ${accessToken}`;
   } catch (error) {
-    console.error("Failed to get access token:\n", error);
+    console.error('Failed to get access token:\n', error);
     return null;
   }
 }
