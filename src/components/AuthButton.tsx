@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
-import * as api from '@/lib/github/apiClient';
+import * as api from '@/lib/github/api';
 import { useEffect } from 'react';
 
 export function AuthButton() {
@@ -9,7 +9,13 @@ export function AuthButton() {
 
   useEffect(() => {
     api.getAuthenticatedGitHubUser().then((data) => {
-      console.log(data);
+      console.log({ user: data });
+    });
+  }, []);
+
+  useEffect(() => {
+    api.getUserRepos().then((data) => {
+      console.log({ repos: data });
     });
   }, []);
 
