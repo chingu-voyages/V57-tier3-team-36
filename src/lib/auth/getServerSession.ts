@@ -1,7 +1,9 @@
 import { auth, type AuthContext } from '@/lib/auth';
 import { headers } from 'next/headers';
 
-export async function getSession(): Promise<AuthContext> {
+export async function getServerSession(): Promise<AuthContext> {
+  'use server';
+
   const data = await auth.api.getSession({ headers: await headers() });
 
   const user = data?.user;
