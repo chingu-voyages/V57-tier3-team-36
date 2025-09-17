@@ -3,6 +3,13 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   devIndicators: false,
 
+  env: {
+    APP_VERSION:
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      process.env.npm_package_version || require('./package.json').version,
+    APP_NAME: 'MyApp',
+  },
+
   // Prevent Next.js from resolving files outside the project root.
   outputFileTracingRoot: __dirname,
 
