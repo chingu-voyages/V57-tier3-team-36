@@ -1,3 +1,5 @@
+import Image from "next/image";
+import accountIcon from "../../public/icons/accountIcon.svg";
 import SidebarItem from "../components/SidebarItem";
 import "./globals.css";
 
@@ -27,7 +29,7 @@ export default function RootLayout({
                         <div className="w-full flex p-4 items-center gap-4">
                             <label
                                 htmlFor="my-drawer"
-                                className="btn btn-primary drawer-button lg:hidden">
+                                className="btn btn-primary drawer-button lg:hidden bg-white text-black">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     height="24px"
@@ -46,12 +48,23 @@ export default function RootLayout({
                             htmlFor="my-drawer"
                             aria-label="close sidebar"
                             className="drawer-overlay"></label>
-                        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-                            <SidebarItem label="Home" />
-                            <SidebarItem label="Commits" />
-                            <SidebarItem label="Contributors" />
-                            <SidebarItem label="Reviews" />
-                            <SidebarItem label="Quality" />
+                        <ul className="menu bg-base-200 text-base-content min-h-full w-60 p-4 bg-white text-black">
+                            <div className="flex items-center gap-2 mb-4 justify-between text-2xl px-3 font-bold">
+                                <Image
+                                    src={accountIcon}
+                                    alt="Account Icon"
+                                    width={32}
+                                    height={32}
+                                />
+                                Jane Doe
+                            </div>
+                            <div className="flex flex-col gap-1 font-semibold text-lg">
+                                <SidebarItem label="Home" />
+                                <SidebarItem label="Commits" />
+                                <SidebarItem label="Contributors" />
+                                <SidebarItem label="Reviews" />
+                                <SidebarItem label="Quality" />
+                            </div>
                         </ul>
                     </div>
                 </div>
