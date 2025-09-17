@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SidebarItem from "../components/SidebarItem";
+import SidebarItem from "../components/Sidebar/SidebarItem";
 import "./globals.css";
 
 if (

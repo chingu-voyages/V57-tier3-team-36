@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import cn from "../utils/twcn";
+import cn from "../../utils/twcn";
 import SidebarIcon from "./SidebarIcon";
 
 export default function SidebarItem({ label }: { label: string }) {
