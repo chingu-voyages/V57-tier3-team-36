@@ -18,7 +18,7 @@ const teamMembers: TeamMember[] = [
   { name: 'David Eastmond', github: 'https://github.com/davideastmond', linkedin: 'https://www.linkedin.com/in/david-eastmond-2783ab18a/', role: 'Developers', gender: 'male', imageName: 'David.jpg' },
   { name: 'Peter Tasca', github: 'https://github.com/tascapeter514', linkedin: 'https://www.linkedin.com/in/peter-tasca/', role: 'Developers', gender: 'male', imageName: 'Peter.jpg' },
   { name: 'Hyun Woo Kim', github: 'https://github.com/hynwkm', linkedin: 'https://www.linkedin.com/in/hyunwoo-kim/', role: 'Developers', gender: 'male', imageName: 'Hyun.jpg' },
-  { name: 'Sattyik Kundu', github: 'https://github.com/SattyikKundu', role: 'Developers', gender: 'male', imageName: 'Sattyik.jpeg' },
+  { name: 'Sattyik Kundu', github: 'https://github.com/SattyikKundu', role: 'Developers', gender: 'male', imageName: 'Sattyik.jpg' },
 ];
 
 const availableColors = [
