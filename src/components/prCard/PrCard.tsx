@@ -71,8 +71,8 @@ export function PrCard({
         <div className="pr-card-header flex justify-between">
           {/* header includes the PR state and Ci/CD checks */}
           <PrStatusBadge state={getPrState()} />
-          {/* DISCUSS: how this is derived */}
-          <AutomatedTestStatusBadge status="failed" />
+          {/* TODO: discuss how this is derived - it is hard-coded */}
+          <AutomatedTestStatusBadge status="passed" />
         </div>
         <Link href={html_url} target="_blank" rel="noopener noreferrer">
           <h2 className="card-title text-2xl">
