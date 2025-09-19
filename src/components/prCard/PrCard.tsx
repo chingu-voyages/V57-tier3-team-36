@@ -40,7 +40,7 @@ type PullRequestCardProps = {
     reviews?: {
       // This could be an array of reviews, but for now we just need the latest review
       // Review state is computed by the reviews array that we get from the above API call mentioned
-      state?: string;
+      state?: "APPROVED" | "CHANGES_REQUESTED" | "COMMENTED";
       user: {
         avatarUrl: string;
       };
