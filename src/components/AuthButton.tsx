@@ -1,9 +1,23 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import { api } from '@/lib/github/client';
+import { useEffect } from 'react';
 
 export function AuthButton() {
   const { user, loading, signOut, signIn, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    api.getAuthenticatedGitHubUser().then((data) => {
+      console.log({ user: data });
+    });
+  }, []);
+
+  useEffect(() => {
+    api.getUserRepos().then((data) => {
+      console.log({ repos: data });
+    });
+  }, []);
 
   return (
     <div className="flex items-center gap-3">
