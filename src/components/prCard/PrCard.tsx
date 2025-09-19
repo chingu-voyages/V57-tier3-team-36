@@ -32,7 +32,7 @@ type PullRequestCardProps = {
 
   // TODO: computedProps are derived from other API calls - should we separate these out this way?
   computedProps?: {
-    //  GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews to get reviews and then compute the reviewState from that data
+    //  GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews is called to get reviews. From this we can compute the reviewState
     reviews?: {
       // This could be an array of reviews, but for now we just need the latest review
       // Review state is computed by the reviews array that we get from the above API call mentioned
