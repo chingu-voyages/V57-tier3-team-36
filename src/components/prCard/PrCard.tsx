@@ -1,13 +1,17 @@
 import { AutomatedTestStatusBadge } from "@/components/prCard/AutomatedTestStatusBadge";
 
 import { CommitsCounter } from "@/components/prCard/CommitsCounter";
+import { PrReviewStateBadge } from "@/components/prCard/PrReviewStateBadge";
 import { PrStatusBadge } from "@/components/prCard/PrStatusBadge";
 import { ReviewCommentsCounter } from "@/components/prCard/ReviewCommentsCounter";
 import { UserAvatar } from "@/components/prCard/UserAvatar";
+import Link from "next/link";
 
 const MAX_BODY_LENGTH = 100;
 
 type PullRequestCardProps = {
+  // These props should be on the main GitHubPullRequest object
+  html_url: string;
   title: string;
   state: "open" | "closed";
   body?: string;
@@ -23,17 +27,28 @@ type PullRequestCardProps = {
     default: boolean;
   }> | null;
   user?: Partial<GitHubUser>;
-  commits?: {
-    count?: number;
-    commits_url?: string;
-  };
-  review_comments?: {
-    count?: number;
-    review_comments_url?: string;
+  commits?: number;
+  review_comments?: number;
+
+  // DISCUSS: computedProps can be props that need to be derived from another API call higher up in the component chain.
+  // The GitHub actions statuses can also be computed by another API call.
+  // Is it helpful to separate computedProps?
+  // GitHubAPI uses snake_case for their API response properties, but in JS/TS we typically use camelCase.
+  computedProps?: {
+    //  GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews to get reviews and then compute the reviewState from that data
+    // DISCUSS: use camelCase for computedProps ?
+    reviews?: {
+      // This could be an array of reviews, but for now we just need the latest review
+      // Review state is computed by the reviews array that we get from the above API call mentioned
+      state?: string;
+      user: {
+        avatarUrl: string;
+      };
+    };
   };
 };
 
-export function PRCard({
+export function PrCard({
   title,
   state,
   body,
@@ -43,6 +58,8 @@ export function PRCard({
   user,
   commits,
   review_comments,
+  html_url,
+  computedProps,
 }: PullRequestCardProps) {
   const getPrState = () => {
     if (state === "closed" && merged_at) return "merged";
@@ -54,12 +71,15 @@ export function PRCard({
         <div className="pr-card-header flex justify-between">
           {/* header includes the PR state and Ci/CD checks */}
           <PrStatusBadge state={getPrState()} />
+          {/* DISCUSS: how this is derived */}
           <AutomatedTestStatusBadge status="failed" />
         </div>
-        <h2 className="card-title text-2xl">
-          <span className="font-thin">#{number}</span>
-          {title}
-        </h2>
+        <Link href={html_url} target="_blank" rel="noopener noreferrer">
+          <h2 className="card-title text-2xl">
+            <span className="font-thin">#{number}</span>
+            {title}
+          </h2>
+        </Link>
         <p>{shortenBody(body)}</p>
 
         {/* labels section 
@@ -87,8 +107,12 @@ export function PRCard({
               <CommitsCounter commits={commits} />
             </div>
           </div>
-          <div className="flex">
-            <div className="flex"></div>
+          <div>
+            <PrReviewStateBadge
+              avatar_url={computedProps?.reviews?.user.avatarUrl || ""}
+              state={computedProps?.reviews?.state || ""}
+            />
+            {/* TODO: last updated needs to be displayed here */}
             <p>{merged_at && merged_at}</p>
           </div>
         </footer>
