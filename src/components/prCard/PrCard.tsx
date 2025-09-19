@@ -30,16 +30,13 @@ type PullRequestCardProps = {
   commits?: number;
   review_comments?: number;
 
-  // DISCUSS: computedProps can be props that need to be derived from another API call higher up in the component chain.
-  // The GitHub actions statuses can also be computed by another API call.
-  // Is it helpful to separate computedProps?
-  // GitHubAPI uses snake_case for their API response properties, but in JS/TS we typically use camelCase.
+  // TODO: computedProps are derived from other API calls - should we separate these out this way?
   computedProps?: {
     //  GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews to get reviews and then compute the reviewState from that data
-    // DISCUSS: use camelCase for computedProps ?
     reviews?: {
       // This could be an array of reviews, but for now we just need the latest review
       // Review state is computed by the reviews array that we get from the above API call mentioned
+      // TODO: I used camelCase here to differentiate from the GitHub API response, but should we just stick to one style?
       state?: "APPROVED" | "CHANGES_REQUESTED" | "COMMENTED";
       user: {
         avatarUrl: string;
@@ -81,11 +78,6 @@ export function PrCard({
           </h2>
         </Link>
         <p>{shortenBody(body)}</p>
-
-        {/* labels section 
-          style property is used instead of tailwind classes because the label colors are dynamic
-          and tailwind removes classes that are interpolated in strings
-        */}
         {labels && labels.length > 0 && (
           <div>
             {labels.map((label) => (
