@@ -88,6 +88,8 @@ export function PRCard({
             </div>
           </div>
           <div className="flex">
+            <div className="flex">
+              <</div>    
             <p>{merged_at && merged_at}</p>
           </div>
         </footer>
