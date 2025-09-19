@@ -4,7 +4,9 @@ import { usePathname } from "next/navigation";
 import cn from "../../utils/twcn";
 import SidebarIcon from "./SidebarIcon";
 
-export default function SidebarItem({ label }: { label: string }) {
+type IconLabel = "Home" | "Commits" | "Contributors" | "Reviews" | "Quality";
+
+export default function SidebarItem({ label }: { label: IconLabel }) {
     const pathname = usePathname();
     const isActive =
         pathname === `/${label.toLowerCase()}` ||
