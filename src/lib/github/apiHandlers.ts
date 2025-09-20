@@ -1,12 +1,12 @@
-import type { handleServerRequest } from '@/lib/github/handleServerRequest';
-import type { handleClientRequest } from '@/lib/github/handleClientRequest';
+import type { handleClientRequest } from "@/lib/github/handleClientRequest";
+import type { handleServerRequest } from "@/lib/github/handleServerRequest";
 
 export const apiHandlers = (
-  requestHandler: typeof handleClientRequest | typeof handleServerRequest,
+  requestHandler: typeof handleClientRequest | typeof handleServerRequest
 ) => ({
-  getAuthenticatedGitHubUser: () => requestHandler<GitHubUser>('/user'),
+  getAuthenticatedGitHubUser: () => requestHandler<GitHubUser>("/user"),
 
-  getUserRepos: () => requestHandler<GitHubRepo[]>('/user/repos'),
+  getUserRepos: () => requestHandler<GitHubRepo[]>("/user/repos"),
 
   getAllReposForUsername: (owner: string) =>
     requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
@@ -18,10 +18,10 @@ export const apiHandlers = (
   }: {
     owner: string;
     repo: string;
-    state: 'open' | 'closed';
+    state: "open" | "closed";
   }) =>
     requestHandler<GitHubPullRequest[]>(
-      `/repos/${owner}/${repo}/pulls?state=${state}`,
+      `/repos/${owner}/${repo}/pulls?state=${state}`
     ),
 
   getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
@@ -29,4 +29,17 @@ export const apiHandlers = (
 
   getBranchesForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
     requestHandler<GitHubBranch[]>(`/repos/${owner}/${repo}/branches`),
+
+  getReviewsForPullRequest: ({
+    owner,
+    repo,
+    pull_number,
+  }: {
+    owner: string;
+    repo: string;
+    pull_number: number;
+  }) =>
+    requestHandler<GitHubPullRequestReview[]>(
+      `/repos/${owner}/${repo}/pulls/${pull_number}/reviews`
+    ),
 });
