@@ -66,7 +66,7 @@ export function PrCard({
     <div className="card w-96 lg:w-full bg-base-100 card-md shadow-sm">
       <div className="card-body">
         <div className="pr-card-header flex justify-between">
-          {/* header includes the PR state and Ci/CD checks */}
+          {/* header includes the PR state and GitHub actions status */}
           <PrStatusBadge state={getPrState()} />
           {/* TODO: discuss how this is derived - it is hard-coded */}
           <AutomatedTestStatusBadge status="passed" />
