@@ -14,14 +14,14 @@ type PullRequestCardProps = {
   html_url: string;
   title: string;
   state: "open" | "closed";
-  body?: string;
-  number?: number;
-  merged_at?: string;
+  body: string | null;
+  number: number;
+  merged_at?: string | null;
   labels?: Array<{
     id: number;
     name: string;
     color: string;
-    description: string;
+    description: string | null;
     node_id: string;
     url: string;
     default: boolean;
@@ -39,7 +39,7 @@ type PullRequestCardProps = {
       // TODO: I used camelCase here to differentiate from the GitHub API response, but should we just stick to one style?
       state?: "APPROVED" | "CHANGES_REQUESTED" | "COMMENTED";
       user: {
-        avatarUrl: string;
+        avatarUrl?: string;
       };
     };
   };
