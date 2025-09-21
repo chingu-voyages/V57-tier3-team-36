@@ -57,16 +57,14 @@ export function PrCard({
   html_url,
   computedProps,
 }: PullRequestCardProps) {
-  const getPrState = () => {
-    if (state === "closed" && merged_at) return "merged";
-    return state;
-  };
   return (
     <div className="card w-96 lg:w-full bg-base-100 card-md shadow-sm">
       <div className="card-body">
         <div className="pr-card-header flex justify-between">
           {/* header includes the PR state and GitHub actions status */}
-          <PrStatusBadge state={getPrState()} />
+          <PrStatusBadge
+            state={state === "closed" && merged_at ? "merged" : state}
+          />
           {/* TODO: discuss how this is derived - it is hard-coded */}
           <AutomatedTestStatusBadge status="passed" />
         </div>
