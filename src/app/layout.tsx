@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import "./globals.css";
 
@@ -40,6 +41,7 @@ export default function RootLayout({
                             <h1>App Name</h1>
                         </div>
                         {children}
+                        <Footer />
                     </div>
                     <Sidebar />
                 </div>
