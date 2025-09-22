@@ -3,23 +3,15 @@ import { ReposList } from '@/components/ReposList';
 
 export default function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <nav className="flex items-center justify-between px-5 py-3">
-        <h1>App Name Goes Here</h1>
-        <AuthButton />
-      </nav>
-
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        {/* ADDED (daisyUI): a primary button */}
-        <button className="btn btn-primary">
-          Dummy Daisy-UI component #1 (in page.tsx)
-        </button>
-
-        {/* ADDED (daisyUI): an info alert */}
-        <div className="alert alert-info">
-          <span>Dummy Daisy-UI component #2 (in page.tsx)</span>
+    <div className="min-h-screen bg-gray-50">
+      {/* Main Content Area */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Auth Section */}
+        <div className="flex justify-end mb-6">
+          <AuthButton />
         </div>
-
+        
+        {/* Repos List */}
         <ReposList />
       </main>
     </div>
