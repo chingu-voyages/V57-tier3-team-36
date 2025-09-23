@@ -1,13 +1,14 @@
 import Image from "next/image";
+import DefaultAvatar from "/public/images/github/defaultAvatar.svg";
 export const GitHubAvatar = ({ url }: { url: string }) => {
-  if (!url) return null;
   return (
     <Image
-      src={url}
+      src={url || DefaultAvatar}
       alt="GitHub Avatar"
       width={40}
       height={40}
       className="rounded-full"
+      placeholder="empty"
     />
   );
 };
