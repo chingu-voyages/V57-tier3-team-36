@@ -1,5 +1,5 @@
-import { ApprovedCircleCheckIcon } from "@/components/icons/ApprovedCircleCheckIcon";
-import { FailedXIcon } from "@/components/icons/FailedXIcon";
+import ApprovedCircleCheckIcon from "@/components/icons/ApprovedCircleCheckIcon";
+import FailedXIcon from "@/components/icons/FailedXIcon";
 
 export const AutomatedTestStatusBadge = ({
   status,
