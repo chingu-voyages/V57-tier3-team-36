@@ -1,5 +1,5 @@
-import { AuthButton } from '@/components/AuthButton';
-import { ReposList } from '@/components/ReposList';
+import { AuthButton } from "@/components/AuthButton";
+import { ReposList } from "@/components/ReposList";
 
 export default function HomePage() {
   return (
@@ -10,7 +10,7 @@ export default function HomePage() {
         <div className="flex justify-end mb-6">
           <AuthButton />
         </div>
-        
+
         {/* Repos List */}
         <ReposList />
       </main>

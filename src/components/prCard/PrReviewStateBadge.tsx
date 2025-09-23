@@ -1,6 +1,6 @@
 import { GitHubAvatar } from "@/components/githubAvatar/GitHubAvatar";
-import { ApprovedCircleCheckIcon } from "@/components/prCard/icons/ApprovedCircleCheckIcon";
-import { RequestedChangesIcon } from "@/components/prCard/icons/RequestedChangesIcon";
+import { ApprovedCircleCheckIcon } from "@/components/icons/ApprovedCircleCheckIcon";
+import { RequestedChangesIcon } from "@/components/icons/RequestedChangesIcon";
 
 export const PrReviewStateBadge = ({
   avatar_url,
