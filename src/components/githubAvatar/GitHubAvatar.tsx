@@ -1,9 +1,8 @@
 import Image from "next/image";
-import DefaultAvatar from "/public/images/github/defaultAvatar.svg";
 export const GitHubAvatar = ({ url }: { url: string }) => {
   return (
     <Image
-      src={url || DefaultAvatar}
+      src={url || "/images/github/defaultAvatar.svg"}
       alt="GitHub Avatar"
       width={40}
       height={40}
