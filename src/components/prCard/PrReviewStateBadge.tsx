@@ -1,6 +1,6 @@
+import { GitHubAvatar } from "@/components/githubAvatar/GitHubAvatar";
 import { ApprovedCircleCheckIcon } from "@/components/prCard/icons/ApprovedCircleCheckIcon";
 import { RequestedChangesIcon } from "@/components/prCard/icons/RequestedChangesIcon";
-import { UserAvatar } from "@/components/prCard/UserAvatar";
 
 export const PrReviewStateBadge = ({
   avatar_url,
@@ -32,7 +32,7 @@ export const PrReviewStateBadge = ({
   };
   return (
     <div className="flex items-center gap-2">
-      <UserAvatar url={avatar_url} />
+      <GitHubAvatar url={avatar_url} />
       {renderBadge(state)}
     </div>
   );

@@ -1,10 +1,10 @@
 import { AutomatedTestStatusBadge } from "@/components/prCard/AutomatedTestStatusBadge";
 
+import { GitHubAvatar } from "@/components/githubAvatar/GitHubAvatar";
 import { CommitsCounter } from "@/components/prCard/CommitsCounter";
 import { PrReviewStateBadge } from "@/components/prCard/PrReviewStateBadge";
 import { PrStatusBadge } from "@/components/prCard/PrStatusBadge";
 import { ReviewCommentsCounter } from "@/components/prCard/ReviewCommentsCounter";
-import { UserAvatar } from "@/components/prCard/UserAvatar";
 import Link from "next/link";
 
 const MAX_BODY_LENGTH = 100;
@@ -90,7 +90,7 @@ export function PrCard({
         )}
         <footer className="flex justify-between items-center mt-4">
           <div className="flex items-center gap-2 mt-4">
-            <UserAvatar url={user?.avatar_url || ""} />
+            <GitHubAvatar url={user?.avatar_url || ""} />
             <div className="flex justify-start gap-2">
               <ReviewCommentsCounter review_comments={review_comments} />
               <CommitsCounter commits={commits} />
