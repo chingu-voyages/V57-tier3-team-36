@@ -1,11 +1,11 @@
-import { AutomatedTestStatusBadge } from "@/components/prCard/AutomatedTestStatusBadge";
+import { AutomatedTestStatusBadge } from '@/components/prCard/AutomatedTestStatusBadge';
 
-import { GitHubAvatar } from "@/components/githubAvatar/GitHubAvatar";
-import { CommitsCounter } from "@/components/prCard/CommitsCounter";
-import { PrReviewStateBadge } from "@/components/prCard/PrReviewStateBadge";
-import { PrStatusBadge } from "@/components/prCard/PrStatusBadge";
-import { ReviewCommentsCounter } from "@/components/prCard/ReviewCommentsCounter";
-import Link from "next/link";
+import { GitHubAvatar } from '@/components/githubAvatar/GitHubAvatar';
+import { CommitsCounter } from '@/components/prCard/CommitsCounter';
+import { PrReviewStateBadge } from '@/components/prCard/PrReviewStateBadge';
+import { PrStatusBadge } from '@/components/prCard/PrStatusBadge';
+import { ReviewCommentsCounter } from '@/components/prCard/ReviewCommentsCounter';
+import Link from 'next/link';
 
 const MAX_BODY_LENGTH = 100;
 
@@ -13,7 +13,7 @@ type PullRequestCardProps = {
   // These props should be on the main GitHubPullRequest object
   html_url: string;
   title: string;
-  state: "open" | "closed";
+  state: 'open' | 'closed';
   body: string | null;
   number: number;
   merged_at?: string | null;
@@ -36,7 +36,7 @@ type PullRequestCardProps = {
     reviews?: {
       // This could be an array of reviews, but for now we just need the latest review
       // Review state is computed by the reviews array that we get from the above API call mentioned
-      state?: "APPROVED" | "CHANGES_REQUESTED" | "COMMENTED";
+      state?: 'APPROVED' | 'CHANGES_REQUESTED' | 'COMMENTED';
       user: {
         avatarUrl?: string;
       };
@@ -63,7 +63,7 @@ export function PrCard({
         <div className="pr-card-header flex justify-between">
           {/* header includes the PR state and GitHub actions status */}
           <PrStatusBadge
-            state={state === "closed" && merged_at ? "merged" : state}
+            state={state === 'closed' && merged_at ? 'merged' : state}
           />
           {/* TODO: discuss how this is derived - it is hard-coded */}
           <AutomatedTestStatusBadge status="passed" />
@@ -77,11 +77,11 @@ export function PrCard({
         <p>{shortenBody(body)}</p>
         {labels && labels.length > 0 && (
           <div>
-            {labels.map((label) => (
+            {labels.map(label => (
               <div
                 key={label.id}
                 className="badge mr-1 mb-1"
-                style={{ backgroundColor: `#${label.color}`, color: "white" }}
+                style={{ backgroundColor: `#${label.color}`, color: 'white' }}
               >
                 {label.name}
               </div>
@@ -90,7 +90,7 @@ export function PrCard({
         )}
         <footer className="flex justify-between items-center mt-4">
           <div className="flex items-center gap-2 mt-4">
-            <GitHubAvatar url={user?.avatar_url || ""} />
+            <GitHubAvatar url={user?.avatar_url || ''} />
             <div className="flex justify-start gap-2">
               <ReviewCommentsCounter review_comments={review_comments} />
               <CommitsCounter commits={commits} />
@@ -98,8 +98,8 @@ export function PrCard({
           </div>
           <div>
             <PrReviewStateBadge
-              avatar_url={computedProps?.reviews?.user.avatarUrl || ""}
-              state={computedProps?.reviews?.state || ""}
+              avatar_url={computedProps?.reviews?.user.avatarUrl || ''}
+              state={computedProps?.reviews?.state || ''}
             />
             {/* TODO: last updated needs to be displayed here */}
             <p>{merged_at && merged_at}</p>
@@ -112,8 +112,8 @@ export function PrCard({
 
 const shortenBody = (body: string | null | undefined) => {
   // Make the body concise for display purposes - strings with more than MAX_BODY_LENGTH characters will be truncated with "..."
-  if (!body) return "No description available";
+  if (!body) return 'No description available';
   if (body.length > MAX_BODY_LENGTH)
-    return body.slice(0, MAX_BODY_LENGTH - 3) + "...";
+    return body.slice(0, MAX_BODY_LENGTH - 3) + '...';
   return body;
 };

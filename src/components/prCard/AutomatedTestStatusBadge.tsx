@@ -1,12 +1,12 @@
-import ApprovedCircleCheckIcon from "@/components/icons/ApprovedCircleCheckIcon";
-import FailedXIcon from "@/components/icons/FailedXIcon";
+import ApprovedCircleCheckIcon from '@/components/icons/ApprovedCircleCheckIcon';
+import FailedXIcon from '@/components/icons/FailedXIcon';
 
 export const AutomatedTestStatusBadge = ({
   status,
 }: {
-  status: "passed" | "failed";
+  status: 'passed' | 'failed';
 }) => {
-  if (status === "failed") {
+  if (status === 'failed') {
     return (
       <div className="flex items-center gap-1">
         <FailedXIcon />
@@ -14,7 +14,7 @@ export const AutomatedTestStatusBadge = ({
       </div>
     );
   }
-  if (status === "passed") {
+  if (status === 'passed') {
     return (
       <div className="flex items-center gap-1">
         <ApprovedCircleCheckIcon />
