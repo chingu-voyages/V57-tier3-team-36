@@ -1,4 +1,4 @@
-import CommentIcon from "@/components/icons/CommentIcon";
+import CommentIcon from '@/components/icons/CommentIcon';
 
 export const ReviewCommentsCounter = ({
   review_comments,

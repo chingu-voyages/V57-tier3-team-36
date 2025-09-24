@@ -1,4 +1,4 @@
-import CommitsIcon from "@/components/icons/CommitsIcon";
+import CommitsIcon from '@/components/icons/CommitsIcon';
 
 export const CommitsCounter = ({ commits }: { commits?: number }) => {
   return (
