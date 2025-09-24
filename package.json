@@ -11,7 +11,8 @@
     "test": "echo \"No tests configured yet. Please add a test runner and define your tests.\"",
     "setup": "msw init public/ --save",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "dotenvx run -f .env.local -- npx drizzle-kit push",
+    "db:deploy": "dotenvx run -f .env -- npx drizzle-kit migrate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
@@ -22,6 +23,7 @@
     "react-dom": "19.1.0"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "^1.51.0",
     "@eslint/eslintrc": "^3.3.1",
     "@octokit/openapi-types": "^25.1.0",
     "@tailwindcss/postcss": "^4.1.12",

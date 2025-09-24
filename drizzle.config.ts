@@ -1,10 +1,6 @@
 import { defineConfig } from 'drizzle-kit';
-import { loadEnvConfig } from '@next/env'
 
-const projectDir = process.cwd();
-loadEnvConfig(projectDir)
-
-if (!process.env.DATABASE_URL) throw new Error('Db url is missing!')
+if (!process.env.DATABASE_URL) throw new Error('Missing DATABASE_URL')
 
 export default defineConfig({
     out: './drizzle',
