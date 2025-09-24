@@ -32,4 +32,17 @@ export const apiHandlers = (
 
   getBranchesForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
     requestHandler<GitHubBranch[]>(`/repos/${owner}/${repo}/branches`),
+
+  getReviewsForPullRequest: ({
+    owner,
+    repo,
+    pull_number,
+  }: {
+    owner: string;
+    repo: string;
+    pull_number: number;
+  }) =>
+    requestHandler<GitHubPullRequestReview[]>(
+      `/repos/${owner}/${repo}/pulls/${pull_number}/reviews`
+    ),
 });
