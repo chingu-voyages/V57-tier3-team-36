@@ -1,45 +1,45 @@
-import type { handleClientRequest } from "@/lib/github/handleClientRequest";
-import type { handleServerRequest } from "@/lib/github/handleServerRequest";
+import type { handleClientRequest } from '@/lib/github/handleClientRequest';
+import type { handleServerRequest } from '@/lib/github/handleServerRequest';
 
 export const apiHandlers = (
-    requestHandler: typeof handleClientRequest | typeof handleServerRequest
+  requestHandler: typeof handleClientRequest | typeof handleServerRequest
 ) => ({
-    getAuthenticatedGitHubUser: () => requestHandler<GitHubUser>("/user"),
+  getAuthenticatedGitHubUser: () => requestHandler<GitHubUser>('/user'),
 
-    getUserRepos: () => requestHandler<GitHubRepo[]>("/user/repos"),
+  getUserRepos: () => requestHandler<GitHubRepo[]>('/user/repos'),
 
-    getAllReposForUsername: (owner: string) =>
-        requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
+  getAllReposForUsername: (owner: string) =>
+    requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
 
-    getPullRequestsForRepo: ({
-        owner,
-        repo,
-        state,
-    }: {
-        owner: string;
-        repo: string;
-        state: "open" | "closed";
-    }) =>
-        requestHandler<GitHubPullRequest[]>(
-            `/repos/${owner}/${repo}/pulls?state=${state}`
-        ),
+  getPullRequestsForRepo: ({
+    owner,
+    repo,
+    state,
+  }: {
+    owner: string;
+    repo: string;
+    state: 'open' | 'closed';
+  }) =>
+    requestHandler<GitHubPullRequest[]>(
+      `/repos/${owner}/${repo}/pulls?state=${state}`
+    ),
 
-    getContributorsForRepo: ({
-        owner,
-        repo,
-    }: {
-        owner: string;
-        repo: string;
-    }) =>
-        requestHandler<GitHubContributor[]>(
-            `/repos/${owner}/${repo}/contributors`
-        ),
+  getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
+    requestHandler<GitHubContributor[]>(`/repos/${owner}/${repo}/contributors`),
 
-    getBranchesForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
-        requestHandler<GitHubBranch[]>(`/repos/${owner}/${repo}/branches`),
+  getBranchesForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
+    requestHandler<GitHubBranch[]>(`/repos/${owner}/${repo}/branches`),
 
-    getPullRequestsBySearchQuery: (query: string) =>
-        requestHandler<GitHubSearchIssuesResponse>(
-            `/search/issues?q=${encodeURIComponent(query)}&advanced_search=true`
-        ),
+  getReviewsForPullRequest: ({
+    owner,
+    repo,
+    pull_number,
+  }: {
+    owner: string;
+    repo: string;
+    pull_number: number;
+  }) =>
+    requestHandler<GitHubPullRequestReview[]>(
+      `/repos/${owner}/${repo}/pulls/${pull_number}/reviews`
+    ),
 });
