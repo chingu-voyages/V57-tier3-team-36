@@ -12,6 +12,7 @@
     "setup": "msw init public/ --save",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "dotenvx run -f .env.local -- npx drizzle-kit push",
+    "db:migrate:test": "dotenvx run -f .env.test -- npx drizzle-kit push",
     "db:deploy": "dotenvx run -f .env -- npx drizzle-kit migrate"
   },
   "dependencies": {
