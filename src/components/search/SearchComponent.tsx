@@ -12,6 +12,7 @@ export function SearchComponent() {
     const fetchData = async () => {
       setIsBusy(true);
       const data = await getAllUsersRepos();
+      console.log("15 Fetched Repos:", data);
       setFetchedRepos(data);
       setIsBusy(false);
     };

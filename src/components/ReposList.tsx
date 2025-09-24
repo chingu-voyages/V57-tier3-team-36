@@ -1,11 +1,14 @@
-import { requireAuth } from '@/lib/auth/requireAuth';
-import { createApi } from '@/lib/github/server';
+import { requireAuth } from "@/lib/auth/requireAuth";
+import { apiHandlers } from "@/lib/github/apiHandlers";
+import { createApi } from "@/lib/github/server";
 
 export async function ReposList() {
   const isAuthenticated = await requireAuth();
   if (!isAuthenticated) return null;
 
-  const api = await createApi();
+  const api: ReturnType<typeof apiHandlers> = (await createApi()) as ReturnType<
+    typeof apiHandlers
+  >;
   const user = await api.getAuthenticatedGitHubUser();
   const repos = await api.getUserRepos();
 
