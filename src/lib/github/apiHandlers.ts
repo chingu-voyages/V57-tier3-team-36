@@ -1,12 +1,12 @@
-import type { handleClientRequest } from "@/lib/github/handleClientRequest";
-import type { handleServerRequest } from "@/lib/github/handleServerRequest";
+import type { handleClientRequest } from '@/lib/github/handleClientRequest';
+import type { handleServerRequest } from '@/lib/github/handleServerRequest';
 
 export const apiHandlers = (
   requestHandler: typeof handleClientRequest | typeof handleServerRequest
 ) => ({
-  getAuthenticatedGitHubUser: () => requestHandler<GitHubUser>("/user"),
+  getAuthenticatedGitHubUser: () => requestHandler<GitHubUser>('/user'),
 
-  getUserRepos: () => requestHandler<GitHubRepo[]>("/user/repos"),
+  getUserRepos: () => requestHandler<GitHubRepo[]>('/user/repos'),
 
   getAllReposForUsername: (owner: string) =>
     requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
@@ -18,7 +18,7 @@ export const apiHandlers = (
   }: {
     owner: string;
     repo: string;
-    state: "open" | "closed";
+    state: 'open' | 'closed';
   }) =>
     requestHandler<GitHubPullRequest[]>(
       `/repos/${owner}/${repo}/pulls?state=${state}`

@@ -1,4 +1,4 @@
-import type { components } from "@octokit/openapi-types";
+import type { components } from '@octokit/openapi-types';
 
 declare global {
   type Result<T, E = string> =
@@ -6,17 +6,17 @@ declare global {
     | { success: false; error: E };
 
   // GitHub username is the `login` property
-  type GitHubUser = components["schemas"]["simple-user"];
+  type GitHubUser = components['schemas']['simple-user'];
 
-  type GitHubRepo = components["schemas"]["repository"];
+  type GitHubRepo = components['schemas']['repository'];
 
-  type GitHubContributor = components["schemas"]["contributor"];
+  type GitHubContributor = components['schemas']['contributor'];
 
-  type GitHubBranch = components["schemas"]["short-branch"];
+  type GitHubBranch = components['schemas']['short-branch'];
 
-  type GitHubPullRequest = components["schemas"]["pull-request"];
+  type GitHubPullRequest = components['schemas']['pull-request'];
 
-  type GitHubPullRequestReview = components["schemas"]["pull-request-review"];
+  type GitHubPullRequestReview = components['schemas']['pull-request-review'];
 }
 
 export {};

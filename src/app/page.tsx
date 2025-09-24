@@ -1,5 +1,5 @@
-import { AuthButton } from "@/components/AuthButton";
-import { ReposList } from "@/components/ReposList";
+import { AuthButton } from '@/components/AuthButton';
+import { ReposList } from '@/components/ReposList';
 
 export default function HomePage() {
   return (
