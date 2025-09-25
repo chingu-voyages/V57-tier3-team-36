@@ -44,7 +44,8 @@ export const apiHandlers = (
     ),
 
   getReposExample: () =>
-    requestHandler<GitHubRepo[]>('/graphql', { query: `{
+    requestHandler<GitHubRepo[]>('/graphql', {
+      query: `{
   viewer {
     repositories (first: 30, affiliations: [OWNER, COLLABORATOR, ORGANIZATION_MEMBER]) {
         edges {
@@ -67,7 +68,6 @@ export const apiHandlers = (
       }
     }
   }
-}` }),
-
-  // affiliations:[OWNER, ORGANIZATION_MEMBER, COLLABORATOR],&nbsp;ownerAffiliations:[OWNER, ORGANIZATION_MEMBER, COLLABORATOR]
+}`,
+    }),
 });
