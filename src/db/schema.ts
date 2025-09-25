@@ -73,7 +73,7 @@ export const repo = pgTable(
     githubRepoId: text('github_repo_id').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
   },
-  (t) => [uniqueIndex('github_repo_id_idx').on(t.githubRepoId)],
+  t => [uniqueIndex('github_repo_id_idx').on(t.githubRepoId)]
 );
 
 export const userRepo = pgTable(
@@ -93,5 +93,5 @@ export const userRepo = pgTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (t) => [uniqueIndex('user_repo_idx').on(t.userId, t.repoId)],
+  t => [uniqueIndex('user_repo_idx').on(t.userId, t.repoId)]
 );
