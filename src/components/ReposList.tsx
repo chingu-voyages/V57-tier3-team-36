@@ -8,15 +8,17 @@ export async function ReposList() {
   const api = await createApi();
   const user = await api.getAuthenticatedGitHubUser();
   const repos = await api.getUserRepos();
-  const exampleRepos = await api.getReposExample();
 
   return (
-    <div className="flex flex-col gap-4 w-full items-center text-gray-600">
+    <div className="flex flex-col gap-4 w-full items-center">
       <p>Username: {user?.login}</p>
-      <p>User Repos: {repos?.length}</p>
-      <p>
-        Example Repos: {exampleRepos?.data?.viewer?.repositories?.edges?.length}
-      </p>
+      <p>Repos: {repos?.length}</p>
+      {repos?.map(repo => (
+        <div key={repo.id} className="border p-4 rounded max-w-[600px] w-full">
+          <h3 className="font-bold">{repo.name}</h3>
+          <p className="text-gray-600">{repo.description}</p>
+        </div>
+      ))}
     </div>
   );
 }

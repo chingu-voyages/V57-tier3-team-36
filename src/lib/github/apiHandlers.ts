@@ -43,31 +43,6 @@ export const apiHandlers = (
       `/repos/${owner}/${repo}/pulls/${pull_number}/reviews`
     ),
 
-  getReposExample: () =>
-    requestHandler<GitHubRepo[]>('/graphql', {
-      query: `{
-  viewer {
-    repositories (first: 30, affiliations: [OWNER, COLLABORATOR, ORGANIZATION_MEMBER]) {
-        edges {
-            node {
-                description,
-                name,
-                url,
-                viewerPermission,
-                id,
-                owner {
-                    login
-                }
-            }
-        }
-        pageInfo {
-        endCursor
-        startCursor
-        hasNextPage
-        hasPreviousPage
-      }
-    }
-  }
-}`,
-    }),
+  graphqlExample: (query: string) =>
+    requestHandler<unknown>('/graphql', { query }),
 });
