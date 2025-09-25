@@ -8,7 +8,7 @@ export const apiHandlers = (
 
   getUserRepos: (page: number = 1) =>
     requestHandler<GitHubRepo[]>(
-      `/user/repos?per_page=10&page=${page}&sort=updated`
+      `/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator`
     ),
 
   getAllReposForUsername: (owner: string) =>

@@ -1,5 +1,5 @@
 import { AuthButton } from "@/components/AuthButton";
-import { SearchComponent } from "@/components/search/SearchComponent";
+import { ReposList } from "@/components/ReposList";
 
 export default function HomePage() {
   return (
@@ -12,7 +12,8 @@ export default function HomePage() {
         </div>
 
         {/* Repositories List Section */}
-        <SearchComponent />
+        {/* <SearchComponent /> */}
+        <ReposList />
       </main>
     </div>
   );
