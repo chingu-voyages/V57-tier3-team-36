@@ -18,6 +18,7 @@ export const user = pgTable('user', {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+export type User = typeof user.$inferSelect;
 
 export const session = pgTable('session', {
   id: text('id').primaryKey(),
@@ -75,6 +76,7 @@ export const repo = pgTable(
   },
   t => [uniqueIndex('github_repo_id_idx').on(t.githubRepoId)]
 );
+export type Repo = typeof repo.$inferSelect;
 
 export const userRepo = pgTable(
   'user_repo',
@@ -95,3 +97,4 @@ export const userRepo = pgTable(
   },
   t => [uniqueIndex('user_repo_idx').on(t.userId, t.repoId)]
 );
+export type UserRepo = typeof userRepo.$inferSelect;
