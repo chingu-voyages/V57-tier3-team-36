@@ -3,6 +3,7 @@ import { githubApiPath, githubApiUrl } from '@/lib/github/constants';
 import { requireAuth } from '@/lib/auth/requireAuth';
 import { getBearerAccessToken } from '@/lib/auth/getBearerAccessToken';
 import * as Response from '@/lib/response';
+import { fetchRequest } from '@/lib/request';
 
 export async function proxy<T>(
   request: NextRequest
@@ -59,7 +60,7 @@ export async function proxy<T>(
       }
     }
 
-    const githubResponse = await fetch(url, fetchOptions);
+    const githubResponse = await fetchRequest(url, fetchOptions);
 
     const allowedHeaders = [
       'last-modified',

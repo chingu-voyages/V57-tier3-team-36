@@ -1,6 +1,7 @@
 'use client';
 
 import { githubApiPath } from '@/lib/github/constants';
+import { fetchRequest } from '@/lib/request';
 
 export async function handleClientRequest<T>(
   url: string,
@@ -16,7 +17,7 @@ export async function handleClientRequest<T>(
         method: 'POST',
       };
 
-  const response = await fetch(`${baseUrl}${url}`, {
+  const response = await fetchRequest(`${baseUrl}${url}`, {
     ...fetchOptions,
     credentials: 'include',
   });

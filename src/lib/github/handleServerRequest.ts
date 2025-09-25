@@ -2,6 +2,7 @@
 
 import { getBearerAccessToken } from '@/lib/auth/getBearerAccessToken';
 import { githubApiUrl } from '@/lib/github/constants';
+import { fetchRequest } from '@/lib/request';
 
 export async function handleServerRequest<T>(
   url: string,
@@ -20,7 +21,7 @@ export async function handleServerRequest<T>(
         method: 'POST',
       };
 
-  const response = await fetch(`${githubApiUrl}${url}`, {
+  const response = await fetchRequest(`${githubApiUrl}${url}`, {
     ...fetchOptions,
     headers: {
       Accept: 'application/vnd.github.v3+json',
@@ -31,5 +32,6 @@ export async function handleServerRequest<T>(
     throw new Error(`GitHub API request failed: ${response.statusText}`);
   }
   const data = await response.json();
+
   return data;
 }
