@@ -11,18 +11,47 @@ interface TeamMember {
 }
 
 const teamMembers: TeamMember[] = [
-  { name: 'Kelly Ripple', github: 'https://github.com/kripple', linkedin: 'https://www.linkedin.com/in/kellymripple/', imageName: 'Kelly.jpg' },
-  { name: 'Vincent Bui', github: 'https://github.com/VincentBui0', linkedin: 'https://www.linkedin.com/in/vincent-bui0', imageName: 'vincent.jpg' },
-  { name: 'David Eastmond', github: 'https://github.com/davideastmond', linkedin: 'https://www.linkedin.com/in/david-eastmond-2783ab18a/', imageName: 'David.jpg' },
-  { name: 'Peter Tasca', github: 'https://github.com/tascapeter514', linkedin: 'https://www.linkedin.com/in/peter-tasca/', imageName: 'Peter.jpg' },
-  { name: 'Hyun Woo Kim', github: 'https://github.com/hynwkm', linkedin: 'https://www.linkedin.com/in/hyunwoo-kim/', imageName: 'Hyun.jpg' },
+  {
+    name: 'Kelly Ripple',
+    github: 'https://github.com/kripple',
+    linkedin: 'https://www.linkedin.com/in/kellymripple/',
+    imageName: 'Kelly.jpg',
+  },
+  {
+    name: 'Vincent Bui',
+    github: 'https://github.com/VincentBui0',
+    linkedin: 'https://www.linkedin.com/in/vincent-bui0',
+    imageName: 'vincent.jpg',
+  },
+  {
+    name: 'David Eastmond',
+    github: 'https://github.com/davideastmond',
+    linkedin: 'https://www.linkedin.com/in/david-eastmond-2783ab18a/',
+    imageName: 'David.jpg',
+  },
+  {
+    name: 'Peter Tasca',
+    github: 'https://github.com/tascapeter514',
+    linkedin: 'https://www.linkedin.com/in/peter-tasca/',
+    imageName: 'Peter.jpg',
+  },
+  {
+    name: 'Hyun Woo Kim',
+    github: 'https://github.com/hynwkm',
+    linkedin: 'https://www.linkedin.com/in/hyunwoo-kim/',
+    imageName: 'Hyun.jpg',
+  },
   { name: 'Sattyik Kundu', github: 'https://github.com/SattyikKundu' },
 ];
 
 // Default avatar component for members without images
 const DefaultAvatar = ({ name }: { name: string }) => (
   <div className="w-16 h-16 bg-primary text-primary-content rounded-full flex items-center justify-center font-bold text-lg">
-    {name.split(' ').map(n => n[0]).join('').toUpperCase()}
+    {name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()}
   </div>
 );
 
@@ -45,7 +74,7 @@ export default function Footer() {
 
         {/* Team Members Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {teamMembers.map((member) => (
+          {teamMembers.map(member => (
             <div
               key={member.name}
               className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow p-6"
@@ -61,7 +90,7 @@ export default function Footer() {
                         fill
                         className="object-cover"
                         sizes="64px"
-                        onError={(e) => {
+                        onError={e => {
                           // Hide the image and show default avatar on error
                           e.currentTarget.style.display = 'none';
                         }}

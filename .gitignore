@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+.last-run.json
 
 # next.js
 /.next/
@@ -23,6 +24,7 @@
 # misc
 .DS_Store
 *.pem
+/.vscode
 
 # debug
 npm-debug.log*
@@ -43,3 +45,8 @@ next-env.d.ts
 
 # msw
 public/mockServiceWorker.js
+
+# playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

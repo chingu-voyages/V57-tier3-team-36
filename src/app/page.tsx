@@ -10,7 +10,7 @@ export default function HomePage() {
         <div className="flex justify-end mb-6">
           <AuthButton />
         </div>
-        
+
         {/* Repos List */}
         <ReposList />
       </main>

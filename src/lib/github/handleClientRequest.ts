@@ -10,7 +10,7 @@ export async function handleClientRequest<T>(path: string): Promise<T> {
 
   if (!response.ok) {
     throw new Error(
-      `GitHub API request failed: ${response.status} ${response.statusText}`,
+      `GitHub API request failed: ${response.status} ${response.statusText}`
     );
   }
 
