@@ -8,13 +8,13 @@ export function AuthButton() {
   const { user, loading, signOut, signIn, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    api.getAuthenticatedGitHubUser().then((data) => {
+    api.getAuthenticatedGitHubUser().then(data => {
       console.log({ user: data });
     });
   }, []);
 
   useEffect(() => {
-    api.getUserRepos().then((data) => {
+    api.getUserRepos().then(data => {
       console.log({ repos: data });
     });
   }, []);

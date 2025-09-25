@@ -9,7 +9,9 @@ const nextConfig: NextConfig = {
       process.env.npm_package_version || require('./package.json').version,
     APP_NAME: 'MyApp',
   },
-
+  images: {
+    domains: ['avatars.githubusercontent.com'],
+  },
   // Prevent Next.js from resolving files outside the project root.
   outputFileTracingRoot: __dirname,
 
