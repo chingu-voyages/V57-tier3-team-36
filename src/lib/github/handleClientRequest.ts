@@ -2,11 +2,24 @@
 
 import { githubApiPath } from '@/lib/github/constants';
 
-export async function handleClientRequest<T>(path: string): Promise<T> {
+export async function handleClientRequest<T>(
+  url: string,
+  body?: Record<string, string>
+): Promise<T> {
   const baseUrl =
     `${process.env.NEXT_PUBLIC_BASE_URL}${githubApiPath}` as const;
 
-  const response = await fetch(`${baseUrl}${path}`, { credentials: 'include' });
+  const fetchOptions: RequestInit = !body
+    ? {}
+    : {
+        body: JSON.stringify(body),
+        method: 'POST',
+      };
+
+  const response = await fetch(`${baseUrl}${url}`, {
+    ...fetchOptions,
+    credentials: 'include',
+  });
 
   if (!response.ok) {
     throw new Error(

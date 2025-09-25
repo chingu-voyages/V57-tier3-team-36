@@ -42,4 +42,7 @@ export const apiHandlers = (
     requestHandler<GitHubPullRequestReview[]>(
       `/repos/${owner}/${repo}/pulls/${pull_number}/reviews`
     ),
+
+  getUsername: () =>
+    requestHandler<string>('/graphql', { query: '{ viewer { login } }' }),
 });
