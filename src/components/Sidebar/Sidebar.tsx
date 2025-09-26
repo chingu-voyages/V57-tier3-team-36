@@ -1,8 +1,8 @@
 'use client';
 import { useAuth } from '@/hooks/useAuth';
 import { GitHubAvatar } from '../githubAvatar/GitHubAvatar';
+import SidebarIcon from './SidebarIcon';
 import SidebarItem from './SidebarItem';
-
 export default function Sidebar() {
   const { user, signOut, signIn, isAuthenticated } = useAuth();
 
@@ -26,7 +26,7 @@ export default function Sidebar() {
           {isAuthenticated ? (
             <AuthenticatedSidebarItems signOut={signOut} />
           ) : (
-            <AuthButton action={signIn} label="Sign in" />
+            <AuthButton action={signIn} label="Sign In" />
           )}
         </div>
       </ul>
@@ -41,7 +41,7 @@ const AuthenticatedSidebarItems = ({ signOut }: { signOut: () => void }) => {
       <SidebarItem label="Contributors" />
       <SidebarItem label="Reviews" />
       <SidebarItem label="Quality" />
-      <AuthButton action={signOut} label="Sign out" />
+      <AuthButton action={signOut} label="Sign Out" />
     </>
   );
 };
@@ -51,11 +51,12 @@ const AuthButton = ({
   label,
 }: {
   action: () => void;
-  label: string;
+  label: 'Sign In' | 'Sign Out';
 }) => {
   return (
     <li>
-      <button className="w-full justify-end" onClick={action}>
+      <button className="w-full justify-between" onClick={action}>
+        <SidebarIcon label={label} />
         {label}
       </button>
     </li>
