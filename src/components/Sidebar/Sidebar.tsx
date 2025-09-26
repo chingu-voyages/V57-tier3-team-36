@@ -24,7 +24,13 @@ export default function Sidebar() {
         <div className="flex flex-col gap-1 font-semibold text-lg">
           <SidebarItem label="Home" />
           {isAuthenticated ? (
-            <AuthenticatedSidebarItems signOut={signOut} />
+            <>
+              <SidebarItem label="Commits" />
+              <SidebarItem label="Contributors" />
+              <SidebarItem label="Reviews" />
+              <SidebarItem label="Quality" />
+              <AuthButton action={signOut} label="Sign Out" />
+            </>
           ) : (
             <AuthButton action={signIn} label="Sign In" />
           )}
@@ -33,18 +39,6 @@ export default function Sidebar() {
     </div>
   );
 }
-
-const AuthenticatedSidebarItems = ({ signOut }: { signOut: () => void }) => {
-  return (
-    <>
-      <SidebarItem label="Commits" />
-      <SidebarItem label="Contributors" />
-      <SidebarItem label="Reviews" />
-      <SidebarItem label="Quality" />
-      <AuthButton action={signOut} label="Sign Out" />
-    </>
-  );
-};
 
 const AuthButton = ({
   action,
