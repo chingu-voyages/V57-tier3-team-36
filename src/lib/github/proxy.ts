@@ -53,9 +53,15 @@ export async function proxy<T>(
     // For POST requests, include the request body
     if (method === 'POST') {
       try {
-        const body = await request.text();
-        if (body) {
-          fetchOptions.body = body;
+        const body = await request.json();
+        // Security check: Only allow POST for GraphQL query operations
+        if (
+          !body ||
+          !Object.keys(body).every(key => ['query', 'variables'].includes(key))
+        ) {
+          return Response.BadRequest;
+        } else {
+          fetchOptions.body = JSON.stringify(body);
         }
       } catch (error) {
         console.warn('Could not read request body:', error);
