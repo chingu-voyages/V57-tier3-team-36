@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export async function fetchRequest(url: string, init?: RequestInit) {
+export async function fetchRequest(url: string, options?: RequestInit) {
   // Generate a unique, short ID for each request
   const requestId = uuidv4().slice(0, 8);
-  const fetchOptions: RequestInit = {
-    ...init,
+  const fetchOptions = {
+    ...options,
     headers: {
-      ...init?.headers,
+      ...options?.headers,
       'X-Mgf-Request-Id': requestId,
     },
   };
