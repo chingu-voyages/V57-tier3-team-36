@@ -19,7 +19,7 @@ export async function proxy<T>(
     const method = request.method;
     if (method === 'POST') {
       const requestUrl = new URL(request.url);
-      const { pathname }= requestUrl;
+      const { pathname } = requestUrl;
       const githubPath = pathname.replace(githubApiPath, '');
 
       if (githubPath !== '/graphql') {
@@ -39,8 +39,11 @@ export async function proxy<T>(
 
     const githubUrl = `${githubApiUrl}${githubPath}`;
 
-    const searchParams = requestUrl.searchParams.toString();
-    const url = searchParams ? `${githubUrl}?${searchParams}` : githubUrl;
+    const { searchParams } = requestUrl;
+    const url =
+      searchParams.size > 0
+        ? `${githubUrl}?${searchParams.toString()}`
+        : githubUrl;
 
     const fetchOptions: RequestInit = {
       method,
