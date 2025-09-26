@@ -1,4 +1,10 @@
-import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  uniqueIndex,
+} from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -12,6 +18,7 @@ export const user = pgTable('user', {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+export type User = typeof user.$inferSelect;
 
 export const session = pgTable('session', {
   id: text('id').primaryKey(),
@@ -59,3 +66,35 @@ export const verification = pgTable('verification', {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+
+export const repo = pgTable(
+  'repo',
+  {
+    id: text('id').primaryKey(),
+    githubRepoId: text('github_repo_id').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  t => [uniqueIndex('github_repo_id_idx').on(t.githubRepoId)]
+);
+export type Repo = typeof repo.$inferSelect;
+
+export const userRepo = pgTable(
+  'user_repo',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    repoId: text('repo_id')
+      .notNull()
+      .references(() => repo.id, { onDelete: 'cascade' }),
+
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  t => [uniqueIndex('user_repo_idx').on(t.userId, t.repoId)]
+);
+export type UserRepo = typeof userRepo.$inferSelect;
