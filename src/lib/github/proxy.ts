@@ -27,11 +27,15 @@ export async function proxy<T>(
       }
     }
 
-    const headers = new Headers({
+    const headers: Record<string, string> = {
       Accept: request.headers.get('accept') || 'application/vnd.github.v3+json',
       Authorization: bearerToken,
       'User-Agent': `${process.env.APP_NAME}/${process.env.APP_VERSION} (+${process.env.NEXT_PUBLIC_BASE_URL})`,
-    });
+    };
+    const contentType = request.headers.get('content-type');
+    if (contentType) {
+      headers['Content-Type'] = contentType;
+    }
 
     const requestUrl = new URL(request.url);
     const pathname = requestUrl.pathname;

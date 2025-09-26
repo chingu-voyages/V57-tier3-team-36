@@ -14,20 +14,23 @@ export async function handleServerRequest<T>(
     throw new Error('Missing user access token');
   }
 
-  const fetchOptions: RequestInit = !body
-    ? {}
+  const headers = {
+    Accept: 'application/vnd.github.v3+json',
+    Authorization: bearerToken,
+  };
+
+  const fetchOptions = !body
+    ? { headers }
     : {
         body: JSON.stringify(body),
-        method: 'POST',
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json',
+        },
+        method: 'POST' as const,
       };
 
-  const response = await fetchRequest(`${githubApiUrl}${url}`, {
-    ...fetchOptions,
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-      Authorization: bearerToken,
-    },
-  });
+  const response = await fetchRequest(`${githubApiUrl}${url}`, fetchOptions);
   if (!response.ok) {
     throw new Error(`GitHub API request failed: ${response.statusText}`);
   }

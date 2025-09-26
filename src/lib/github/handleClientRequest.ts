@@ -10,17 +10,17 @@ export async function handleClientRequest<T>(
   const baseUrl =
     `${process.env.NEXT_PUBLIC_BASE_URL}${githubApiPath}` as const;
 
-  const fetchOptions: RequestInit = !body
-    ? {}
+  const headers = { credentials: 'include' };
+
+  const fetchOptions = !body
+    ? { headers }
     : {
         body: JSON.stringify(body),
-        method: 'POST',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        method: 'POST' as const,
       };
 
-  const response = await fetchRequest(`${baseUrl}${url}`, {
-    ...fetchOptions,
-    credentials: 'include',
-  });
+  const response = await fetchRequest(`${baseUrl}${url}`, fetchOptions);
 
   if (!response.ok) {
     throw new Error(
