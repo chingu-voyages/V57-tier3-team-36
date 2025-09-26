@@ -21,7 +21,7 @@ const teamMembers: TeamMember[] = [
     name: 'Vincent Bui',
     github: 'https://github.com/VincentBui0',
     linkedin: 'https://www.linkedin.com/in/vincent-bui0',
-    imageName: 'vincent.jpg',
+    imageName: 'Vincent.jpg',
   },
   {
     name: 'David Eastmond',
