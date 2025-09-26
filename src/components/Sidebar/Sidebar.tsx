@@ -1,15 +1,15 @@
-import ProfileIcon from '../icons/ProfileIcon';
+import ProfileIcon from '@/components/icons/ProfileIcon';
 import SidebarItem from './SidebarItem';
 
-export default function Sidebar() {
+export default function Sidebar({ checkboxId }: { checkboxId: string }) {
   return (
-    <div className="drawer-side">
+    <div className="drawer-side min-h-screen">
       <label
-        htmlFor="my-drawer"
+        htmlFor={checkboxId}
         aria-label="close sidebar"
         className="drawer-overlay"
       ></label>
-      <ul className="menu text-base-content min-h-full w-60 p-4 ">
+      <ul className="menu bg-base-300 min-h-full w-60 p-4 ">
         <div className="flex items-center gap-2 mb-4 justify-between text-2xl px-3 font-bold">
           <ProfileIcon />
           Jane Doe

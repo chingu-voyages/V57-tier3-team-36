@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar/Sidebar';
+import HamburgerIcon from '@/components/icons/HamburgerIcon';
 import './globals.css';
 
 if (
@@ -15,33 +16,33 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const sidebarCheckboxId = 'my-drawer' as const;
+
   return (
-    <html lang="en">
-      <body>
-        <div className="drawer lg:drawer-open">
-          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content">
-            <div className="w-full flex p-4 items-center gap-4">
+    <html lang="en" className="min-h-screen">
+      <body className="drawer lg:drawer-open min-h-screen">
+        <input
+          id={sidebarCheckboxId}
+          type="checkbox"
+          className="drawer-toggle"
+        />
+        <Sidebar checkboxId={sidebarCheckboxId} />
+        <div className="drawer-content min-h-screen">
+          <div className="min-h-screen flex flex-col">
+            <header className="w-full flex p-4 items-center gap-4 h-[64px] bg-base-200">
               <label
-                htmlFor="my-drawer"
-                className="btn btn-primary drawer-button lg:hidden bg-white text-black"
+                htmlFor={sidebarCheckboxId}
+                className="btn btn-primary drawer-button lg:hidden"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="currentColor"
-                >
-                  <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-                </svg>
+                <HamburgerIcon />
               </label>
               <h1>App Name</h1>
-            </div>
-            {children}
+            </header>
+            <main className="bg-base-100 flex-grow min-h-screen overflow-y-auto">
+              {children}
+            </main>
             <Footer />
           </div>
-          <Sidebar />
         </div>
       </body>
     </html>
