@@ -19,7 +19,8 @@ export async function POST(
     }
 
     const requestBody = await req.json();
-    if (!createTrackedRepoValidator.safeParse(requestBody).success) {
+    const { success } = createTrackedRepoValidator.safeParse(requestBody);
+    if (!success) {
       console.error('Invalid request body:', requestBody);
       return Response.BadRequest;
     }
