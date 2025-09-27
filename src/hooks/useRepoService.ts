@@ -21,8 +21,6 @@ export function useRepoService() {
     if (!response.ok) {
       throw new Error('Failed to track repo');
     }
-
-    return response.json();
   };
 
   return {
