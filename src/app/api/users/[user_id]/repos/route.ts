@@ -26,7 +26,7 @@ export async function POST(
 
     const { githubRepoId } = requestBody;
 
-    // Check for an existing githubRepoId in the repo table
+    // Check for an existing gitHubRepoId in the repo table
     const existingTrackedGitHubRepo = await db.query.repo.findFirst({
       where: eq(repo.githubRepoId, githubRepoId),
     });
