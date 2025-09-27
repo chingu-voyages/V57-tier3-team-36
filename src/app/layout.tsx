@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import HamburgerIcon from '@/components/icons/HamburgerIcon';
+import Header from '@/components/Header';
 import './globals.css';
 
 if (
@@ -36,11 +36,9 @@ export default function RootLayout({
               >
                 <HamburgerIcon />
               </label>
-              <h1>App Name</h1>
-            </header>
-            <main className="bg-base-100 flex-grow min-h-screen overflow-y-auto">
-              {children}
-            </main>
+              <Header />
+            </div>
+            {children}
             <Footer />
           </div>
         </div>

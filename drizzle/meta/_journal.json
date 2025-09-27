@@ -15,6 +15,13 @@
       "when": 1757632157206,
       "tag": "0001_careful_thunderbolts",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758738353687,
+      "tag": "0002_broad_major_mapleleaf",
+      "breakpoints": true
     }
   ]
 }
