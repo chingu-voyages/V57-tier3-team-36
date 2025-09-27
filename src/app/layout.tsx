@@ -1,8 +1,6 @@
 import Footer from '@/components/Footer';
-<<<<<<< HEAD
-=======
 import Sidebar from '@/components/Sidebar/Sidebar';
->>>>>>> b8bad62d8d914c05fbb60b3c537077a06ea70e98
+import Header from '@/components/Header';
 import './globals.css';
 
 if (
@@ -21,10 +19,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-<<<<<<< HEAD
-\        {children}
-        <Footer />
-=======
         <div className="drawer lg:drawer-open">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content">
@@ -43,14 +37,13 @@ export default function RootLayout({
                   <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
                 </svg>
               </label>
-              <h1>App Name</h1>
+              <Header />
             </div>
             {children}
             <Footer />
           </div>
           <Sidebar />
         </div>
->>>>>>> b8bad62d8d914c05fbb60b3c537077a06ea70e98
       </body>
     </html>
   );
