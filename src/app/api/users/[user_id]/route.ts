@@ -1,25 +1,34 @@
-import { user } from '@/db/schema';
-import { db } from '@/index';
-import { eq } from 'drizzle-orm';
+import { getServerSession } from '@/lib/auth/getServerSession';
+import * as Response from '@/lib/response';
+import { createTrackedRepoValidator } from '@/lib/validators/createTrackedRepoValidator';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(
-  request: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ user_id: string }> }
 ) {
-  const { user_id } = await params;
+  try {
+    // Find a repo with a matching userId
+    const requestBody = await req.json();
+    const validationResult = createTrackedRepoValidator.safeParse(requestBody);
+    const { user_id } = await params;
 
-  const userInDb = await db.query.user.findFirst({
-    where: eq(user.id, user_id),
-  });
+    if (!validationResult.success) {
+      return Response.BadRequest;
+    }
 
-  // We shouldn't need this since we are authenticating the user
-  if (!userInDb) {
-    return NextResponse.json(
-      { error: `User with id ${user_id} not found`, success: false } as const,
-      { status: 404 }
-    );
+    const { user } = await getServerSession();
+
+    if (!user || user.id !== user_id) {
+      return Response.Unauthorized;
+    }
+    const { repo_id } = requestBody;
+
+    // const matchingRepo = await db.query.userRepo.findFirst({
+    //   where: and(eq(userRepo.userId, user_id), eq(userRepo.repoId))
+    // });
+    return NextResponse.json({ user_id, requestBody });
+  } catch (error) {
+    return Response.InternalServerError;
   }
-
-  return NextResponse.json({ data: userInDb, success: true }, { status: 200 });
 }
