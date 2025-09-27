@@ -1,6 +1,9 @@
-import Footer from '@/components/Footer';
+'use client';
+
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header';
+import HamburgerIcon from '@/components/icons/HamburgerIcon';
+import { lazy, Suspense } from 'react';
 import './globals.css';
 
 if (
@@ -11,6 +14,8 @@ if (
   require('../mocks');
 }
 
+const Footer = lazy(() => import('@/components/Footer'));
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,28 +24,29 @@ export default function RootLayout({
   const sidebarCheckboxId = 'my-drawer' as const;
 
   return (
-    <html lang="en" className="min-h-screen">
-      <body className="drawer lg:drawer-open min-h-screen">
+    <html lang="en" className="h-screen">
+      <body className="drawer lg:drawer-open h-screen bg-base-300">
         <input
           id={sidebarCheckboxId}
           type="checkbox"
           className="drawer-toggle"
         />
         <Sidebar checkboxId={sidebarCheckboxId} />
-        <div className="drawer-content min-h-screen">
-          <div className="min-h-screen flex flex-col">
-            <header className="w-full flex p-4 items-center gap-4 h-[64px] bg-base-200">
+        <div className="drawer-content h-screen overflow-y-auto">
+          <div className="h-screen flex flex-col">
+            <Header>
               <label
                 htmlFor={sidebarCheckboxId}
                 className="btn btn-primary drawer-button lg:hidden"
               >
                 <HamburgerIcon />
               </label>
-              <Header />
-            </div>
-            {children}
-            <Footer />
+            </Header>
+            <main className="flex-grow px-4 pb-4">{children}</main>
           </div>
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
         </div>
       </body>
     </html>
