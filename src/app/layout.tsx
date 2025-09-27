@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar/Sidebar';
+import Header from '@/components/Header';
 import './globals.css';
 
 if (
@@ -36,7 +37,7 @@ export default function RootLayout({
                   <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
                 </svg>
               </label>
-              <h1>App Name</h1>
+              <Header />
             </div>
             {children}
             <Footer />
