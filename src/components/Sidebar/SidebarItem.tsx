@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import cn from '../../utils/twcn';
+import cn from '@/utils/twcn';
 import SidebarIcon from './SidebarIcon';
 
 type IconLabel = 'Home' | 'Commits' | 'Contributors' | 'Reviews' | 'Quality';
@@ -13,9 +13,9 @@ export default function SidebarItem({ label }: { label: IconLabel }) {
     (label === 'Home' && pathname === '/');
 
   return (
-    <li className={cn(isActive && 'bg-primary text-white rounded-lg')}>
+    <li>
       <a
-        className="flex items-center justify-between"
+        className={`${cn(isActive && 'menu-active')} flex items-center justify-between`}
         href={label.toLowerCase() === 'home' ? '/' : `/${label.toLowerCase()}`}
       >
         <SidebarIcon label={label} />

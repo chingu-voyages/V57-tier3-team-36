@@ -1,6 +1,9 @@
-import Footer from '@/components/Footer';
+'use client';
+
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header';
+import HamburgerIcon from '@/components/icons/HamburgerIcon';
+import { lazy, Suspense } from 'react';
 import './globals.css';
 
 if (
@@ -11,38 +14,39 @@ if (
   require('../mocks');
 }
 
+const Footer = lazy(() => import('@/components/Footer'));
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const sidebarCheckboxId = 'my-drawer' as const;
+
   return (
-    <html lang="en">
-      <body>
-        <div className="drawer lg:drawer-open">
-          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content">
-            <div className="w-full flex p-4 items-center gap-4">
+    <html lang="en" className="h-screen">
+      <body className="drawer lg:drawer-open h-screen bg-base-300">
+        <input
+          id={sidebarCheckboxId}
+          type="checkbox"
+          className="drawer-toggle"
+        />
+        <Sidebar checkboxId={sidebarCheckboxId} />
+        <div className="drawer-content h-screen overflow-y-auto">
+          <div className="h-screen flex flex-col">
+            <Header>
               <label
-                htmlFor="my-drawer"
-                className="btn btn-primary drawer-button lg:hidden bg-white text-black"
+                htmlFor={sidebarCheckboxId}
+                className="btn btn-primary drawer-button lg:hidden"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="currentColor"
-                >
-                  <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-                </svg>
+                <HamburgerIcon />
               </label>
-              <Header />
-            </div>
-            {children}
-            <Footer />
+            </Header>
+            <main className="flex-grow px-4 pb-4">{children}</main>
           </div>
-          <Sidebar />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
         </div>
       </body>
     </html>

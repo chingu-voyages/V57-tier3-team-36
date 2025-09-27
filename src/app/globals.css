@@ -1,2 +1,8 @@
 @import 'tailwindcss';
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: dark --default;
+}
+
+.menu-active {
+  --menu-active-bg: var(--color-primary);
+}
