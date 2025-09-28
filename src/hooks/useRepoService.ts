@@ -31,9 +31,6 @@ export function useRepoService() {
 
     const request = await fetch(`/api/users/${user.id}/repos`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
 
     const { data, success } = await request.json();
@@ -50,9 +47,6 @@ export function useRepoService() {
     }
     const request = await fetch(`/api/users/${user.id}/repos/${githubRepoId}`, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
 
     const { success } = await request.json();
