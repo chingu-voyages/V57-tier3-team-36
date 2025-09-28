@@ -9,7 +9,7 @@ export default function Sidebar() {
         aria-label="close sidebar"
         className="drawer-overlay"
       ></label>
-      <ul className="menu text-base-content min-h-full w-60 p-4 ">
+      <ul className="menu text-base-content min-h-full w-60 p-4 bg-base-100">
         <div className="flex items-center gap-2 mb-4 justify-between text-2xl px-3 font-bold">
           <ProfileIcon />
           Jane Doe

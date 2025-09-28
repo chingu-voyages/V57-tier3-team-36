@@ -24,7 +24,7 @@ export default function RootLayout({
             <div className="w-full flex p-4 items-center gap-4">
               <label
                 htmlFor="my-drawer"
-                className="btn btn-primary drawer-button lg:hidden bg-white text-black"
+                className="btn btn-primary drawer-button lg:hidden "
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
