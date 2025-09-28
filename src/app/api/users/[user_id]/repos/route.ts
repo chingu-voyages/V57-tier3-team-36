@@ -1,6 +1,5 @@
 import { repo, userRepo } from '@/db/schema';
 import { db } from '@/index';
-import { getServerSession } from '@/lib/auth/getServerSession';
 import * as Response from '@/lib/response';
 import { createTrackedRepoValidator } from '@/lib/validators/createTrackedRepoValidator';
 import { eq } from 'drizzle-orm';
@@ -12,11 +11,7 @@ export async function POST(
   { params }: { params: Promise<{ user_id: string }> }
 ) {
   try {
-    const { user } = await getServerSession();
     const { user_id } = await params;
-    if (!user || user.id !== user_id) {
-      return Response.Unauthorized;
-    }
 
     const requestBody = await req.json();
     const { success } = createTrackedRepoValidator.safeParse(requestBody);
@@ -49,7 +44,10 @@ export async function POST(
       success: true,
     });
   } catch (error) {
-    console.error('Error in POST /api/users/[user_id]/repos:', error as Error);
+    console.error(
+      'Error in POST /api/users/[user_id]/repos:',
+      (error as Error).message
+    );
     return Response.InternalServerError;
   }
 }
