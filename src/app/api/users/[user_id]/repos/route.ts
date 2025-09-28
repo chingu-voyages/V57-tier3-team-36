@@ -1,5 +1,6 @@
 import { repo, userRepo } from '@/db/schema';
 import { db } from '@/index';
+import { createApi } from '@/lib/github/server';
 import * as Response from '@/lib/response';
 import { createTrackedRepoValidator } from '@/lib/validators/createTrackedRepoValidator';
 import { eq } from 'drizzle-orm';
@@ -43,6 +44,41 @@ export async function POST(
     return NextResponse.json({
       success: true,
     });
+  } catch (error) {
+    console.error(
+      'Error in POST /api/users/[user_id]/repos:',
+      (error as Error).message
+    );
+    return Response.InternalServerError;
+  }
+}
+
+export async function GET(
+  _: NextRequest,
+  { params }: { params: Promise<{ user_id: string }> }
+) {
+  const { user_id } = await params;
+  try {
+    const userRepos = await db
+      .select({
+        githubRepoId: repo.githubRepoId,
+      })
+      .from(userRepo)
+      .where(eq(userRepo.userId, user_id))
+      .innerJoin(repo, eq(userRepo.repoId, repo.id));
+
+    // Create a github API
+    const api = await createApi();
+
+    const fetchedUserReposFromGitHub = await api.getUserRepos();
+
+    const filteredRepos = fetchedUserReposFromGitHub?.filter(fetchedRepo =>
+      userRepos.some(
+        userRepo => userRepo.githubRepoId === fetchedRepo.id.toString()
+      )
+    );
+
+    return NextResponse.json({ data: filteredRepos, success: true });
   } catch (error) {
     console.error(
       'Error in POST /api/users/[user_id]/repos:',
