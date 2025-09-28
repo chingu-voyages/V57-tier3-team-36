@@ -10,7 +10,7 @@ export function useRepoService() {
       throw new Error('User not authenticated');
     }
 
-    const response = await fetch(`/api/users/${user.id}/repos`, {
+    const request = await fetch(`/api/users/${user.id}/repos`, {
       method: 'POST',
       body: JSON.stringify({ githubRepoId }),
       headers: {
@@ -18,8 +18,9 @@ export function useRepoService() {
       },
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to track repo');
+    const { success } = await request.json();
+    if (!success) {
+      throw new Error('Failed to track repo for user');
     }
   };
 
