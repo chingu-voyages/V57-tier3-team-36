@@ -15,8 +15,6 @@ export async function DELETE(
   }
   const { user_id, github_repo_id } = await params;
 
-  // Find the entry in the user_repo table and delete it
-
   try {
     const repoEntryInDb = await db.query.repo.findFirst({
       where: eq(repo.githubRepoId, github_repo_id),
