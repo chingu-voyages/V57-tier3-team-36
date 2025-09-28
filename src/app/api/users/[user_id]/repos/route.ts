@@ -1,5 +1,6 @@
 import { repo, userRepo } from '@/db/schema';
 import { db } from '@/index';
+import { getServerSession } from '@/lib/auth/getServerSession';
 import { createApi } from '@/lib/github/server';
 import * as Response from '@/lib/response';
 import { createTrackedRepoValidator } from '@/lib/validators/createTrackedRepoValidator';
@@ -12,6 +13,10 @@ export async function POST(
   { params }: { params: Promise<{ user_id: string }> }
 ) {
   try {
+    const { isAuthenticated } = await getServerSession();
+    if (!isAuthenticated) {
+      return Response.Unauthorized;
+    }
     const { user_id } = await params;
 
     const requestBody = await req.json();
@@ -57,6 +62,11 @@ export async function GET(
   _: NextRequest,
   { params }: { params: Promise<{ user_id: string }> }
 ) {
+  const { isAuthenticated } = await getServerSession();
+  if (!isAuthenticated) {
+    return Response.Unauthorized;
+  }
+
   const { user_id } = await params;
   try {
     const userRepos = await db

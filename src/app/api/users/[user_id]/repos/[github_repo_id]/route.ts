@@ -1,6 +1,7 @@
 import { repo, userRepo } from '@/db/schema';
 import { db } from '@/index';
-import { InternalServerError } from '@/lib/response';
+import { getServerSession } from '@/lib/auth/getServerSession';
+import { InternalServerError, Unauthorized } from '@/lib/response';
 import { and, eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -8,6 +9,10 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ user_id: string; github_repo_id: string }> }
 ) {
+  const { isAuthenticated } = await getServerSession();
+  if (!isAuthenticated) {
+    return Unauthorized;
+  }
   const { user_id, github_repo_id } = await params;
 
   // Find the entry in the user_repo table and delete it
