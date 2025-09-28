@@ -62,13 +62,13 @@ export async function GET(
   _: NextRequest,
   { params }: { params: Promise<{ user_id: string }> }
 ) {
-  const { isAuthenticated } = await getServerSession();
-  if (!isAuthenticated) {
-    return Response.Unauthorized;
-  }
-
-  const { user_id } = await params;
   try {
+    const { isAuthenticated } = await getServerSession();
+    if (!isAuthenticated) {
+      return Response.Unauthorized;
+    }
+
+    const { user_id } = await params;
     const userRepos = await db
       .select({
         githubRepoId: repo.githubRepoId,
