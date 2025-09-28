@@ -6,17 +6,22 @@ import SidebarIcon from './SidebarIcon';
 
 type IconLabel = 'Home' | 'Commits' | 'Contributors' | 'Reviews' | 'Quality';
 
-export default function SidebarItem({ label }: { label: IconLabel }) {
+
+export default function SidebarItem({ label, disabled = false,}: { label: IconLabel; disabled?: boolean; }) {
+
   const pathname = usePathname();
-  const isActive =
-    pathname === `/${label.toLowerCase()}` ||
-    (label === 'Home' && pathname === '/');
+  const isActive = pathname === `/${label.toLowerCase()}` || (label === 'Home' && pathname === '/');
+
+  const baseHref = label.toLowerCase() === 'home' ? '/' : `/${label.toLowerCase()}`; // 'href' for sidebar menu links
 
   return (
     <li>
       <a
-        className={`${cn(isActive && 'menu-active')} flex items-center justify-between`}
-        href={label.toLowerCase() === 'home' ? '/' : `/${label.toLowerCase()}`}
+        href={disabled ? undefined : baseHref} // If not disabled, 'baseHref' returns url linU for menu item
+        aria-disabled={disabled}  // tracks if a menu item is disabled (based on if user is logged in or not)
+        className={`${cn(isActive && !disabled && 'menu-active')} flex items-center justify-between ${
+          disabled ? 'pointer-events-none select-none outline-none focus:outline-none text-base-content/60' : ''
+        }`}
       >
         <SidebarIcon label={label} />
         {label}
