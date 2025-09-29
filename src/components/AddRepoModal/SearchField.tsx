@@ -10,7 +10,16 @@ export function SearchField({
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!onSearchSubmit) return;
     const query = event.target.value;
-    if (query && query.trim().length > 3) {
+    if ((query && query.trim().length > 3) || query.trim().length === 0) {
+      onSearchSubmit(query);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log('Key down event:', event);
+    if (!onSearchSubmit) return;
+    if (event.key === 'Enter') {
+      const query = event.currentTarget.value;
       onSearchSubmit(query);
     }
   };
@@ -38,6 +47,7 @@ export function SearchField({
           className="w-full"
           placeholder="Search"
           onChange={handleSearchChange}
+          onKeyDown={handleKeyDown}
           disabled={isBusy}
         />
       </label>
