@@ -1,9 +1,8 @@
-'use client';
-
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header';
-import HamburgerIcon from '@/components/icons/HamburgerIcon';
-import { lazy, Suspense, useRef } from 'react';
+import LazyFooter from '@/components/LazyFooter';
+import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
+
 import './globals.css';
 
 if (
@@ -14,42 +13,40 @@ if (
   require('../mocks');
 }
 
-const Footer = lazy(() => import('@/components/Footer'));
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const sidebarCheckboxId = 'my-drawer' as const;
-  const sidebarRef = useRef<HTMLInputElement>(null);
+  const sidebarCheckboxId = 'sidebar-checkbox' as const;
+
+  // Breakpoints must match to ensure users always have a way to access the sidebar
+  // Large screens: persistent sidebar (no sidebar button)
+  // Small screens: hidden sidebar + floating sidebar button
+  const showSidebar = 'lg:drawer-open' as const;
+  const hideFloatingButton = 'lg:hidden' as const;
 
   return (
     <html lang="en" className="h-screen">
-      <body className="drawer lg:drawer-open h-screen bg-base-300">
+      <body className={`drawer ${showSidebar} h-screen bg-base-300`}>
         <input
           id={sidebarCheckboxId}
           type="checkbox"
           className="drawer-toggle"
-          ref={sidebarRef}
         />
         <Sidebar checkboxId={sidebarCheckboxId} />
         <div className="drawer-content h-screen overflow-y-auto">
-          <div className="fab lg:hidden">
-            <button
-              className="btn btn-lg btn-circle btn-primary"
-              onClick={() => sidebarRef.current?.click()}
-            >
-              <HamburgerIcon />
-            </button>
-          </div>
+          <FloatingSidebarButton
+            checkboxId={sidebarCheckboxId}
+            buttonClass={hideFloatingButton}
+          />
+
           <div className="h-screen flex flex-col">
             <Header />
             <main className="flex-grow px-4 pb-4">{children}</main>
           </div>
-          <Suspense fallback={null}>
-            <Footer />
-          </Suspense>
+
+          <LazyFooter />
         </div>
       </body>
     </html>
