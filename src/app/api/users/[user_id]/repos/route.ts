@@ -50,10 +50,9 @@ export async function POST(
       success: true,
     });
   } catch (error) {
-    console.error(
-      'Error in POST /api/users/[user_id]/repos:',
-      (error as Error).message
-    );
+    if (error instanceof SyntaxError) {
+      console.error('Error in POST /api/users/[user_id]/repos:', error.message);
+    }
     return Response.InternalServerError;
   }
 }
@@ -90,10 +89,9 @@ export async function GET(
 
     return NextResponse.json({ data: filteredRepos, success: true });
   } catch (error) {
-    console.error(
-      'Error in POST /api/users/[user_id]/repos:',
-      (error as Error).message
-    );
+    if (error instanceof Error) {
+      console.error('Error in GET /api/users/[user_id]/repos:', error.message);
+    }
     return Response.InternalServerError;
   }
 }

@@ -34,10 +34,13 @@ export async function DELETE(
       );
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error(
-      'Error in DELETE /api/users/[user_id]/repos/[github_repo_id]:',
-      (error as Error).message
-    );
+    if (error instanceof Error) {
+      console.error(
+        'Error in DELETE /api/users/[user_id]/repos/[github_repo_id]:',
+        error.message
+      );
+    }
+
     return InternalServerError;
   }
 }
