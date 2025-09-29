@@ -9,13 +9,12 @@ export default function SidebarToggle({
   return (
     <div className="fab lg:hidden cursor-pointer">
       <button
+        className="btn btn-lg btn-circle btn-primary"
         onClick={() => {
           const toggle = document.getElementById(
             sidebarCheckboxId
           ) as HTMLInputElement;
-          if (toggle) {
-            toggle.checked = !toggle.checked;
-          }
+          toggle?.click(); // behaves the same as user clicking the checkbox
         }}
       >
         <HamburgerIcon />
