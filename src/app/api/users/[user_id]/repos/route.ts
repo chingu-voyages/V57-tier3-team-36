@@ -50,7 +50,7 @@ export async function POST(
       success: true,
     });
   } catch (error) {
-    if (error instanceof SyntaxError) {
+    if (error instanceof Error) {
       console.error('Error in POST /api/users/[user_id]/repos:', error.message);
     }
     return Response.InternalServerError;
