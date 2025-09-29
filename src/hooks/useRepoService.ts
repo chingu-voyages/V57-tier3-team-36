@@ -5,7 +5,7 @@ import { useAuth } from './useAuth';
 export function useRepoService() {
   const { user } = useAuth();
 
-  async function trackRepoForUser(githubRepoId: string) {
+  async function createUserRepo(githubRepoId: string) {
     if (!user) {
       throw new Error('User not authenticated');
     }
@@ -24,7 +24,7 @@ export function useRepoService() {
     }
   }
 
-  async function fetchTrackedRepos(): Promise<GitHubRepo[]> {
+  async function fetchUserRepos(): Promise<GitHubRepo[]> {
     if (!user) {
       throw new Error('User not authenticated');
     }
@@ -41,7 +41,7 @@ export function useRepoService() {
     return data;
   }
 
-  async function untrackRepoForUser(githubRepoId: string) {
+  async function deleteUserRepo(githubRepoId: string) {
     if (!user) {
       throw new Error('User not authenticated');
     }
@@ -55,8 +55,8 @@ export function useRepoService() {
     }
   }
   return {
-    trackRepoForUser,
-    fetchTrackedRepos,
-    untrackRepoForUser,
+    createUserRepo,
+    fetchUserRepos,
+    deleteUserRepo,
   };
 }
