@@ -1,7 +1,7 @@
+import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import SidebarToggle from '@/components/Sidebar/SidebarToggle';
-import AddRepoModal from '@/components/TrackedRepo/AddRepoModal';
 import { lazy, Suspense } from 'react';
 import './globals.css';
 

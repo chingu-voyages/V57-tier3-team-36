@@ -1,6 +1,7 @@
 import { requireAuth } from '@/lib/auth/requireAuth';
 import { apiHandlers } from '@/lib/github/apiHandlers';
 import { createApi } from '@/lib/github/server';
+import { SearchComponent } from './SearchComponent';
 
 export default async function AddRepoModal() {
   const isAuthenticated = await requireAuth();
@@ -12,13 +13,6 @@ export default async function AddRepoModal() {
   const repos = await api.getUserRepos();
   return (
     <>
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
-      {/* <button
-        className="btn"
-        onClick={() => document.getElementById('my_modal_3').showModal()}
-      >
-        open modal
-      </button> */}
       <dialog id="AddRepoModal" className="modal">
         <div className="modal-box">
           <form method="dialog">
@@ -27,8 +21,10 @@ export default async function AddRepoModal() {
               ✕
             </button>
           </form>
-          <h3 className="font-bold text-lg">Add Repo</h3>
-          <p className="py-4">Press ESC key or click on ✕ button to close</p>
+          <div className="flex flex-col gap-4">
+            <h3 className="font-bold text-lg">Add Repository to Track</h3>
+            <SearchComponent />
+          </div>
         </div>
       </dialog>
     </>
