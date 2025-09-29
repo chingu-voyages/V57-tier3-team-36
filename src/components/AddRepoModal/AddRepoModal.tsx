@@ -1,20 +1,14 @@
 import { requireAuth } from '@/lib/auth/requireAuth';
-import { apiHandlers } from '@/lib/github/apiHandlers';
-import { createApi } from '@/lib/github/server';
 import { SearchComponent } from './SearchComponent';
 
 export default async function AddRepoModal() {
   const isAuthenticated = await requireAuth();
   if (!isAuthenticated) return null;
 
-  const api: ReturnType<typeof apiHandlers> = (await createApi()) as ReturnType<
-    typeof apiHandlers
-  >;
-  const repos = await api.getUserRepos();
   return (
     <>
       <dialog id="AddRepoModal" className="modal">
-        <div className="modal-box">
+        <div className="modal-box max-w-3xl max-h-3/5">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
