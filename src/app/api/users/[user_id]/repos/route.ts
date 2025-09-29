@@ -3,7 +3,7 @@ import { db } from '@/index';
 import { getServerSession } from '@/lib/auth/getServerSession';
 import { createApi } from '@/lib/github/server';
 import * as Response from '@/lib/response';
-import { createTrackedRepoValidator } from '@/lib/validators/createTrackedRepoValidator';
+import { createUserRepoValidator } from '@/lib/validators/createUserRepoValidator';
 import { and, eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,7 +20,7 @@ export async function POST(
     const { user_id } = await params;
 
     const requestBody = await req.json();
-    const { success } = createTrackedRepoValidator.safeParse(requestBody);
+    const { success } = createUserRepoValidator.safeParse(requestBody);
     if (!success) {
       console.error('Invalid request body:', requestBody);
       return Response.BadRequest;
