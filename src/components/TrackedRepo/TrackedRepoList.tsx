@@ -1,9 +1,10 @@
-import { requireAuth } from '@/lib/auth/requireAuth';
+'use client';
 
-export default async function TrackedRepoList() {
-  const isAuthenticated = await requireAuth();
-  if (!isAuthenticated) return null;
-
+export default function TrackedRepoList({
+  onClick,
+}: {
+  onClick: (repoName: string) => void;
+}) {
   // fetch repos from db
   const repos = [
     { id: 1, name: 'repo-1' },
@@ -15,11 +16,11 @@ export default async function TrackedRepoList() {
 
   return (
     <>
-      {repos.map(repo => {
-        <li>
+      {repos.map(repo => (
+        <li key={repo.id} onClick={() => onClick(repo.name)}>
           <a>{repo.name}</a>
-        </li>;
-      })}
+        </li>
+      ))}
     </>
   );
 }

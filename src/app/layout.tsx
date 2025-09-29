@@ -1,9 +1,7 @@
-'use client';
-
 import Header from '@/components/Header';
-import HamburgerIcon from '@/components/icons/HamburgerIcon';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import { lazy, Suspense, useRef } from 'react';
+import SidebarToggle from '@/components/Sidebar/SidebarToggle';
+import { lazy, Suspense } from 'react';
 import './globals.css';
 
 if (
@@ -22,7 +20,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const sidebarCheckboxId = 'my-drawer' as const;
-  const sidebarRef = useRef<HTMLInputElement>(null);
 
   return (
     <html lang="en" className="h-screen">
@@ -31,18 +28,10 @@ export default function RootLayout({
           id={sidebarCheckboxId}
           type="checkbox"
           className="drawer-toggle"
-          ref={sidebarRef}
         />
         <Sidebar checkboxId={sidebarCheckboxId} />
         <div className="drawer-content h-screen overflow-y-auto">
-          <div className="fab lg:hidden">
-            <button
-              className="btn btn-lg btn-circle btn-primary"
-              onClick={() => sidebarRef.current?.click()}
-            >
-              <HamburgerIcon />
-            </button>
-          </div>
+          <SidebarToggle sidebarCheckboxId={sidebarCheckboxId} />
           <div className="h-screen flex flex-col">
             <Header />
             <main className="flex-grow px-4 pb-4">{children}</main>
@@ -51,6 +40,7 @@ export default function RootLayout({
             <Footer />
           </Suspense>
         </div>
+        {/* <AddRepoModal /> */}
       </body>
     </html>
   );
