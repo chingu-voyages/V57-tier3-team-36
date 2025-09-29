@@ -4,7 +4,7 @@ import { getServerSession } from '@/lib/auth/getServerSession';
 import { createApi } from '@/lib/github/server';
 import * as Response from '@/lib/response';
 import { createTrackedRepoValidator } from '@/lib/validators/createTrackedRepoValidator';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -98,9 +98,9 @@ export async function GET(
 
 async function insertUserRepoEntry(user_id: string, repoId: string) {
   // Check if an entry already exists in the user_repo table
+
   const existingEntry = await db.query.userRepo.findFirst({
-    where: (userRepo, { eq }) =>
-      eq(userRepo.userId, user_id) && eq(userRepo.repoId, repoId),
+    where: and(eq(userRepo.userId, user_id), eq(userRepo.repoId, repoId)),
   });
 
   if (!existingEntry) {
