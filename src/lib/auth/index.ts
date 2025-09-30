@@ -23,6 +23,9 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
+  advanced: {
+    useSecureCookies: process.env.NODE_ENV === 'production',
+  },
 });
 export type Session = (typeof auth.$Infer.Session)['session'];
 export type User = (typeof auth.$Infer.Session)['user'];
