@@ -4,7 +4,7 @@ require('@dotenvx/dotenvx').config({ path: '.env.test' });
 import { defineConfig, devices } from '@playwright/test';
 import { existsSync } from 'fs';
 
-const authFile = 'playwright/.auth/user.json'
+const authFile = 'playwright/.auth/user.json';
 
 export default defineConfig({
   forbidOnly: !!process.env.CI,
