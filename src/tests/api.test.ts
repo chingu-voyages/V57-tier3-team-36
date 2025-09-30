@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
 import type { Repo } from '@/db/schema';
+import { authFile } from '@/tests/constants';
 
 test.describe('User Repos API', () => {
   test('full user repos workflow', async ({ playwright }) => {
     // Create a request context with the stored auth
     const request = await playwright.request.newContext({
-      storageState: 'playwright/.auth/user.json',
+      storageState: authFile,
     });
 
     // Get the authenticated user

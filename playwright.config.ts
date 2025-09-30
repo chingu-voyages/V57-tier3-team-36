@@ -3,8 +3,7 @@ require('@dotenvx/dotenvx').config({ path: '.env.test' });
 
 import { defineConfig, devices } from '@playwright/test';
 import { existsSync } from 'fs';
-
-const authFile = 'playwright/.auth/user.json';
+import { authFile } from '@/tests/constants';
 
 export default defineConfig({
   forbidOnly: !!process.env.CI,
@@ -28,7 +27,6 @@ export default defineConfig({
         // Only use storageState if the file exists
         ...(existsSync(authFile) ? { storageState: authFile } : {}),
       },
-      dependencies: ['setup'],
     },
   ],
 
@@ -42,7 +40,7 @@ export default defineConfig({
     command: 'npm run dev',
     url: 'http://localhost:3000',
     reuseExistingServer: false,
-    stdout: 'pipe',
+    stdout: process.env.DEBUG ? 'pipe' : undefined,
     stderr: 'pipe',
   },
 });

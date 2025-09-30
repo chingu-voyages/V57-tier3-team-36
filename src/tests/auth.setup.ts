@@ -1,9 +1,8 @@
 import { test as setup } from '@playwright/test';
 import { existsSync, readFileSync } from 'fs';
+import { authFile } from '@/tests/constants';
 
 setup('authenticate', async ({ page }) => {
-  const authFile = 'playwright/.auth/user.json';
-
   // Check if auth file exists and is still valid
   if (existsSync(authFile)) {
     const authState = JSON.parse(readFileSync(authFile, 'utf-8'));
@@ -26,5 +25,5 @@ setup('authenticate', async ({ page }) => {
   await page.waitForSelector('text=Sign out');
 
   // Save the authenticated state
-  await page.context().storageState({ path: 'playwright/.auth/user.json' });
+  await page.context().storageState({ path: authFile });
 });
