@@ -1,10 +1,6 @@
-import { requireAuth } from '@/lib/auth/requireAuth';
 import { SearchComponent } from './SearchComponent';
 
-export default async function AddRepoModal() {
-  const isAuthenticated = await requireAuth();
-  if (!isAuthenticated) return null;
-
+export default function AddRepoModal() {
   return (
     <>
       <dialog id="AddRepoModal" className="modal">
