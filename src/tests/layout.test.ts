@@ -1,21 +1,23 @@
 import { test, expect } from '@playwright/test';
 
 const viewportSizes = [
-  { width: 375, height: 667, name: '375x667-xs' },
-  { width: 640, height: 800, name: '640x800-sm' },
-  { width: 768, height: 1024, name: '768x1024-md' },
-  { width: 1024, height: 768, name: '1024x768-lg' },
+  { width: 375, height: 667 },
+  { width: 640, height: 800 },
+  { width: 768, height: 1024 },
+  { width: 1024, height: 768 },
 ];
 
 test.describe('HomePage Layout Tests', () => {
   for (const viewport of viewportSizes) {
-    test(`homepage layout ${viewport.name}`, async ({ page }) => {
+    const name = `${viewport.width}x${viewport.height}`;
+
+    test(`homepage layout ${name}`, async ({ page }) => {
       await page.goto('/');
       await page.setViewportSize({
         width: viewport.width,
         height: viewport.height,
       });
-      await expect(page).toHaveScreenshot(`homepage-${viewport.name}.png`, {
+      await expect(page).toHaveScreenshot(`homepage-${name}.png`, {
         animations: 'disabled' as const,
         mask: [
           page.locator('[data-label="PullsListCard"]'),
