@@ -46,9 +46,12 @@ export async function POST(
       await insertUserRepoEntry(user_id, existingTrackedGitHubRepo.id);
     }
 
-    return NextResponse.json({
-      success: true,
-    });
+    return NextResponse.json(
+      {
+        githubRepoId,
+      },
+      { status: 201 }
+    );
   } catch (error) {
     if (error instanceof Error) {
       console.error('Error in POST /api/users/[user_id]/repos:', error.message);
@@ -68,6 +71,7 @@ export async function GET(
     }
 
     const { user_id } = await params;
+
     const userRepos = await db
       .select({
         githubRepoId: repo.githubRepoId,
@@ -79,15 +83,14 @@ export async function GET(
     // Create a github API
     const api = await createApi();
 
-    const fetchedUserReposFromGitHub = await api.getUserRepos();
-
-    const filteredRepos = fetchedUserReposFromGitHub?.filter(fetchedRepo =>
-      userRepos.some(
-        userRepo => userRepo.githubRepoId === fetchedRepo.id.toString()
-      )
+    // Fetch all repos in parallel
+    const repoDataPromises = userRepos.map(userRepo =>
+      api.getRepoById(userRepo.githubRepoId)
     );
 
-    return NextResponse.json({ data: filteredRepos, success: true });
+    const repoData = await Promise.all(repoDataPromises);
+
+    return NextResponse.json(repoData);
   } catch (error) {
     if (error instanceof Error) {
       console.error('Error in GET /api/users/[user_id]/repos:', error.message);
@@ -113,5 +116,6 @@ async function insertUserRepoEntry(user_id: string, repoId: string) {
     console.warn(
       `Warning: Entry already exists in user_repo for userId: ${user_id} and repoId: ${repoId}`
     );
+    return existingEntry;
   }
 }
