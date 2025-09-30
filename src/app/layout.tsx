@@ -1,4 +1,3 @@
-import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
 import Header from '@/components/Header';
 import LazyFooter from '@/components/LazyFooter';
 import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
@@ -49,7 +48,6 @@ export default function RootLayout({
 
           <LazyFooter />
         </div>
-        <AddRepoModal />
       </body>
     </html>
   );

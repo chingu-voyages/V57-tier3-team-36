@@ -1,5 +1,6 @@
 'use client';
 
+import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
 import TrackedRepoList from '@/components/TrackedRepo/TrackedRepoList';
 import { useState } from 'react';
 
@@ -38,6 +39,7 @@ export default function RepoDropdown() {
           <a>+ Add Repository</a>
         </li>
       </ul>
+      <AddRepoModal />
     </div>
   );
 }
