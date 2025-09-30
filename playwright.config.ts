@@ -1,5 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-require('@dotenvx/dotenvx').config({ path: '.env.test' });
+if (!process.env.CI) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  require('@dotenvx/dotenvx').config({ path: '.env.test' });
+}
 
 import { defineConfig, devices } from '@playwright/test';
 import { existsSync } from 'fs';
