@@ -1,5 +1,5 @@
 import { repo, userRepo } from '@/db/schema';
-import { db } from '@/index';
+import { db } from '@/db';
 import { getServerSession } from '@/lib/auth/getServerSession';
 import { InternalServerError, Unauthorized } from '@/lib/response';
 import { and, eq } from 'drizzle-orm';
