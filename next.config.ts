@@ -10,7 +10,12 @@ const nextConfig: NextConfig = {
     APP_NAME: 'MyApp',
   },
   images: {
-    domains: ['avatars.githubusercontent.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+    ],
   },
   // Prevent Next.js from resolving files outside the project root.
   outputFileTracingRoot: __dirname,
