@@ -6,10 +6,13 @@ export const apiHandlers = (
 ) => ({
   getAuthenticatedGitHubUser: () => requestHandler<GitHubUser>('/user'),
 
-  getUserRepos: (page: number = 1) =>
+  getUserRepos: () =>
     requestHandler<GitHubRepo[]>(
-      `/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator`
+      '/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator'
     ),
+
+  getRepoById: (githubRepoId: string) =>
+    requestHandler<GitHubRepo>(`/repositories/${githubRepoId}`),
 
   getAllReposForUsername: (owner: string) =>
     requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
