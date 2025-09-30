@@ -11,6 +11,9 @@ export const apiHandlers = (
       '/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator'
     ),
 
+  getRepoById: (githubRepoId: string) =>
+    requestHandler<GitHubRepo>(`/repositories/${githubRepoId}`),
+
   getAllReposForUsername: (owner: string) =>
     requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
 
