@@ -1,6 +1,8 @@
-import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header';
+import LazyFooter from '@/components/LazyFooter';
+import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
+
 import './globals.css';
 
 if (
@@ -16,33 +18,35 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const sidebarCheckboxId = 'sidebar-checkbox' as const;
+
+  // Breakpoints must match to ensure users always have a way to access the sidebar
+  // Large screens: persistent sidebar (no sidebar button)
+  // Small screens: hidden sidebar + floating sidebar button
+  const showSidebar = 'lg:drawer-open' as const;
+  const hideFloatingButton = 'lg:hidden' as const;
+
   return (
-    <html lang="en">
-      <body>
-        <div className="drawer lg:drawer-open">
-          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content">
-            <div className="w-full flex p-4 items-center gap-4">
-              <label
-                htmlFor="my-drawer"
-                className="btn btn-primary drawer-button lg:hidden bg-white text-black"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="currentColor"
-                >
-                  <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-                </svg>
-              </label>
-              <Header />
-            </div>
-            {children}
-            <Footer />
+    <html lang="en" className="h-screen">
+      <body className={`drawer ${showSidebar} h-screen bg-base-300`}>
+        <input
+          id={sidebarCheckboxId}
+          type="checkbox"
+          className="drawer-toggle"
+        />
+        <Sidebar checkboxId={sidebarCheckboxId} />
+        <div className="drawer-content h-screen overflow-y-auto">
+          <FloatingSidebarButton
+            checkboxId={sidebarCheckboxId}
+            buttonClass={hideFloatingButton}
+          />
+
+          <div className="h-screen flex flex-col">
+            <Header />
+            <main className="flex-grow px-4 pb-4">{children}</main>
           </div>
-          <Sidebar />
+
+          <LazyFooter />
         </div>
       </body>
     </html>

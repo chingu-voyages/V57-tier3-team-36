@@ -40,6 +40,9 @@ jobs:
           npm test
         env:
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+          GITHUB_CLIENT_ID: ${{ secrets.TEST_GITHUB_CLIENT_ID }}
+          GITHUB_CLIENT_SECRET: ${{ secrets.TEST_GITHUB_CLIENT_SECRET}}
+          BETTER_AUTH_SECRET: ${{ secrets.TEST_BETTER_AUTH_SECRET }}
 
       - name: Build
         env:

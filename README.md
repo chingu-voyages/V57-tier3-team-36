@@ -88,6 +88,24 @@ This app uses GitHub OAuth for authentication. The GitHub App has access to endp
 
 Enable or disable the mock service worker API mocks using the `ENABLE_API_MOCKING` environment variable in `.env.local`.
 
+### Tests
+
+1. Create a `.env.test` file (similar to `.env.local`)
+2. Populate it with these variables. You will need to contact a team mate to obtain the values
+
+```env
+DATABASE_URL=your_test_database_url_here
+GITHUB_CLIENT_ID=your_test_github_client_id_here
+GITHUB_CLIENT_SECRET=your_test_github_client_secret_here
+BETTER_AUTH_SECRET=your_test_better_auth_secret_here
+```
+
+3. Run the tests with:
+
+```bash
+npm run test
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
