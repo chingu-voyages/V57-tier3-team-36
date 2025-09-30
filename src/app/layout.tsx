@@ -1,8 +1,9 @@
 import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
 import Header from '@/components/Header';
+import LazyFooter from '@/components/LazyFooter';
+import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import SidebarToggle from '@/components/Sidebar/SidebarToggle';
-import { lazy, Suspense } from 'react';
+
 import './globals.css';
 
 if (
@@ -13,18 +14,22 @@ if (
   require('../mocks');
 }
 
-const Footer = lazy(() => import('@/components/Footer'));
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const sidebarCheckboxId = 'my-drawer' as const;
+  const sidebarCheckboxId = 'sidebar-checkbox' as const;
+
+  // Breakpoints must match to ensure users always have a way to access the sidebar
+  // Large screens: persistent sidebar (no sidebar button)
+  // Small screens: hidden sidebar + floating sidebar button
+  const showSidebar = 'lg:drawer-open' as const;
+  const hideFloatingButton = 'lg:hidden' as const;
 
   return (
     <html lang="en" className="h-screen">
-      <body className="drawer lg:drawer-open h-screen bg-base-300">
+      <body className={`drawer ${showSidebar} h-screen bg-base-300`}>
         <input
           id={sidebarCheckboxId}
           type="checkbox"
@@ -32,14 +37,17 @@ export default function RootLayout({
         />
         <Sidebar checkboxId={sidebarCheckboxId} />
         <div className="drawer-content h-screen overflow-y-auto">
-          <SidebarToggle sidebarCheckboxId={sidebarCheckboxId} />
+          <FloatingSidebarButton
+            checkboxId={sidebarCheckboxId}
+            buttonClass={hideFloatingButton}
+          />
+
           <div className="h-screen flex flex-col">
             <Header />
             <main className="flex-grow px-4 pb-4">{children}</main>
           </div>
-          <Suspense fallback={null}>
-            <Footer />
-          </Suspense>
+
+          <LazyFooter />
         </div>
         <AddRepoModal />
       </body>
