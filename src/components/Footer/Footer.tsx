@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import GitHubIcon from './icons/GitHubIcon';
+import GitHubIcon from '@/icons/GitHubIcon';
 
 interface TeamMember {
   name: string;
