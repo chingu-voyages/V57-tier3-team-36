@@ -16,13 +16,17 @@ export default function StatsCard({
   color,
 }: StatsCardProps) {
   return (
-    <div className="stats shadow h-full w-full">
-      <div className="stat">
-        <div className="stat-title">{title}</div>
-        <div className="stat-value">{value}</div>
-        {subtitle && (
-          <div className={`stat-desc ${getColorAttr(color)}`}>{subtitle}</div>
-        )}
+    <div className="stats shadow w-full h-full">
+      <div className="stat overflow-hidden">
+        <div className="stat-title md:text-2xl">{title}</div>
+        <div className="flex justify-center gap-1">
+          <div className="stat-value md:text-9xl">{value}</div>
+          {subtitle && (
+            <div className={`stat-desc ${getColorAttr(color)} md:text-2xl`}>
+              {subtitle}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
