@@ -2,7 +2,7 @@ type StatsCardProps = {
   title: string;
   value: string;
   subtitle?: string;
-  color: ColorAttribute;
+  color?: ColorAttribute;
 };
 
 type ColorAttribute = 'positive' | 'negative' | string;
