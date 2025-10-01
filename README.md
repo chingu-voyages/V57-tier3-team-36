@@ -106,6 +106,26 @@ BETTER_AUTH_SECRET=your_test_better_auth_secret_here
 npm run test
 ```
 
+### Component Organization
+
+**We organize components using folders without index.ts files** (one folder per component, no barrel exports).
+
+```
+/components
+  /Button
+    - Button.tsx
+  /DataTable
+    - DataTable.tsx
+    - DataTableRow.tsx
+```
+
+Import components like: `import { Button } from '@/components/Button/Button'`
+
+**Why this approach:**
+- Clear component boundaries and ownership
+- No extra boilerplate files
+- Teammate preferences (voted 3-1-1 in favor of this option)
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
