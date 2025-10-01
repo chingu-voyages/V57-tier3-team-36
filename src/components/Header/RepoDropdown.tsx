@@ -1,7 +1,7 @@
 'use client';
 
 import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
-import RepoDropdownList from '@/components/RepoDropdownList';
+import RepoDropdownList from '@/components/Header/RepoDropdownList';
 import { useState } from 'react';
 
 export default function RepoDropdown() {
