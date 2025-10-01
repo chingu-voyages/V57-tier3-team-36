@@ -5,9 +5,11 @@ type StatsCardProps = {
   value: string;
   auxiliaryStat?: {
     title: string;
-    colorAttribute?: 'positive' | 'negative' | 'neutral' | 'other';
+    colorAttribute?: ColorAttribute;
   };
 };
+
+type ColorAttribute = 'positive' | 'negative' | 'neutral' | 'other';
 export default function StatsCard({
   title,
   value,
@@ -30,9 +32,7 @@ export default function StatsCard({
   );
 }
 
-function getColorAttr(
-  colorAttribute: 'positive' | 'negative' | 'neutral' | 'other' | undefined
-) {
+function getColorAttr(colorAttribute?: ColorAttribute) {
   if (colorAttribute === 'positive') return 'text-green-500';
   if (colorAttribute === 'negative') return 'text-red-500';
   if (colorAttribute === 'neutral') return 'text-yellow-500';
