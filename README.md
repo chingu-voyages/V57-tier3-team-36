@@ -122,6 +122,7 @@ npm run test
 Import components like: `import { Button } from '@/components/Button/Button'`
 
 **Why this approach:**
+
 - Clear component boundaries and ownership
 - No extra boilerplate files
 - Teammate preferences (voted 3-1-1 in favor of this option)
