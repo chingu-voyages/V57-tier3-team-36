@@ -1,7 +1,7 @@
 'use client';
 
 import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
-import TrackedRepoList from '@/components/TrackedRepo/TrackedRepoList';
+import RepoDropdownList from '@/components/RepoDropdownList';
 import { useState } from 'react';
 
 export default function RepoDropdown() {
@@ -12,7 +12,7 @@ export default function RepoDropdown() {
   };
 
   return (
-    <div className="dropdown">
+    <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn m-1">
         {trackedRepo}
       </div>
@@ -26,7 +26,7 @@ export default function RepoDropdown() {
         >
           <a>All Repositories</a>
         </li>
-        <TrackedRepoList onClick={handleRepoClick} />
+        <RepoDropdownList onClick={handleRepoClick} />
         <li
           className="text-primary border-t-2 border-gray-200"
           onClick={() => {

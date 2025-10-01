@@ -1,6 +1,6 @@
 'use client';
 
-export default function TrackedRepoList({
+export default function RepoDropdownList({
   onClick,
 }: {
   onClick: (repoName: string) => void;
