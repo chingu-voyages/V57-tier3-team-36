@@ -1,6 +1,6 @@
 'use client';
 
-import RepoDropdown from '@/components/TrackedRepo/RepoDropdown';
+import RepoDropdown from '@/components/RepoDropdown';
 
 export default function Header() {
   return (

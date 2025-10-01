@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
-import { GitHubAvatar } from '../githubAvatar/GitHubAvatar';
+import { GitHubAvatar } from '@/components/GitHubAvatar';
 import SidebarIcon from './SidebarIcon';
 import SidebarItem from './SidebarItem';
 
