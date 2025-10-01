@@ -14,7 +14,10 @@ export default function StatsCard({
   color,
 }: StatsCardProps) {
   return (
-    <div className="stats shadow w-full h-full">
+    <div
+      data-label="StatsCard"
+      className="stats shadow bg-base-100 w-full h-28 md:h-full"
+    >
       <div className="stat overflow-hidden">
         <div className="stat-title md:text-2xl">{title}</div>
         <div className="flex justify-center gap-1">
