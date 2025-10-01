@@ -1,7 +1,7 @@
-import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header';
 import LazyFooter from '@/components/LazyFooter';
 import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
+import Sidebar from '@/components/Sidebar/Sidebar';
 
 import './globals.css';
 
