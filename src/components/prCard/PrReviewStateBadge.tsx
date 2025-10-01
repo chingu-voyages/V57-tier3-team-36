@@ -1,4 +1,4 @@
-import { GitHubAvatar } from '@/components/githubAvatar/GitHubAvatar';
+import { GitHubAvatar } from '@/components/GitHubAvatar';
 
 import ApprovedCircleCheckIcon from '@/components/icons/ApprovedCircleCheckIcon';
 import RequestedChangesIcon from '@/components/icons/RequestedChangesIcon';
