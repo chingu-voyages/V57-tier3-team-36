@@ -6,8 +6,15 @@ export async function ReposList() {
   if (!isAuthenticated) return null;
 
   const api = await createApi();
-  const user = await api.getAuthenticatedGitHubUser();
-  const repos = await api.getUserRepos();
+  const userResult = await api.getAuthenticatedGitHubUser();
+  const reposResult = await api.getUserRepos();
+
+  if (!userResult.success || !reposResult.success) {
+    return <p>Error loading data</p>;
+  }
+
+  const user = userResult.data;
+  const repos = reposResult.data;
 
   return (
     <div className="flex flex-col gap-4 w-full items-center">

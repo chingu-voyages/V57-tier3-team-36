@@ -1,6 +1,6 @@
 import { AutomatedTestStatusBadge } from '@/components/prCard/AutomatedTestStatusBadge';
 
-import { GitHubAvatar } from '@/components/githubAvatar/GitHubAvatar';
+import { GitHubAvatar } from '@/components/GitHubAvatar';
 import { CommitsCounter } from '@/components/prCard/CommitsCounter';
 import { PrReviewStateBadge } from '@/components/prCard/PrReviewStateBadge';
 import { PrStatusBadge } from '@/components/prCard/PrStatusBadge';
