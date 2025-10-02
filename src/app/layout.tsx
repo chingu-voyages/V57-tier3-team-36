@@ -1,5 +1,5 @@
-import Header from '@/components/Header';
-import LazyFooter from '@/components/LazyFooter';
+import Header from '@/components/Header/Header';
+import LazyFooter from '@/components/Footer/LazyFooter';
 import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
 import Sidebar from '@/components/Sidebar/Sidebar';
 

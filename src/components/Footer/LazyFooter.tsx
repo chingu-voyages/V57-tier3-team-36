@@ -2,7 +2,7 @@
 
 import { lazy, Suspense } from 'react';
 
-const Footer = lazy(() => import('@/components/Footer'));
+const Footer = lazy(() => import('@/components/Footer/Footer'));
 
 export default function LazyFooter() {
   return (
