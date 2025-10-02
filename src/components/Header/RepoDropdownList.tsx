@@ -9,10 +9,12 @@ export default function RepoDropdownList({
   onClick,
   repos,
   setRepos,
+  setCurrentRepo,
 }: {
   onClick: (repo: GitHubRepo[]) => void;
   repos: GitHubRepo[];
   setRepos: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
+  setCurrentRepo: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
 }) {
   const [loading, setLoading] = useState(false);
   const { fetchUserRepos, deleteUserRepo } = useRepoService();
@@ -24,8 +26,10 @@ export default function RepoDropdownList({
       const repos = await fetchUserRepos();
       setRepos(repos);
       setLoading(false);
+      return repos;
     } catch (error) {
       console.error(error);
+      return [];
     }
   };
 
@@ -33,7 +37,9 @@ export default function RepoDropdownList({
     try {
       setLoading(true);
       await deleteUserRepo(repoId);
-      fetchRepos();
+      const repos = await fetchRepos();
+      setRepos(repos);
+      setCurrentRepo([...repos]);
       setLoading(false);
     } catch (error) {
       console.error(error);

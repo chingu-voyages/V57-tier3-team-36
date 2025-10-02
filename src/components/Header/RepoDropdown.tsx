@@ -41,6 +41,7 @@ export default function RepoDropdown() {
           onClick={handleRepoClick}
           repos={trackedRepos}
           setRepos={setTrackedRepos}
+          setCurrentRepo={setCurrentRepo}
         />
         <li
           className="text-primary border-t-2 border-gray-200"

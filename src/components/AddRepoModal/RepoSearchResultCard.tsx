@@ -28,7 +28,7 @@ export function RepoSearchResultCard({
       setLoading(true);
       await createUserRepo(id);
       const repos = await fetchUserRepos();
-      setTrackedRepos(repos);
+      setTrackedRepos([...repos]);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -40,16 +40,8 @@ export function RepoSearchResultCard({
       await deleteUserRepo(repoId);
       const repos = await fetchUserRepos();
 
-      setTrackedRepos(repos);
-      setCurrentRepo(prev => {
-        if (prev.length > 1 && prev.length === trackedRepoIds.length) {
-          return repos;
-        }
-        if (prev.length === 1 && prev[0].id === Number(repoId)) {
-          return [];
-        }
-        return prev.filter(r => r.id !== Number(repoId));
-      });
+      setTrackedRepos([...repos]);
+      setCurrentRepo([...repos]);
 
       setLoading(false);
     } catch (error) {
