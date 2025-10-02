@@ -1,8 +1,6 @@
 import StatsCard from '@/components/StatsCard/StatsCard';
 
 export default function HomePage() {
-  const statsCardStyle = 'card bg-base-100 w-full px-3 py-2 h-28 md:h-full';
-
   return (
     <div
       data-label="HomePage"
