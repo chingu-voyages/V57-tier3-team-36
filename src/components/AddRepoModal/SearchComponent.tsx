@@ -4,7 +4,15 @@ import { api } from '@/lib/github/client';
 import { useEffect, useState } from 'react';
 import { SearchField } from './SearchField';
 
-export function SearchComponent() {
+export function SearchComponent({
+  trackedRepoIds,
+  setTrackedRepos,
+  setCurrentRepo,
+}: {
+  trackedRepoIds: number[];
+  setTrackedRepos: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
+  setCurrentRepo: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
+}) {
   const [fetchedRepos, setFetchedRepos] = useState<GitHubRepo[]>([]);
   const [filteredResults, setFilteredResults] = useState<GitHubRepo[]>([]);
   const [isBusy, setIsBusy] = useState(false);
@@ -24,7 +32,6 @@ export function SearchComponent() {
     fetchData();
   }, []);
   const handleSearch = (query: string) => {
-    console.log('Searching for:', query);
     const lowerCaseQuery = query.toLowerCase();
     const results = fetchedRepos.filter(
       repo =>
@@ -33,13 +40,17 @@ export function SearchComponent() {
           repo.description.toLowerCase().includes(lowerCaseQuery))
     );
     setFilteredResults(results);
-    console.log('Search results:', results);
   };
 
   return (
     <div>
       <SearchField onSearchSubmit={handleSearch} isBusy={isBusy} />
-      <RepoSearchResultList filteredResults={filteredResults} />
+      <RepoSearchResultList
+        filteredResults={filteredResults}
+        trackedRepoIds={trackedRepoIds}
+        setTrackedRepos={setTrackedRepos}
+        setCurrentRepo={setCurrentRepo}
+      />
     </div>
   );
 }

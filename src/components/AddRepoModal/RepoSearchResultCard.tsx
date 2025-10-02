@@ -1,12 +1,62 @@
-type RepoSearchResultCardProps = Partial<GitHubRepo> & {
-  onSelected?: (id: number) => void;
-};
+'use client';
+
+import { useRepoService } from '@/hooks/useRepoService';
+import { useState } from 'react';
+
 export function RepoSearchResultCard({
   id,
   name,
   description,
-  onSelected,
-}: RepoSearchResultCardProps) {
+  tracked,
+  trackedRepoIds,
+  setTrackedRepos,
+  setCurrentRepo,
+}: {
+  id: number | null;
+  name: string;
+  description: string | null;
+  tracked: boolean;
+  trackedRepoIds: number[];
+  setTrackedRepos: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
+  setCurrentRepo: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
+}) {
+  const { createUserRepo, fetchUserRepos, deleteUserRepo } = useRepoService();
+  const [loading, setLoading] = useState(false);
+
+  const onSelected = async (id: string) => {
+    try {
+      setLoading(true);
+      await createUserRepo(id);
+      const repos = await fetchUserRepos();
+      setTrackedRepos(repos);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteRepo = async (repoId: string) => {
+    try {
+      setLoading(true);
+      await deleteUserRepo(repoId);
+      const repos = await fetchUserRepos();
+
+      setTrackedRepos(repos);
+      setCurrentRepo(prev => {
+        if (prev.length > 1 && prev.length === trackedRepoIds.length) {
+          return repos;
+        }
+        if (prev.length === 1 && prev[0].id === Number(repoId)) {
+          return [];
+        }
+        return prev.filter(r => r.id !== Number(repoId));
+      });
+
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="card card-border bg-base-100">
       <div className="card-body flex-row justify-between">
@@ -17,9 +67,28 @@ export function RepoSearchResultCard({
           </p>
         </div>
         <div className="card-actions shrink-0">
-          <button className="btn btn-primary" onClick={() => onSelected?.(id!)}>
-            + Select
-          </button>
+          {loading ? (
+            <button className="btn btn-disabled">
+              <span className="loading loading-dots" />
+            </button>
+          ) : tracked ? (
+            <div className="group">
+              <button
+                className="btn bg-success hover:bg-error"
+                onClick={() => deleteRepo(id!.toString())}
+              >
+                <span className="block group-hover:hidden">Selected</span>
+                <span className="hidden group-hover:block">Deselect</span>
+              </button>
+            </div>
+          ) : (
+            <button
+              className="btn btn-primary"
+              onClick={() => onSelected?.(id!.toString())}
+            >
+              + Select
+            </button>
+          )}
         </div>
       </div>
     </div>

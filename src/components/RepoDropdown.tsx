@@ -2,19 +2,30 @@
 
 import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
 import RepoDropdownList from '@/components/RepoDropdownList';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function RepoDropdown() {
-  const [trackedRepo, setTrackedRepo] = useState('All Repositories');
+  const [trackedRepos, setTrackedRepos] = useState<GitHubRepo[]>([]);
+  const [currentRepo, setCurrentRepo] = useState<GitHubRepo[]>([]);
 
-  const handleRepoClick = (repoName: string) => {
-    setTrackedRepo(repoName);
+  const handleRepoClick = (repo: GitHubRepo[]) => {
+    setCurrentRepo(_prevRepos => [...repo]);
   };
+
+  useEffect(() => {
+    if (trackedRepos.length > 0 && currentRepo.length === 0) {
+      setCurrentRepo(trackedRepos);
+    }
+  }, [trackedRepos]);
 
   return (
     <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn m-1">
-        {trackedRepo}
+        {currentRepo.length === 0
+          ? 'Select Repository'
+          : currentRepo.length > 1
+            ? 'All Repositories'
+            : currentRepo[0].name}
       </div>
       <ul
         tabIndex={0}
@@ -22,11 +33,15 @@ export default function RepoDropdown() {
       >
         <li
           className="border-b-2 border-gray-200"
-          onClick={() => handleRepoClick('All Repositories')}
+          onClick={() => handleRepoClick(trackedRepos)}
         >
           <a>All Repositories</a>
         </li>
-        <RepoDropdownList onClick={handleRepoClick} />
+        <RepoDropdownList
+          onClick={handleRepoClick}
+          repos={trackedRepos}
+          setRepos={setTrackedRepos}
+        />
         <li
           className="text-primary border-t-2 border-gray-200"
           onClick={() => {
@@ -39,7 +54,11 @@ export default function RepoDropdown() {
           <a>+ Add Repository</a>
         </li>
       </ul>
-      <AddRepoModal />
+      <AddRepoModal
+        trackedRepoIds={trackedRepos.map(repo => repo.id)}
+        setTrackedRepos={setTrackedRepos}
+        setCurrentRepo={setCurrentRepo}
+      />
     </div>
   );
 }
