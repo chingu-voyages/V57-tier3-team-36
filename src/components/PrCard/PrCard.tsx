@@ -57,8 +57,8 @@ export function PrCard({
   html_url,
   computedProps,
 }: PullRequestCardProps) {
-  return (
-    <div className="card w-96 lg:w-full bg-base-100 card-md shadow-sm">
+  const ogCard = (
+    <div className="card w-96 lg:w-full bg-base-200 card-md shadow-sm">
       <div className="card-body">
         <div className="pr-card-header flex justify-between">
           {/* header includes the PR state and GitHub actions status */}
@@ -107,6 +107,19 @@ export function PrCard({
         </footer>
       </div>
     </div>
+  );
+
+  return (
+    <Link href={html_url} target="_blank" rel="noopener noreferrer">
+      <div className="card bg-base-200 card-md shadow-sm">
+        <div className="card-body">
+          <h2 className="card-title items-start">
+            <span className="font-thin">#{number}</span>
+            {title}
+          </h2>
+        </div>
+      </div>
+    </Link>
   );
 }
 

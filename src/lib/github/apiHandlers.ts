@@ -17,6 +17,7 @@ export const apiHandlers = (
   getAllReposForUsername: (owner: string) =>
     requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
 
+  // TODO: pagination
   getPullRequestsForRepo: ({
     owner,
     repo,
