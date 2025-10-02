@@ -13,7 +13,7 @@ export default function Sidebar({ checkboxId }: { checkboxId: string }) {
   );
   const uiLoading = loading || authAction !== null;
   const loadingLabel = authAction === 'signout' ? 'Logging out…' : 'Loading…';
-
+ 
   useEffect(() => {
     if (!loading && authAction === 'signin' && isAuthenticated)
       setAuthAction(null);
