@@ -32,15 +32,14 @@ export default function HomePage() {
         data-label="StatsCards"
         className="grid gap-3 grid-cols-2 sm:grid-cols-4 md:grid-cols-1 col-span-12 md:col-span-4 xl:col-span-3 row-start-1"
       >
-        <StatsCard title="Open PRs" value="24" color="color" />
-        <StatsCard title="Avg Reviews Per PR" value="2.3" color="color" />
+        <StatsCard title="Open PRs" value="24" />
+        <StatsCard title="Avg Reviews Per PR" value="2.3" />
         <StatsCard
           title="Avg Time To First Review"
           subtitle="Last 30 days"
           value="4.2h"
-          color="color"
         />
-        <StatsCard title="Avg Time To Merge" value="18.5h" color="color" />
+        <StatsCard title="Avg Time To Merge" value="18.5h" />
       </aside>
     </div>
   );
