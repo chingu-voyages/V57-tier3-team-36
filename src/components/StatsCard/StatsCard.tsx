@@ -16,11 +16,13 @@ export default function StatsCard({
   return (
     <div className="stats shadow w-full h-full">
       <div className="stat overflow-hidden">
-        <div className="stat-title md:text-2xl">{title}</div>
+        <div className="stat-title md:text-2xl text-wrap">{title}</div>
         <div className="flex justify-center gap-1">
-          <div className="stat-value md:text-9xl">{value}</div>
+          <div className="stat-value md:text-7xl">{value}</div>
           {subtitle && (
-            <div className={`stat-desc ${getColorAttr(color)} md:text-2xl`}>
+            <div
+              className={`stat-desc ${getColorAttr(color)} md:text-xl text-wrap`}
+            >
               {subtitle}
             </div>
           )}
