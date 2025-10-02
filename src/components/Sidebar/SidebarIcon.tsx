@@ -1,10 +1,10 @@
-import CommitIcon from '@/components/icons/CommitIcon';
-import ContributorIcon from '@/components/icons/ContributorIcon';
-import QualityIcon from '@/components/icons/QualityIcon';
-import ReviewIcon from '@/components/icons/ReviewIcon';
-import SignInIcon from '@/components/icons/SignInIcon';
-import SignOutIcon from '@/components/icons/SignOutIcon';
-import HomeIcon from '@/components/icons/HomeIcon';
+import CommitIcon from '@/icons/CommitIcon';
+import ContributorIcon from '@/icons/ContributorIcon';
+import QualityIcon from '@/icons/QualityIcon';
+import ReviewIcon from '@/icons/ReviewIcon';
+import SignInIcon from '@/icons/SignInIcon';
+import SignOutIcon from '@/icons/SignOutIcon';
+import HomeIcon from '@/icons/HomeIcon';
 
 const icons = {
   Home: <HomeIcon />,
