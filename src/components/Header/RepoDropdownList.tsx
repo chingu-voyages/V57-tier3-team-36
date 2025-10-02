@@ -2,8 +2,8 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { useRepoService } from '@/hooks/useRepoService';
+import DeleteIcon from '@/icons/DeleteIcon';
 import { useEffect, useState } from 'react';
-import DeleteIcon from './icons/DeleteIcon';
 
 export default function RepoDropdownList({
   onClick,
