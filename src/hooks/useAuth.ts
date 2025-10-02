@@ -3,6 +3,7 @@
 import { authClient } from '@/lib/auth/authClient';
 import type { AuthContext } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export function useAuth(): {
   loading: boolean;
@@ -14,18 +15,26 @@ export function useAuth(): {
   const user = data?.user;
   const session = data?.session;
 
+  const [updating, setUpdating] = useState<boolean>(false);
+  const loading = isPending || updating;
+
   const authData = {
-    loading: isPending,
+    loading,
     signOut: async () => {
+      setUpdating(true);
       await authClient.revokeSessions();
       await authClient.signOut();
+      setUpdating(false);
       router.refresh();
     },
-    signIn: () =>
-      authClient.signIn.social({
+    signIn: async () => {
+      setUpdating(true);
+      await authClient.signIn.social({
         provider: 'github',
         callbackURL: '/',
-      }),
+      });
+      setUpdating(false);
+    },
   };
 
   return user && session

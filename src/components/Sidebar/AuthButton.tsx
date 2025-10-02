@@ -1,29 +1,45 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import SignInIcon from '@/icons/SignInIcon';
+import SignOutIcon from '@/icons/SignOutIcon';
 
-export function AuthButton() {
-  const { user, loading, signOut, signIn, isAuthenticated } = useAuth();
+export default function AuthButton() {
+  const { loading, signOut, signIn, isAuthenticated } = useAuth();
+
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    // If auth state is loading, do nothing and return.
+    if (loading) {
+      event.preventDefault();
+      return;
+    }
+
+    if (isAuthenticated) {
+      signOut();
+    } else {
+      signIn();
+    }
+  };
 
   return (
-    <div className="flex items-center gap-3">
-      {isAuthenticated ? (
-        <span>Welcome, {user.name || user.email}!</span>
-      ) : null}
-
-      <button
-        className="bg-blue-300 hover:bg-blue-400 px-3 py-1 rounded-md cursor-pointer"
-        disabled={loading}
-        onClick={loading ? undefined : isAuthenticated ? signOut : signIn}
-      >
-        {loading ? (
-          <>Loading...</>
-        ) : isAuthenticated ? (
-          <>Sign Out</>
-        ) : (
-          <>Login with GitHub</>
-        )}
-      </button>
-    </div>
+    <button
+      className="w-full items-center gap-3 justify-between"
+      disabled={loading}
+      onClick={handleClick}
+    >
+      {loading ? (
+        <>Loading...</>
+      ) : isAuthenticated ? (
+        <>
+          <SignOutIcon /> Sign Out
+        </>
+      ) : (
+        <>
+          <SignInIcon /> Sign In
+        </>
+      )}
+    </button>
   );
 }

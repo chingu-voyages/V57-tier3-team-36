@@ -15,7 +15,7 @@ export default function SidebarItem({ label }: { label: IconLabel }) {
   return (
     <li>
       <a
-        className={`${cn(isActive && 'menu-active')} flex items-center justify-between`}
+        className={`${cn(isActive && 'menu-active')} flex items-center gap-3 justify-between`}
         href={label.toLowerCase() === 'home' ? '/' : `/${label.toLowerCase()}`}
         onClick={event => event.preventDefault()}
       >
