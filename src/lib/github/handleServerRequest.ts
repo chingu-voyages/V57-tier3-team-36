@@ -7,7 +7,7 @@ import { fetchRequest } from '@/lib/request';
 export async function handleServerRequest<T>(
   url: string,
   body?: Record<string, string>
-): Promise<Result<T>> {
+): Promise<T> {
   const bearerToken = await getBearerAccessToken();
 
   if (!bearerToken) {

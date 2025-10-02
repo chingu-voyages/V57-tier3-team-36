@@ -1,3 +1,5 @@
+import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
+
 export default function HomePage() {
   const statsCardStyle = 'card bg-base-100 w-full px-3 py-2 h-28 md:h-full';
 
@@ -20,12 +22,7 @@ export default function HomePage() {
           >
             Search Bar
           </div>
-          <div
-            data-label="PullsList"
-            className="flex-grow w-full px-3 py-2 bg-[blue] overflow-y-auto"
-          >
-            List of Pull Requests
-          </div>
+          <PullRequestsList />
         </div>
       </div>
       <aside

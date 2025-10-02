@@ -2,6 +2,7 @@ import Header from '@/components/Header/Header';
 import LazyFooter from '@/components/Footer/LazyFooter';
 import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
 import Sidebar from '@/components/Sidebar/Sidebar';
+import AppProvider from '@/components/AppProvider/AppProvider';
 
 import './globals.css';
 
@@ -29,25 +30,27 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-screen">
       <body className={`drawer ${showSidebar} h-screen bg-base-300`}>
-        <input
-          id={sidebarCheckboxId}
-          type="checkbox"
-          className="drawer-toggle"
-        />
-        <Sidebar checkboxId={sidebarCheckboxId} />
-        <div className="drawer-content h-screen overflow-y-auto">
-          <FloatingSidebarButton
-            checkboxId={sidebarCheckboxId}
-            buttonClass={hideFloatingButton}
+        <AppProvider>
+          <input
+            id={sidebarCheckboxId}
+            type="checkbox"
+            className="drawer-toggle"
           />
+          <Sidebar checkboxId={sidebarCheckboxId} />
+          <div className="drawer-content h-screen overflow-y-auto">
+            <FloatingSidebarButton
+              checkboxId={sidebarCheckboxId}
+              buttonClass={hideFloatingButton}
+            />
 
-          <div className="h-screen flex flex-col">
-            <Header />
-            <main className="flex-grow px-4 pb-4">{children}</main>
+            <div className="h-screen flex flex-col">
+              <Header />
+              <main className="flex-grow px-4 pb-4">{children}</main>
+            </div>
+
+            <LazyFooter />
           </div>
-
-          <LazyFooter />
-        </div>
+        </AppProvider>
       </body>
     </html>
   );

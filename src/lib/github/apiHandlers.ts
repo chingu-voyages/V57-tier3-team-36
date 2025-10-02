@@ -20,11 +20,11 @@ export const apiHandlers = (
   getPullRequestsForRepo: ({
     owner,
     repo,
-    state,
+    state = 'open',
   }: {
     owner: string;
     repo: string;
-    state: 'open' | 'closed';
+    state?: 'open' | 'closed';
   }) =>
     requestHandler<GitHubPullRequest[]>(
       `/repos/${owner}/${repo}/pulls?state=${state}`
