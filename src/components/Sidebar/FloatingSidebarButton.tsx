@@ -1,6 +1,6 @@
 'use client';
 
-import HamburgerIcon from '@/components/icons/HamburgerIcon';
+import HamburgerIcon from '@/icons/HamburgerIcon';
 import { useRef } from 'react';
 
 export default function FloatingSidebarButton({
