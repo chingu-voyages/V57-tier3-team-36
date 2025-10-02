@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 const viewportSizes = [
   { width: 375, height: 667 },
@@ -21,7 +21,7 @@ test.describe('HomePage Layout Tests', () => {
         animations: 'disabled' as const,
         mask: [
           page.locator('[data-label="PullsListCard"]'),
-          page.locator('[data-label="StatsCard"]'),
+          page.locator('[data-label="StatsCards"]'),
           page.locator('[data-label="HeaderContents"]'),
           page.locator('[data-label="Sidebar"]'),
         ],
