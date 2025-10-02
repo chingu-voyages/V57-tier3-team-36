@@ -1,0 +1,2 @@
+# Enforce line endings to pass lint testing for Pull Requests
+* text=auto eol=lf
