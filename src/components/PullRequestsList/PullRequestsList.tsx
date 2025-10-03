@@ -36,6 +36,7 @@ export default function PullRequestsList() {
           console.warn('Missing response data');
           return;
         }
+        // TODO: add repo name to PR objects
         const combined = pullRequests.map(i => i.data).flat();
         setPullRequests(combined);
       })
@@ -45,13 +46,13 @@ export default function PullRequestsList() {
   }, [user, isAuthenticated]);
 
   return (
-    <div
+    <ul
       data-label="PullRequestsList"
-      className="flex flex-col flex-1 gap-3 w-full min-h-0 px-3"
+      className="menu flex flex-col flex-1 gap-3 w-full min-h-0 px-3"
     >
       {pullRequests.map(props => (
         <PrCard key={props.id} {...props} />
       ))}
-    </div>
+    </ul>
   );
 }

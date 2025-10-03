@@ -18,9 +18,9 @@ export default function HomePage() {
         >
           <div
             data-label="SearchBar"
-            className="flex-shrink-0 w-full mb-3 p-3 bg-[red]"
+            className="flex-shrink-0 w-full mb-3 px-3"
           >
-            Search Bar
+            <input type="search" className="input w-full bg-base-content text-neutral" placeholder="Search"></input>
           </div>
           <div className="flex flex-1 w-full min-h-0 overflow-y-auto -mr-4">
             <PullRequestsList />
