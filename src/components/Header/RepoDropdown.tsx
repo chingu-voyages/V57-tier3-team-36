@@ -9,6 +9,9 @@ export default function RepoDropdown() {
 
   const handleRepoClick = (repoName: string) => {
     setTrackedRepo(repoName);
+    window.dispatchEvent(
+      new CustomEvent('repoChanged', { detail: { repo: repoName } })
+    );
   };
 
   return (

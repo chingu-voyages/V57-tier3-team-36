@@ -1,3 +1,5 @@
+import { AverageMergeTimeWidget } from "@/components/AverageMergeTimeWidget";
+
 export default function HomePage() {
   const statsCardStyle = 'card bg-base-100 w-full px-3 py-2 h-28 md:h-full';
 
@@ -43,6 +45,7 @@ export default function HomePage() {
         </div>
         <div data-label="StatsCard" className={statsCardStyle}>
           Avg Time To Merge
+          <AverageMergeTimeWidget />
         </div>
       </aside>
     </div>
