@@ -16,7 +16,6 @@ export function SearchField({
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log('Key down event:', event);
     if (!onSearchSubmit) return;
     if (event.key === 'Enter') {
       const query = event.currentTarget.value;
