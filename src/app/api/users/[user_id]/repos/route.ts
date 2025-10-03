@@ -1,5 +1,5 @@
-import { repo, userRepo } from '@/db/schema';
 import { db } from '@/db';
+import { repo, userRepo } from '@/db/schema';
 import { getServerSession } from '@/lib/auth/getServerSession';
 import { createApi } from '@/lib/github/server';
 import * as Response from '@/lib/response';
@@ -89,7 +89,6 @@ export async function GET(
     );
 
     const repoData = await Promise.all(repoDataPromises);
-
     return NextResponse.json(repoData);
   } catch (error) {
     if (error instanceof Error) {
