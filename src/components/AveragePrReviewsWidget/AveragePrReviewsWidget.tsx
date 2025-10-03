@@ -1,52 +1,41 @@
 'use client';
+import StatsCard from '@/components/StatsCard/StatsCard';
 import { useAuth } from '@/hooks/useAuth';
 import { useRepoService } from '@/hooks/useRepoService';
-import { api } from '@/lib/github/client';
-import { useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
+import { calculateAverageReviewsPerPr } from './calculateAverageReviewsPerPr';
+
 export default function AveragePrReviewsWidget() {
   const { fetchUserRepos } = useRepoService();
+  const [isLoading, setIsLoading] = useState(false);
+  const [calculatedAverage, setCalculatedAverage] = useState<number | null>(0);
   const { user } = useAuth();
 
   useEffect(() => {
-    fetchRepos();
+    calculate();
   }, [user]);
 
-  const fetchRepos = async () => {
+  const calculate = async () => {
     if (user) {
-      const userRepos = await fetchUserRepos();
-
-      const pullRequests = userRepos.map(repo =>
-        api.getPullRequestsForRepo({
-          owner: repo.owner.login,
-          repo: repo.name,
-          state: 'open',
-        })
-      );
-      const allPullRequestsAcrossRepos = (await Promise.all(
-        pullRequests
-      )) as Array<{ data: GitHubPullRequest[] | null; success: boolean }>;
-
-      const flattenedPullRequests = allPullRequestsAcrossRepos.flatMap(
-        prs => prs.data || []
-      );
-
-      const reviews = flattenedPullRequests.map(pr =>
-        api.getReviewsForPullRequest({
-          owner: pr.base.repo.owner.login,
-          repo: pr.base.repo.name,
-          pull_number: pr.number,
-        })
-      );
-
-      const allReviews = await Promise.allSettled(reviews);
-      const successFullReviews = allReviews.filter(
-        r => r.status === 'fulfilled'
-      ) as PromiseFulfilledResult<{
-        data: GitHubPullRequestReview[] | null;
-        success: boolean;
-      }>[];
-      console.log('successfully-fetched reviews', successFullReviews);
+      try {
+        setIsLoading(true);
+        const userRepos = await fetchUserRepos();
+        const calculatedAverage = await calculateAverageReviewsPerPr(userRepos);
+        setCalculatedAverage(calculatedAverage);
+      } catch (error) {
+        console.log('Error fetching average PR reviews:', error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
-  return <div>AveragePrReviewsWidget</div>;
+  return (
+    <StatsCard
+      title="Average Reviews per PR"
+      value={calculatedAverage?.toFixed(2) || 'N/A'}
+      color="neutral"
+      isBusy={isLoading}
+    />
+  );
 }
