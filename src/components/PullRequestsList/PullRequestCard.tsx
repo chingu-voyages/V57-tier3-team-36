@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { relativeTime } from '@/lib/time';
 
-export function PrCard({
+export function PullRequestCard({
   created_at,
   draft,
   title,

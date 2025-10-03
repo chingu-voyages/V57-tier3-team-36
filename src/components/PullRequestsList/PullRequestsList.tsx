@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/github/client';
-import { PrCard } from '@/components/PrCard/PrCard';
+import { PullRequestCard } from '@/components/PullRequestsList/PullRequestCard';
 
 export default function PullRequestsList() {
   const { user, isAuthenticated } = useAuth();
@@ -51,7 +51,7 @@ export default function PullRequestsList() {
       className="menu flex flex-col flex-1 gap-3 w-full min-h-0 px-3"
     >
       {pullRequests.map(props => (
-        <PrCard key={props.id} {...props} />
+        <PullRequestCard key={props.id} {...props} />
       ))}
     </ul>
   );
