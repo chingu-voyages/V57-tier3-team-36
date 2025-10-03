@@ -3,6 +3,7 @@ type StatsCardProps = {
   value: string;
   subtitle?: string;
   color?: ColorAttribute;
+  isBusy?: boolean;
 };
 
 type ColorAttribute = 'positive' | 'negative' | string;
@@ -12,21 +13,28 @@ export default function StatsCard({
   value,
   subtitle,
   color,
+  isBusy = true,
 }: StatsCardProps) {
   return (
     <div className="stats shadow w-full h-full">
       <div className="stat overflow-hidden">
         <div className="stat-title md:text-2xl text-wrap">{title}</div>
-        <div className="flex justify-center gap-1">
-          <div className="stat-value md:text-7xl">{value}</div>
-          {subtitle && (
-            <div
-              className={`stat-desc ${getColorAttr(color)} md:text-xl text-wrap`}
-            >
-              {subtitle}
-            </div>
-          )}
-        </div>
+        {isBusy ? (
+          <div className="flex justify-center items-center">
+            <span className="loading loading-spinner loading-lg"></span>
+          </div>
+        ) : (
+          <div className="flex justify-center gap-1">
+            <div className="stat-value md:text-7xl">{value}</div>
+            {subtitle && (
+              <div
+                className={`stat-desc ${getColorAttr(color)} md:text-xl text-wrap`}
+              >
+                {subtitle}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
