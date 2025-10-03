@@ -1,5 +1,6 @@
 'use client';
 import { RepoSearchResultList } from '@/components/AddRepoModal/RepoSearchResultList';
+import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/github/client';
 import { useEffect, useState } from 'react';
 import { SearchField } from './SearchField';
@@ -16,6 +17,8 @@ export function SearchComponent({
   const [fetchedRepos, setFetchedRepos] = useState<GitHubRepo[]>([]);
   const [filteredResults, setFilteredResults] = useState<GitHubRepo[]>([]);
   const [isBusy, setIsBusy] = useState(false);
+
+  const { isAuthenticated } = useAuth();
   useEffect(() => {
     const fetchData = async () => {
       setIsBusy(true);
@@ -28,9 +31,10 @@ export function SearchComponent({
       }
       setIsBusy(false);
     };
-
-    fetchData();
-  }, []);
+    if (isAuthenticated) {
+      fetchData();
+    }
+  }, [isAuthenticated]);
   const handleSearch = (query: string) => {
     const lowerCaseQuery = query.toLowerCase();
     const results = fetchedRepos.filter(
@@ -44,7 +48,16 @@ export function SearchComponent({
 
   return (
     <div>
-      <SearchField onSearchSubmit={handleSearch} isBusy={isBusy} />
+      <div className="sticky top-0 z-10 bg-base-100 flex flex-col gap-4 p-6">
+        <h3 className="font-bold text-lg">Add Repository to Track</h3>
+        <SearchField onSearchSubmit={handleSearch} isBusy={isBusy} />
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-20">
+            ✕
+          </button>
+        </form>
+      </div>
       <RepoSearchResultList
         filteredResults={filteredResults}
         trackedRepoIds={trackedRepoIds}
