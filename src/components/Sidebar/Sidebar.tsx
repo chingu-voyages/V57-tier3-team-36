@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { GitHubAvatar } from '@/components/GitHubAvatar/GitHubAvatar';
 import SidebarIcon from './SidebarIcon';
 import SidebarItem from './SidebarItem';
+import AuthButton from './AuthButton';
 
 export default function Sidebar({ checkboxId }: { checkboxId: string }) {
   const { user, signOut, signIn, isAuthenticated, loading } = useAuth();
@@ -81,19 +82,4 @@ export default function Sidebar({ checkboxId }: { checkboxId: string }) {
   );
 }
 
-const AuthButton = ({
-  action,
-  label,
-}: {
-  action: () => void;
-  label: 'Sign In' | 'Sign Out';
-}) => {
-  return (
-    <li>
-      <button className="w-full justify-between" onClick={action}>
-        <SidebarIcon label={label} />
-        {label}
-      </button>
-    </li>
-  );
-};
+
