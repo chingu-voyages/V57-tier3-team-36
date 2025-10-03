@@ -1,7 +1,7 @@
-import StatsCard from '@/components/StatsCard/StatsCard';
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
 import SortIcon from '@/icons/SortIcon';
 import FilterIcon from '@/icons/FilterIcon';
+import StatsCard from '@/components/StatsCard/StatsCard';
 
 export default function HomePage() {
   return (
@@ -20,12 +20,6 @@ export default function HomePage() {
           <div
             data-label="SearchBar"
             className="flex flex-shrink-0 w-full mb-3 gap-2"
-          >
-            Search Bar
-          </div>
-          <div
-            data-label="PullsList"
-            className="flex-grow w-full px-3 py-2 bg-[blue] overflow-y-auto"
           >
             <input
               type="search"
