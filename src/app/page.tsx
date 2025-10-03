@@ -1,4 +1,6 @@
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
+import SortIcon from '@/icons/SortIcon';
+import FilterIcon from '@/icons/FilterIcon';
 
 export default function HomePage() {
   const statsCardStyle = 'card bg-base-100 w-full px-3 py-2 h-28 md:h-full';
@@ -14,17 +16,26 @@ export default function HomePage() {
       >
         <div
           data-label="PullsListCard"
-          className="card flex flex-col flex-1 min-h-0 w-full bg-base-100 py-3"
+          className="card flex flex-col flex-1 min-h-0 w-full"
         >
           <div
             data-label="SearchBar"
-            className="flex-shrink-0 w-full mb-3 px-3"
+            className="flex flex-shrink-0 w-full mb-3 gap-2"
           >
-            <input type="search" className="input w-full bg-base-content text-neutral" placeholder="Search"></input>
+            <input
+              type="search"
+              className="input w-full bg-base-content text-neutral focus:outline-none focus:border-accent border-2"
+              placeholder="Search Pull Requests"
+            ></input>
+            <button className="btn btn-accent aspect-square p-0">
+              <SortIcon />
+            </button>
+            <button className="btn btn-accent aspect-square p-0">
+              <FilterIcon />
+            </button>
           </div>
-          <div className="flex flex-1 w-full min-h-0 overflow-y-auto -mr-4">
-            <PullRequestsList />
-          </div>
+
+          <PullRequestsList />
         </div>
       </div>
       <aside
