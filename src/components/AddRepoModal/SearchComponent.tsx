@@ -22,14 +22,19 @@ export function SearchComponent({
   useEffect(() => {
     const fetchData = async () => {
       setIsBusy(true);
-      const response = await api.getUserRepos();
-      if (response.success && response.data) {
-        setFetchedRepos(response.data);
-        setFilteredResults(response.data);
-      } else {
-        console.error('Failed to fetch repositories');
+      try {
+        const response = await api.getUserRepos();
+        if (response.success && response.data) {
+          setFetchedRepos(response.data);
+          setFilteredResults(response.data);
+        } else {
+          console.error('Failed to fetch repositories');
+        }
+      } catch (error) {
+        console.error('Failed to fetch repositories:', error);
+      } finally {
+        setIsBusy(false);
       }
-      setIsBusy(false);
     };
     if (isAuthenticated) {
       fetchData();
