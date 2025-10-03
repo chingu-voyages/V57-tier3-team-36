@@ -47,7 +47,7 @@ export default function PullRequestsList() {
   return (
     <div
       data-label="PullRequestsList"
-      className="flex flex-col flex-1 gap-2 w-full min-h-0 overflow-y-auto"
+      className="flex flex-col flex-1 gap-3 w-full min-h-0 px-3"
     >
       {pullRequests.map(props => (
         <PrCard key={props.id} {...props} />
