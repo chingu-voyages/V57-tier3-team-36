@@ -12,7 +12,7 @@ export function PullRequestCard({
 }: GitHubPullRequest & { repo: string }) {
   if (draft) return null;
   return (
-    <li className='min-h-20'>
+    <li className="min-h-20">
       <Link
         href={html_url}
         target="_blank"
