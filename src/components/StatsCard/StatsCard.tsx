@@ -13,7 +13,7 @@ export default function StatsCard({
   value,
   subtitle,
   color,
-  isBusy = true,
+  isBusy,
 }: StatsCardProps) {
   return (
     <div className="stats shadow w-full h-full">
