@@ -17,8 +17,7 @@ export function useRepoService() {
         'Content-Type': 'application/json',
       },
     });
-
-    const { success } = await request.json();
+    const { githubRepoId: success } = await request.json();
     if (!success) {
       throw new Error('Failed to track repo for user');
     }
@@ -32,13 +31,12 @@ export function useRepoService() {
     const request = await fetch(`/api/users/${user.id}/repos`, {
       method: 'GET',
     });
+    const repos = await request.json();
 
-    const { data, success } = await request.json();
-
-    if (!success) {
+    if (!repos) {
       throw new Error('Failed to fetch tracked repos');
     }
-    return data;
+    return repos;
   }
 
   async function deleteUserRepo(githubRepoId: string) {
