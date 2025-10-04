@@ -1,7 +1,7 @@
 import { api } from '@/lib/github/client';
 export async function calculateAverageReviewsPerPr(
   userRepos: GitHubRepo[]
-): Promise<number> {
+): Promise<string> {
   const pullRequests = (await Promise.all(
     userRepos.map(repo =>
       api.getPullRequestsForRepo({
@@ -43,5 +43,5 @@ export function computeAveragePrReviews(
   const averageReviews =
     pullRequests.length > 0 ? totalReviews / pullRequests.length : 0;
 
-  return averageReviews;
+  return averageReviews.toFixed(2);
 }

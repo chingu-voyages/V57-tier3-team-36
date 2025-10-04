@@ -6,7 +6,7 @@ const testCases = [
     description: 'No pull requests',
     reviewPromises: [],
     pullRequests: [],
-    expectedAverage: 0,
+    expectedAverage: '0.00',
   },
   {
     description: 'Pull requests with no reviews',
@@ -24,7 +24,7 @@ const testCases = [
         base: { repo: { owner: { login: 'owner1' }, name: 'repo1' } },
       },
     ] as GitHubPullRequest[],
-    expectedAverage: 0,
+    expectedAverage: '0.00',
   },
   {
     description: 'Pull requests with varying number of reviews',
@@ -56,7 +56,39 @@ const testCases = [
         base: { repo: { owner: { login: 'owner2' }, name: 'repo2' } },
       },
     ] as GitHubPullRequest[],
-    expectedAverage: 2,
+    expectedAverage: '2.00',
+  },
+  {
+    description: 'Some review fetches fail',
+    reviewPromises: [
+      {
+        status: 'fulfilled',
+        value: { success: true, data: [{}, {}, {}] },
+      }, // 2 reviews for PR 1
+      {
+        status: 'rejected',
+        reason: 'Network error',
+      }, // Failed fetch for PR 2
+      {
+        status: 'fulfilled',
+        value: { success: true, data: [{}] },
+      }, // 1 review for PR 3
+    ] as PromiseSettledResult<Result<GitHubPullRequestReview[]>>[],
+    pullRequests: [
+      {
+        number: 1,
+        base: { repo: { owner: { login: 'owner1' }, name: 'repo1' } },
+      },
+      {
+        number: 2,
+        base: { repo: { owner: { login: 'owner1' }, name: 'repo1' } },
+      },
+      {
+        number: 3,
+        base: { repo: { owner: { login: 'owner2' }, name: 'repo2' } },
+      },
+    ] as GitHubPullRequest[],
+    expectedAverage: '1.33', // Only PR 1 and PR 3 are counted
   },
 ];
 

@@ -9,7 +9,9 @@ import { calculateAverageReviewsPerPr } from './calculateAverageReviewsPerPr';
 export default function AveragePrReviewsWidget() {
   const { fetchUserRepos } = useRepoService();
   const [isLoading, setIsLoading] = useState(false);
-  const [calculatedAverage, setCalculatedAverage] = useState<number | null>(0);
+  const [calculatedAverage, setCalculatedAverage] = useState<string | null>(
+    null
+  );
   const { user } = useAuth();
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function AveragePrReviewsWidget() {
   return (
     <StatsCard
       title="Average Reviews per PR"
-      value={calculatedAverage?.toFixed(2) || 'N/A'}
+      value={calculatedAverage?.toString() ?? 'N/A'}
       color="neutral"
       isBusy={isLoading}
     />
