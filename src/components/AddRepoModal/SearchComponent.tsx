@@ -1,4 +1,5 @@
 'use client';
+
 import { RepoSearchResultList } from '@/components/AddRepoModal/RepoSearchResultList';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/github/client';
@@ -17,8 +18,8 @@ export function SearchComponent({
   const [fetchedRepos, setFetchedRepos] = useState<GitHubRepo[]>([]);
   const [filteredResults, setFilteredResults] = useState<GitHubRepo[]>([]);
   const [isBusy, setIsBusy] = useState(false);
-
   const { isAuthenticated } = useAuth();
+
   useEffect(() => {
     const fetchData = async () => {
       setIsBusy(true);
@@ -36,10 +37,12 @@ export function SearchComponent({
         setIsBusy(false);
       }
     };
+
     if (isAuthenticated) {
       fetchData();
     }
   }, [isAuthenticated]);
+
   const handleSearch = (query: string) => {
     const lowerCaseQuery = query.toLowerCase();
     const results = fetchedRepos.filter(
@@ -48,7 +51,18 @@ export function SearchComponent({
         (repo.description &&
           repo.description.toLowerCase().includes(lowerCaseQuery))
     );
-    setFilteredResults(results);
+
+    const search = async (searchQuery: string) => {
+      const response = await api.searchRepositories(searchQuery);
+      if (!response.success) return;
+      setFilteredResults(response.data?.items);
+    };
+
+    if (results.length === 0) {
+      search(query);
+    } else {
+      setFilteredResults(results);
+    }
   };
 
   return (
