@@ -7,50 +7,51 @@ import { api } from '@/lib/github/client';
 export function usePullRequests() {
   const { user, isAuthenticated } = useAuth();
   const [pullRequests, setPullRequests] =
-    useState<(GitHubPullRequest & { repo: string })[]>();
+    useState<(GitHubPullRequest & { repo: string; hasNextPage?: boolean })[]>();
+  const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
     if (!isAuthenticated || !user) return;
 
-    const promises = fetch(`/api/users/${user.id}/repos`)
-      .then(response => {
-        return response.json();
-      })
-      .then(repos => {
+    const fetchPullRequests = async () => {
+      try {
+        const response = await fetch(`/api/users/${user.id}/repos`);
+        const repos = await response.json();
+
         if (repos.length === 0) return;
 
         // Fetch all pull requests in parallel
-        const promises = repos.map((repo: GitHubRepo) =>
-          api
-            .getPullRequestsForRepo({
-              owner: repo.owner.login,
-              repo: repo.name,
-            })
-            .then(response => {
-              if (!response.success) return;
-              return response.data.map(pullRequest => ({
-                ...pullRequest,
-                repo: repo.name,
-              }));
-            })
-        );
+        const promises = repos.map(async (repo: ResultSuccess<GitHubRepo>) => {
+          const response = await api.getPullRequestsForRepo({
+            owner: repo.data.owner.login,
+            repo: repo.data.name,
+            page,
+          });
 
-        return Promise.all(promises);
-      });
+          return response.data.data.map(pullRequest => ({
+            ...pullRequest,
+            repo: repo.data.name,
+            hasNextPage: response.hasNextPage,
+          }));
+        });
 
-    promises
-      .then(pullRequests => {
-        if (!pullRequests) {
-          console.warn('Missing response data');
-          return;
-        }
+        const pullRequests = await Promise.all(promises);
         const combined = pullRequests.flat();
         setPullRequests(combined);
-      })
-      .catch(error => {
+      } catch (error) {
         console.log({ error });
-      });
-  }, [user, isAuthenticated]);
+      }
+    };
 
-  return pullRequests;
+    setPullRequests(undefined);
+    fetchPullRequests();
+  }, [user, isAuthenticated, page]);
+
+  return {
+    pullRequests,
+    page,
+    setPage,
+    hasNextPage: pullRequests?.some(i => i.hasNextPage),
+    hasPreviousPage: page > 1,
+  };
 }

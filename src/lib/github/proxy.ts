@@ -77,6 +77,7 @@ export async function proxy<T>(
 
     const allowedHeaders = [
       'last-modified',
+      'link',
       'x-oauth-scopes',
       'x-accepted-oauth-scopes',
       'x-oauth-client-id',
