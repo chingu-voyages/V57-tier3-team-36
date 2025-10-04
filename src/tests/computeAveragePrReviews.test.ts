@@ -36,11 +36,11 @@ const testCases = [
       {
         status: 'fulfilled',
         value: { success: true, data: [{}] },
-      }, // 1 review for PR 2
+      },
       {
         status: 'fulfilled',
         value: { success: true, data: [{}, {}, {}] },
-      }, // 3 reviews for PR 3
+      },
     ] as PromiseSettledResult<Result<GitHubPullRequestReview[]>>[],
     pullRequests: [
       {
@@ -64,7 +64,7 @@ const testCases = [
       {
         status: 'fulfilled',
         value: { success: true, data: [{}, {}, {}] },
-      }, // 2 reviews for PR 1
+      },
       {
         status: 'rejected',
         reason: 'Network error',
@@ -72,7 +72,7 @@ const testCases = [
       {
         status: 'fulfilled',
         value: { success: true, data: [{}] },
-      }, // 1 review for PR 3
+      },
     ] as PromiseSettledResult<Result<GitHubPullRequestReview[]>>[],
     pullRequests: [
       {
@@ -88,7 +88,7 @@ const testCases = [
         base: { repo: { owner: { login: 'owner2' }, name: 'repo2' } },
       },
     ] as GitHubPullRequest[],
-    expectedAverage: '1.33', // Only PR 1 and PR 3 are counted
+    expectedAverage: '1.33',
   },
 ];
 
