@@ -7,7 +7,7 @@ import { fetchRequest } from '@/lib/request';
 export async function handleServerRequest<T>(
   url: string,
   body?: Record<string, string>
-): Promise<Result<T>> {
+): Promise<NestedResultSuccess<T>> {
   const bearerToken = await getBearerAccessToken();
 
   if (!bearerToken) {
@@ -34,7 +34,11 @@ export async function handleServerRequest<T>(
   if (!response.ok) {
     throw new Error(`GitHub API request failed: ${response.statusText}`);
   }
+
+  const linkHeader = response.headers.get('Link');
+  const hasNextPage = linkHeader?.includes('rel="next"');
+
   const data = await response.json();
 
-  return data;
+  return { data, success: true, hasNextPage };
 }

@@ -20,14 +20,18 @@ export const apiHandlers = (
   getPullRequestsForRepo: ({
     owner,
     repo,
-    state,
+    state = 'open',
+    page = 1,
+    per_page = 10,
   }: {
     owner: string;
     repo: string;
-    state: 'open' | 'closed';
+    state?: 'open' | 'closed';
+    page?: number;
+    per_page?: number;
   }) =>
     requestHandler<GitHubPullRequest[]>(
-      `/repos/${owner}/${repo}/pulls?state=${state}`
+      `/repos/${owner}/${repo}/pulls?state=${state}&per_page=${per_page}&sort=updated&page=${page}`
     ),
 
   getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>

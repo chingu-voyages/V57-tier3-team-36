@@ -1,9 +1,13 @@
 import type { components } from '@octokit/openapi-types';
 
 declare global {
-  type Result<T, E = string> =
-    | { success: true; data: T }
-    | { success: false; error: E };
+  type ResultSuccess<T> = { success: true; data: T; hasNextPage?: boolean };
+  type NestedResultSuccess<T> = {
+    success: true;
+    data: { data: T };
+    hasNextPage?: boolean;
+  };
+  type Result<T, E = string> = ResultSuccess<T> | { success: false; error: E };
 
   // GitHub username is the `login` property
   type GitHubUser = components['schemas']['simple-user'];

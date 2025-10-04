@@ -6,7 +6,7 @@ import { fetchRequest } from '@/lib/request';
 export async function handleClientRequest<T>(
   url: string,
   body?: Record<string, string>
-): Promise<Result<T>> {
+): Promise<NestedResultSuccess<T>> {
   const baseUrl =
     `${process.env.NEXT_PUBLIC_BASE_URL}${githubApiPath}` as const;
 
@@ -28,6 +28,9 @@ export async function handleClientRequest<T>(
     );
   }
 
+  const linkHeader = response.headers.get('Link');
+  const hasNextPage = linkHeader?.includes('rel="next"');
+
   const data = await response.json();
-  return data;
+  return { data, success: true, hasNextPage };
 }
