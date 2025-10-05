@@ -31,6 +31,19 @@ export const apiHandlers = (
       `/repos/${owner}/${repo}/pulls?state=${state}`
     ),
 
+  getPullRequestFiles: ({
+    owner,
+    repo,
+    pull_number,
+  }: {
+    owner: string;
+    repo: string;
+    pull_number: number;
+  }) =>
+    requestHandler<GitHubPullRequestFiles[]>(
+      `/repos/${owner}/${repo}/pulls/${pull_number}/files?per_page=100`
+    ),
+
   getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
     requestHandler<GitHubContributor[]>(`/repos/${owner}/${repo}/contributors`),
 

@@ -16,6 +16,8 @@ declare global {
 
   type GitHubPullRequest = components['schemas']['pull-request'];
 
+  type GitHubPullRequestFiles = components['schemas']['diff-entry'];
+
   type GitHubPullRequestReview = components['schemas']['pull-request-review'];
 }
 
