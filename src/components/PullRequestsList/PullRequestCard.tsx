@@ -32,7 +32,7 @@ export function PullRequestCard({
         href={html_url}
         target="_blank"
         rel="noopener noreferrer"
-        className={`flex flex-col items-start p-2 ${isHighlighted ? 'menu-active' : ''}`}
+        className="flex flex-col items-start p-2"
       >
         <h1 className="text-lg flex flex-wrap items-center gap-x-2">
           {title}
@@ -49,13 +49,11 @@ export function PullRequestCard({
           {repo} #{number} opened {relativeTime(created_at)} by {user.login}
         </span>
         {conflictingFiles.length > 0 && (
-          <div className="mt-2 text-xs opacity-80">
+          <div className="text-xs opacity-80">
             <div className="font-semibold mb-1">Conflicting files:</div>
-            <ul className="list-disc list-inside space-y-0.5">
+            <ul className="mb-1">
               {conflictingFiles.map(file => (
-                <li key={file} className="truncate">
-                  {file}
-                </li>
+                <li key={file}>{file}</li>
               ))}
             </ul>
           </div>

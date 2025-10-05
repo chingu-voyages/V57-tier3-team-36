@@ -56,9 +56,7 @@ export default function PullRequestsList() {
             )}
             isHighlighted={highlightedPRs.has(props.number)}
             conflictingFiles={
-              highlightedPRs.has(props.number)
-                ? pullRequestConflicts[props.number.toString()] || []
-                : []
+              pullRequestConflicts[props.number.toString()] || []
             }
             onHighlight={() => handleHighlight(props.number)}
             onClearHighlight={handleClearHighlight}
