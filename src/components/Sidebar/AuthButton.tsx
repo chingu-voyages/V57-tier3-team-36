@@ -12,12 +12,15 @@ export function AuthButton() {
       ) : null}
 
       <button
-        className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 cursor-pointer"
+        className="bg-blue-600  hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 cursor-pointer"
         disabled={loading}
         onClick={loading ? undefined : isAuthenticated ? signOut : signIn}
       >
         {loading ? (
-          <>Loading...</>
+          <div className="flex items-center gap-2">
+            <div className="loading loading-spinner loading-sm"></div>
+            <p>Login with GitHub</p>
+          </div>
         ) : isAuthenticated ? (
           <>Sign Out</>
         ) : (
