@@ -12,7 +12,7 @@ export function AuthButton() {
       ) : null}
 
       <button
-        className="bg-blue-300 hover:bg-blue-400 px-3 py-1 rounded-md cursor-pointer"
+        className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 cursor-pointer"
         disabled={loading}
         onClick={loading ? undefined : isAuthenticated ? signOut : signIn}
       >
