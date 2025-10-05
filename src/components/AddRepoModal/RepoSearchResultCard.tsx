@@ -8,7 +8,6 @@ export function RepoSearchResultCard({
   name,
   description,
   tracked,
-  // trackedRepoIds,
   setTrackedRepos,
   setCurrentRepo,
   url,
@@ -17,7 +16,6 @@ export function RepoSearchResultCard({
   name: string;
   description: string | null;
   tracked: boolean;
-  // trackedRepoIds: number[];
   setTrackedRepos: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
   setCurrentRepo: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
   url: string;

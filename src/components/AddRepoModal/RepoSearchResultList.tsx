@@ -20,7 +20,6 @@ export function RepoSearchResultList({
           name={repo.name}
           url={repo.html_url}
           description={repo.description}
-          trackedRepoIds={trackedRepoIds}
           tracked={trackedRepoIds.includes(repo.id)}
           setTrackedRepos={setTrackedRepos}
           setCurrentRepo={setCurrentRepo}
