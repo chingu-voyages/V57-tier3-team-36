@@ -1,13 +1,14 @@
 'use client';
 
-import { useAuth } from '@/hooks/useAuth';
 import { GitHubAvatar } from '@/components/GitHubAvatar/GitHubAvatar';
+import { useAuth } from '@/hooks/useAuth';
 import SidebarIcon from './SidebarIcon';
 import SidebarItem from './SidebarItem';
 
 export default function Sidebar({ checkboxId }: { checkboxId: string }) {
   const { user, signOut, signIn, isAuthenticated, loading } = useAuth();
 
+  if (!isAuthenticated) return null;
   return (
     <div className="drawer-side h-screen">
       <label
