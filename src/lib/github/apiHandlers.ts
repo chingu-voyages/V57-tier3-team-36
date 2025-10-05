@@ -31,14 +31,18 @@ export const apiHandlers = (
       `/repos/${owner}/${repo}/pulls?state=${state}`
     ),
 
-  getPullRequestsBySearch: (query: string, repos: string[]) => {
+  getPullRequestsBySearch: (
+    query: string,
+    repos: string[],
+    dir: string = 'desc'
+  ) => {
     const repoQuery = repos.map(repo => `repo:${repo}`).join(' OR ');
     const validUsername = sanitizeToValidUsername(query);
     4;
     const searchQuery = `type:pr (${repoQuery}) ((in:title,body ${query}) OR author:${validUsername})`;
     console.log({ searchQuery });
     return requestHandler<GitHubSearchResponse>(
-      `/search/issues?q=${encodeURIComponent(searchQuery)}&advanced_search=true`
+      `/search/issues?q=${encodeURIComponent(searchQuery)}&sort=updated&order=${dir}&advanced_search=true`
     );
   },
   getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>

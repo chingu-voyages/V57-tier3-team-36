@@ -17,7 +17,7 @@ export default function HomePage() {
         >
           <div
             data-label="SearchBar"
-            className="w-full mb-2 px-3 py-2 bg-[red]"
+            className="flex flex-shrink-0 w-full mb-3 gap-2"
           >
             <PRSearchbar />
           </div>

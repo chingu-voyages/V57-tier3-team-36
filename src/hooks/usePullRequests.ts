@@ -53,7 +53,7 @@ export function usePullRequests() {
       });
   }
 
-  async function searchPullRequests(query: string) {
+  async function searchPullRequests(query: string, dir: string = 'desc') {
     if (!isAuthenticated || !user) return;
 
     try {
@@ -67,7 +67,8 @@ export function usePullRequests() {
       console.log({ repoQuery });
       const searchResult = await api.getPullRequestsBySearch(
         query,
-        repos.map((repo: GitHubRepo) => `${repo.owner.login}/${repo.name}`)
+        repos.map((repo: GitHubRepo) => `${repo.owner.login}/${repo.name}`),
+        dir
       );
       console.log({ searchResult });
       if (searchResult.success && searchResult.data.items.length > 0) {

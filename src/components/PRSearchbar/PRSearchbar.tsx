@@ -1,13 +1,34 @@
 'use client';
 
 import { usePullRequests } from '@/hooks/usePullRequests';
+import SortIcon from '@/icons/SortIcon';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function PRSearchbar() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const initialQuery = searchParams.get('q') || '';
+  const initialDir = searchParams.get('dir') || 'desc';
+
+  const [query, setQuery] = useState(initialQuery);
+  const [dir, setDir] = useState(initialDir);
+
   const { searchPullRequests } = usePullRequests();
 
-  const handleSearch = async (query: string) => {
-    console.log('current query', query);
-    const response = await searchPullRequests(query);
+  useEffect(() => {
+    setQuery(initialQuery);
+    setDir(initialDir);
+  }, [initialQuery, initialDir]);
+
+  const handleSearch = async (newQuery: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('q', newQuery);
+    params.set('dir', dir);
+    router.push(`?${params.toString()}`);
+
+    const response = await searchPullRequests(newQuery);
     console.log({ response });
     return response;
   };
@@ -15,16 +36,24 @@ export default function PRSearchbar() {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      const query = e.currentTarget.value;
-      if (query.trim().length > 0) {
-        await handleSearch(query);
-      }
+      const trimmed = query.trim();
+      if (trimmed) await handleSearch(trimmed);
     }
   };
 
+  const toggleSort = () => {
+    const newDir = dir === 'asc' ? 'desc' : 'asc';
+    setDir(newDir);
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('dir', newDir);
+    if (params.has('q')) params.set('q', query);
+    router.push(`?${params.toString()}`);
+  };
+
   return (
-    <div>
-      <label className="input">
+    <div className="w-full flex gap-2">
+      <label className="input w-full">
         <svg
           className="h-[1em] opacity-50"
           xmlns="http://www.w3.org/2000/svg"
@@ -45,9 +74,16 @@ export default function PRSearchbar() {
           type="search"
           className="grow"
           placeholder="Search"
+          onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
         />
       </label>
+      <button
+        className="kbd aspect-square h-full p-0 flex items-center justify-center cursor-pointer"
+        onClick={toggleSort}
+      >
+        <SortIcon down={dir === 'desc'} />
+      </button>
     </div>
   );
 }
