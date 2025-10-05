@@ -7,6 +7,7 @@ import { createUserRepoValidator } from '@/lib/validators/createUserRepoValidato
 import { and, eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
+import { getGithubRepoIdsForUser } from '@/lib/db/getGithubRepoIdsForUser';
 
 export async function POST(
   req: NextRequest,
@@ -71,14 +72,7 @@ export async function GET(
     }
 
     const { user_id } = await params;
-
-    const userRepos = await db
-      .select({
-        githubRepoId: repo.githubRepoId,
-      })
-      .from(userRepo)
-      .where(eq(userRepo.userId, user_id))
-      .innerJoin(repo, eq(userRepo.repoId, repo.id));
+    const userRepos = await getGithubRepoIdsForUser(user_id);
 
     // Create a github API
     const api = await createApi();

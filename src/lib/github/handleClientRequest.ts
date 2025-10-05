@@ -6,7 +6,7 @@ import { fetchRequest } from '@/lib/request';
 export async function handleClientRequest<T>(
   url: string,
   body?: Record<string, string>
-): Promise<Result<T>> {
+): Promise<T> {
   const baseUrl =
     `${process.env.NEXT_PUBLIC_BASE_URL}${githubApiPath}` as const;
 

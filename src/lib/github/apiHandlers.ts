@@ -21,13 +21,17 @@ export const apiHandlers = (
     owner,
     repo,
     state,
+    page = 1,
+    per_page = 10,
   }: {
     owner: string;
     repo: string;
-    state: 'open' | 'closed';
+    state: 'open' | 'closed' | 'all';
+    page?: number;
+    per_page?: number;
   }) =>
     requestHandler<GitHubPullRequest[]>(
-      `/repos/${owner}/${repo}/pulls?state=${state}`
+      `/repos/${owner}/${repo}/pulls?state=${state}&sort=created&direction=desc&per_page=${per_page}&page=${page}`
     ),
 
   getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
@@ -40,13 +44,15 @@ export const apiHandlers = (
     owner,
     repo,
     pull_number,
+    per_page = 30,
   }: {
     owner: string;
     repo: string;
     pull_number: number;
+    per_page?: number;
   }) =>
     requestHandler<GitHubPullRequestReview[]>(
-      `/repos/${owner}/${repo}/pulls/${pull_number}/reviews`
+      `/repos/${owner}/${repo}/pulls/${pull_number}/reviews?per_page=${per_page}`
     ),
 
   graphqlExample: (query: string) =>

@@ -1,4 +1,6 @@
 import StatsCard from '@/components/StatsCard/StatsCard';
+import AvgTimeToFirstReview from '@/components/AvgTimeToFirstReview/AvgTimeToFirstReview';
+import { Suspense } from 'react';
 
 export default function HomePage() {
   return (
@@ -34,11 +36,17 @@ export default function HomePage() {
       >
         <StatsCard title="Open PRs" value="24" />
         <StatsCard title="Avg Reviews Per PR" value="2.3" />
-        <StatsCard
-          title="Avg Time To First Review"
-          subtitle="Last 30 days"
-          value="4.2h"
-        />
+        <Suspense
+          fallback={
+            <StatsCard
+              title="Avg Time to First Review"
+              value=""
+              isBusy={true}
+            />
+          }
+        >
+          <AvgTimeToFirstReview />
+        </Suspense>
         <StatsCard title="Avg Time To Merge" value="18.5h" />
       </aside>
     </div>
