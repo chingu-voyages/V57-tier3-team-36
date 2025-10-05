@@ -1,3 +1,4 @@
+import PRSearchbar from '@/components/PRSearchbar/PRSearchbar';
 import StatsCard from '@/components/StatsCard/StatsCard';
 
 export default function HomePage() {
@@ -18,7 +19,7 @@ export default function HomePage() {
             data-label="SearchBar"
             className="w-full mb-2 px-3 py-2 bg-[red]"
           >
-            Search Bar
+            <PRSearchbar />
           </div>
           <div
             data-label="PullsList"

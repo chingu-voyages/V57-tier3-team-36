@@ -1,5 +1,6 @@
 import type { handleClientRequest } from '@/lib/github/handleClientRequest';
 import type { handleServerRequest } from '@/lib/github/handleServerRequest';
+import sanitizeToValidUsername from '@/utils/sanitizeUsername';
 
 export const apiHandlers = (
   requestHandler: typeof handleClientRequest | typeof handleServerRequest
@@ -20,16 +21,26 @@ export const apiHandlers = (
   getPullRequestsForRepo: ({
     owner,
     repo,
-    state,
+    state = 'open',
   }: {
     owner: string;
     repo: string;
-    state: 'open' | 'closed';
+    state?: 'open' | 'closed';
   }) =>
     requestHandler<GitHubPullRequest[]>(
       `/repos/${owner}/${repo}/pulls?state=${state}`
     ),
 
+  getPullRequestsBySearch: (query: string, repos: string[]) => {
+    const repoQuery = repos.map(repo => `repo:${repo}`).join(' OR ');
+    const validUsername = sanitizeToValidUsername(query);
+    4;
+    const searchQuery = `type:pr (${repoQuery}) ((in:title,body ${query}) OR author:${validUsername})`;
+    console.log({ searchQuery });
+    return requestHandler<GitHubSearchResponse>(
+      `/search/issues?q=${encodeURIComponent(searchQuery)}&advanced_search=true`
+    );
+  },
   getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
     requestHandler<GitHubContributor[]>(`/repos/${owner}/${repo}/contributors`),
 
