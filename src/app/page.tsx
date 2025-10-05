@@ -1,6 +1,13 @@
+import LandingPage from '@/components/LandingPage/LandingPage';
 import StatsCard from '@/components/StatsCard/StatsCard';
+import { getServerSession } from '@/lib/auth/getServerSession';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { isAuthenticated } = await getServerSession();
+
+  if (!isAuthenticated) {
+    return <LandingPage />;
+  }
   return (
     <div
       data-label="HomePage"
