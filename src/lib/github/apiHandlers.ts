@@ -17,14 +17,15 @@ export const apiHandlers = (
   getAllReposForUsername: (owner: string) =>
     requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
 
+  // TODO: pagination
   getPullRequestsForRepo: ({
     owner,
     repo,
-    state,
+    state = 'open',
   }: {
     owner: string;
     repo: string;
-    state: 'open' | 'closed';
+    state?: 'open' | 'closed';
   }) =>
     requestHandler<GitHubPullRequest[]>(
       `/repos/${owner}/${repo}/pulls?state=${state}`
