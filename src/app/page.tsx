@@ -1,5 +1,7 @@
 import PRSearchbar from '@/components/PRSearchbar/PRSearchbar';
+import PRSearchbarSkeleton from '@/components/PRSearchbar/PRSearchbarSkeleton';
 import StatsCard from '@/components/StatsCard/StatsCard';
+import { Suspense } from 'react';
 
 export default function HomePage() {
   return (
@@ -19,7 +21,9 @@ export default function HomePage() {
             data-label="SearchBar"
             className="flex flex-shrink-0 w-full mb-3 gap-2"
           >
-            <PRSearchbar />
+            <Suspense fallback={<PRSearchbarSkeleton />}>
+              <PRSearchbar />
+            </Suspense>
           </div>
           <div
             data-label="PullsList"

@@ -46,8 +46,8 @@ export default function PRSearchbar() {
     setDir(newDir);
 
     const params = new URLSearchParams(searchParams.toString());
-    params.set('dir', newDir);
     if (params.has('q')) params.set('q', query);
+    params.set('dir', newDir);
     router.push(`?${params.toString()}`);
   };
 
