@@ -44,9 +44,8 @@ export default function RootLayout({
           <div className="h-screen flex flex-col">
             <Header />
             <main className="flex-grow px-4 pb-4">{children}</main>
+            <LazyFooter />
           </div>
-
-          <LazyFooter />
         </div>
       </body>
     </html>

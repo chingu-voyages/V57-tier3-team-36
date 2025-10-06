@@ -1,4 +1,5 @@
 import StatsCard from '@/components/StatsCard/StatsCard';
+import {AverageMergeTimeWidget} from '@/components/AverageMergeTimeWidget';
 
 export default function HomePage() {
   return (
@@ -40,6 +41,7 @@ export default function HomePage() {
           value="4.2h"
         />
         <StatsCard title="Avg Time To Merge" value="18.5h" />
+        <AverageMergeTimeWidget />
       </aside>
     </div>
   );
