@@ -2,11 +2,12 @@
 
 import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
 import RepoDropdownList from '@/components/Header/RepoDropdownList';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function RepoDropdown() {
   const [trackedRepos, setTrackedRepos] = useState<GitHubRepo[]>([]);
   const [currentRepo, setCurrentRepo] = useState<GitHubRepo[]>([]);
+  const modalRef = useRef<HTMLDialogElement>(null);
 
   const handleRepoClick = (repoName: string) => {
     setTrackedRepo(repoName);
@@ -35,7 +36,7 @@ export default function RepoDropdown() {
       </div>
       <ul
         tabIndex={0}
-        className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+        className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 shadow-sm p-0"
       >
         <li
           className="border-b-2 border-gray-200"
@@ -51,12 +52,7 @@ export default function RepoDropdown() {
         />
         <li
           className="text-primary border-t-2 border-gray-200"
-          onClick={() => {
-            const modalElement = document.getElementById(
-              'AddRepoModal'
-            ) as HTMLDialogElement;
-            modalElement?.showModal();
-          }}
+          onClick={() => modalRef?.current?.showModal()}
         >
           <a>+ Add Repository</a>
         </li>
@@ -65,6 +61,7 @@ export default function RepoDropdown() {
         trackedRepoIds={trackedRepos.map(repo => repo.id)}
         setTrackedRepos={setTrackedRepos}
         setCurrentRepo={setCurrentRepo}
+        modalRef={modalRef}
       />
     </div>
   );

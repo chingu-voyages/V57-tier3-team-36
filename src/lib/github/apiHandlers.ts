@@ -17,14 +17,15 @@ export const apiHandlers = (
   getAllReposForUsername: (owner: string) =>
     requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
 
+  // TODO: pagination
   getPullRequestsForRepo: ({
     owner,
     repo,
-    state,
+    state = 'open',
   }: {
     owner: string;
     repo: string;
-    state: 'open' | 'closed';
+    state?: 'open' | 'closed';
   }) =>
     requestHandler<GitHubPullRequest[]>(
       `/repos/${owner}/${repo}/pulls?state=${state}`
@@ -47,6 +48,11 @@ export const apiHandlers = (
   }) =>
     requestHandler<GitHubPullRequestReview[]>(
       `/repos/${owner}/${repo}/pulls/${pull_number}/reviews`
+    ),
+
+  searchRepositories: (query: string) =>
+    requestHandler<{ items: GitHubRepo[] }>(
+      `/search/repositories?q=${encodeURIComponent(query)}&per_page=10`
     ),
 
   graphqlExample: (query: string) =>
