@@ -1,5 +1,8 @@
 import PRSearchbar from '@/components/PRSearchbar/PRSearchbar';
 import PRSearchbarSkeleton from '@/components/PRSearchbar/PRSearchbarSkeleton';
+import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
+import SortIcon from '@/icons/SortIcon';
+import FilterIcon from '@/icons/FilterIcon';
 import StatsCard from '@/components/StatsCard/StatsCard';
 import { Suspense } from 'react';
 
@@ -11,11 +14,11 @@ export default function HomePage() {
     >
       <div
         data-label="MainContents"
-        className="col-span-12 md:col-span-8 xl:col-span-9 row-start-2 md:row-start-1 h-full"
+        className="col-span-12 md:col-span-8 xl:col-span-9 row-start-2 md:row-start-1 flex flex-col min-h-0"
       >
         <div
           data-label="PullsListCard"
-          className="card flex flex-col w-full h-full bg-base-100 p-2"
+          className="card flex flex-col flex-1 min-h-0 w-full"
         >
           <div
             data-label="SearchBar"
@@ -31,6 +34,8 @@ export default function HomePage() {
           >
             List of Pull Requests
           </div>
+
+          <PullRequestsList />
         </div>
       </div>
       <aside
