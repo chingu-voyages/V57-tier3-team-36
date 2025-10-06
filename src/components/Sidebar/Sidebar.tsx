@@ -1,14 +1,28 @@
 'use client';
-
 import { GitHubAvatar } from '@/components/GitHubAvatar/GitHubAvatar';
 import { useAuth } from '@/hooks/useAuth';
+import { useEffect, useState } from 'react';
+
+import AuthButton from './AuthButton';
 import SidebarIcon from './SidebarIcon';
 import SidebarItem from './SidebarItem';
 
 export default function Sidebar({ checkboxId }: { checkboxId: string }) {
   const { user, signOut, signIn, isAuthenticated, loading } = useAuth();
 
-  if (!isAuthenticated) return null;
+  const [authAction, setAuthAction] = useState<null | 'signin' | 'signout'>(
+    null
+  );
+  const uiLoading = loading || authAction !== null;
+  const loadingLabel = authAction === 'signout' ? 'Logging out…' : 'Loading…';
+
+  useEffect(() => {
+    if (!loading && authAction === 'signin' && isAuthenticated)
+      setAuthAction(null);
+    if (!loading && authAction === 'signout' && !isAuthenticated)
+      setAuthAction(null);
+  }, [loading, isAuthenticated, authAction]);
+
   return (
     <div className="drawer-side h-screen">
       <label
@@ -35,30 +49,36 @@ export default function Sidebar({ checkboxId }: { checkboxId: string }) {
           <SidebarItem label="Contributors" />
           <SidebarItem label="Reviews" />
           <SidebarItem label="Quality" />
-          {loading ? null : isAuthenticated ? (
-            <AuthButton action={signOut} label="Sign Out" />
+          {uiLoading ? (
+            <li>
+              <button
+                className="w-full justify-between cursor-default select-none text-white"
+                aria-busy="true"
+                disabled
+              >
+                <SidebarIcon label="Sign In" />
+                <span className="animate-pulse">{loadingLabel}</span>
+              </button>
+            </li>
+          ) : isAuthenticated ? (
+            <AuthButton
+              action={() => {
+                setAuthAction('signout');
+                signOut();
+              }}
+              label="Sign Out"
+            />
           ) : (
-            <AuthButton action={signIn} label="Sign In" />
+            <AuthButton
+              action={() => {
+                setAuthAction('signin');
+                signIn();
+              }}
+              label="Sign In"
+            />
           )}
         </div>
       </ul>
     </div>
   );
 }
-
-const AuthButton = ({
-  action,
-  label,
-}: {
-  action: () => void;
-  label: 'Sign In' | 'Sign Out';
-}) => {
-  return (
-    <li>
-      <button className="w-full justify-between" onClick={action}>
-        <SidebarIcon label={label} />
-        {label}
-      </button>
-    </li>
-  );
-};
