@@ -1,4 +1,5 @@
 'use client';
+
 import { RepoSearchResultList } from '@/components/AddRepoModal/RepoSearchResultList';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/github/client';
@@ -16,9 +17,15 @@ export function SearchComponent({
 }) {
   const [fetchedRepos, setFetchedRepos] = useState<GitHubRepo[]>([]);
   const [filteredResults, setFilteredResults] = useState<GitHubRepo[]>([]);
+  const [searchResults, setSearchResults] = useState<GitHubRepo[]>([]);
   const [isBusy, setIsBusy] = useState(false);
-
   const { isAuthenticated } = useAuth();
+  const uniqueResults = Array.from(
+    new Map(
+      [...searchResults, ...filteredResults].map(obj => [obj.id, obj])
+    ).values()
+  );
+
   useEffect(() => {
     const fetchData = async () => {
       setIsBusy(true);
@@ -36,19 +43,30 @@ export function SearchComponent({
         setIsBusy(false);
       }
     };
+
     if (isAuthenticated) {
       fetchData();
     }
   }, [isAuthenticated]);
+
   const handleSearch = (query: string) => {
-    const lowerCaseQuery = query.toLowerCase();
+    const searchQuery = query.trim().toLowerCase();
     const results = fetchedRepos.filter(
       repo =>
-        repo.name.toLowerCase().includes(lowerCaseQuery) ||
+        repo.name.toLowerCase().includes(searchQuery) ||
         (repo.description &&
-          repo.description.toLowerCase().includes(lowerCaseQuery))
+          repo.description.toLowerCase().includes(searchQuery))
     );
     setFilteredResults(results);
+
+    const search = async (searchQuery: string) => {
+      const response = await api.searchRepositories(searchQuery);
+      if (!response.success) return;
+      setSearchResults(response.data?.items);
+    };
+    if (searchQuery.length >= 3) {
+      search(query);
+    }
   };
 
   return (
@@ -64,7 +82,7 @@ export function SearchComponent({
         </form>
       </div>
       <RepoSearchResultList
-        filteredResults={filteredResults}
+        filteredResults={uniqueResults}
         trackedRepoIds={trackedRepoIds}
         setTrackedRepos={setTrackedRepos}
         setCurrentRepo={setCurrentRepo}
