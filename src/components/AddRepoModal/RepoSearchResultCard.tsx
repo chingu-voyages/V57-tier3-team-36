@@ -8,17 +8,17 @@ export function RepoSearchResultCard({
   name,
   description,
   tracked,
-  trackedRepoIds,
   setTrackedRepos,
   setCurrentRepo,
+  url,
 }: {
   id: number | null;
   name: string;
   description: string | null;
   tracked: boolean;
-  trackedRepoIds: number[];
   setTrackedRepos: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
   setCurrentRepo: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
+  url: string;
 }) {
   const { createUserRepo, fetchUserRepos, deleteUserRepo } = useRepoService();
   const [loading, setLoading] = useState(false);
@@ -34,6 +34,7 @@ export function RepoSearchResultCard({
       console.log(error);
     }
   };
+
   const deleteRepo = async (repoId: string) => {
     try {
       setLoading(true);
@@ -54,9 +55,8 @@ export function RepoSearchResultCard({
       <div className="card-body flex-row justify-between">
         <div className="flex flex-col gap-2 flex-1 min-w-0  ">
           <h2 className="card-title">{name}</h2>
-          <p className="truncate whitespace-normal">
-            {description ? description : 'No description provided.'}
-          </p>
+          <p className="truncate whitespace-normal">{description}</p>
+          <p>{url}</p>
         </div>
         <div className="card-actions shrink-0">
           {loading ? (
@@ -66,7 +66,7 @@ export function RepoSearchResultCard({
           ) : tracked ? (
             <div className="group">
               <button
-                className="btn bg-success hover:bg-error"
+                className="btn btn-success"
                 onClick={() => deleteRepo(id!.toString())}
               >
                 <span className="block group-hover:hidden">Selected</span>

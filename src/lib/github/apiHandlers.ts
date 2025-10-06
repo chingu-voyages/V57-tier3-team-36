@@ -17,6 +17,7 @@ export const apiHandlers = (
   getAllReposForUsername: (owner: string) =>
     requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
 
+  // TODO: pagination
   getPullRequestsForRepo: ({
     owner,
     repo,
@@ -53,6 +54,11 @@ export const apiHandlers = (
   }) =>
     requestHandler<GitHubPullRequestReview[]>(
       `/repos/${owner}/${repo}/pulls/${pull_number}/reviews?per_page=${per_page}`
+    ),
+
+  searchRepositories: (query: string) =>
+    requestHandler<{ items: GitHubRepo[] }>(
+      `/search/repositories?q=${encodeURIComponent(query)}&per_page=10`
     ),
 
   graphqlExample: (query: string) =>
