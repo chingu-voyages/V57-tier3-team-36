@@ -2,6 +2,7 @@ import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
 import SortIcon from '@/icons/SortIcon';
 import FilterIcon from '@/icons/FilterIcon';
 import StatsCard from '@/components/StatsCard/StatsCard';
+import OpenPullRequests from '@/components/StatsCard/OpenPullRequests';
 
 export default function HomePage() {
   return (
@@ -41,7 +42,7 @@ export default function HomePage() {
         data-label="StatsCards"
         className="grid gap-3 grid-cols-2 sm:grid-cols-4 md:grid-cols-1 col-span-12 md:col-span-4 xl:col-span-3 row-start-1"
       >
-        <StatsCard title="Open PRs" value="24" />
+        <OpenPullRequests />
         <StatsCard title="Avg Reviews Per PR" value="2.3" />
         <StatsCard
           title="Avg Time To First Review"
