@@ -4,6 +4,7 @@ import { usePullRequests } from '@/hooks/usePullRequests';
 import SortIcon from '@/icons/SortIcon';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import PRFilter from './PRFilter';
 
 export default function PRSearchbar() {
   const router = useRouter();
@@ -78,6 +79,7 @@ export default function PRSearchbar() {
           onKeyDown={handleKeyDown}
         />
       </label>
+      <PRFilter />
       <button
         className="kbd aspect-square h-full p-0 flex items-center justify-center cursor-pointer"
         onClick={toggleSort}
