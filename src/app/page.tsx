@@ -1,5 +1,6 @@
 import LandingPage from '@/components/LandingPage/LandingPage';
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
+
 import StatsCard from '@/components/StatsCard/StatsCard';
 import FilterIcon from '@/icons/FilterIcon';
 import SortIcon from '@/icons/SortIcon';
