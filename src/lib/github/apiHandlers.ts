@@ -50,6 +50,11 @@ export const apiHandlers = (
       `/repos/${owner}/${repo}/pulls/${pull_number}/reviews`
     ),
 
+  searchRepositories: (query: string) =>
+    requestHandler<{ items: GitHubRepo[] }>(
+      `/search/repositories?q=${encodeURIComponent(query)}&per_page=10`
+    ),
+
   graphqlExample: (query: string) =>
     requestHandler<unknown>('/graphql', { query }),
 });
