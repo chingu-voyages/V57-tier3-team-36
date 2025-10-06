@@ -50,12 +50,12 @@ export function SearchComponent({
   }, [isAuthenticated]);
 
   const handleSearch = (query: string) => {
-    const lowerCaseQuery = query.toLowerCase();
+    const searchQuery = query.trim().toLowerCase();
     const results = fetchedRepos.filter(
       repo =>
-        repo.name.toLowerCase().includes(lowerCaseQuery) ||
+        repo.name.toLowerCase().includes(searchQuery) ||
         (repo.description &&
-          repo.description.toLowerCase().includes(lowerCaseQuery))
+          repo.description.toLowerCase().includes(searchQuery))
     );
     setFilteredResults(results);
 
@@ -64,7 +64,9 @@ export function SearchComponent({
       if (!response.success) return;
       setSearchResults(response.data?.items);
     };
-    search(query);
+    if (searchQuery.length >= 3) {
+      search(query);
+    }
   };
 
   return (
