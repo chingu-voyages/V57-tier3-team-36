@@ -3,54 +3,51 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/github/client';
+import { useRepoService } from '@/hooks/useRepoService';
 
 export function usePullRequests() {
   const { user, isAuthenticated } = useAuth();
   const [pullRequests, setPullRequests] =
-    useState<(GitHubPullRequest & { repo: string })[]>();
+    useState<(GitHubPullRequest & { repo: string; hasNextPage?: boolean })[]>();
+  const { fetchUserRepos } = useRepoService();
 
   useEffect(() => {
     if (!isAuthenticated || !user) return;
 
-    const promises = fetch(`/api/users/${user.id}/repos`)
-      .then(response => {
-        return response.json();
-      })
-      .then(repos => {
+    const fetchPullRequests = async () => {
+      try {
+        const repos = await fetchUserRepos();
+
         if (repos.length === 0) return;
 
         // Fetch all pull requests in parallel
-        const promises = repos.map((repo: GitHubRepo) =>
-          api
-            .getPullRequestsForRepo({
-              owner: repo.owner.login,
-              repo: repo.name,
-            })
-            .then(response => {
-              if (!response.success) return;
-              return response.data.map(pullRequest => ({
-                ...pullRequest,
-                repo: repo.name,
-              }));
-            })
+        const promises = repos.map(async (repo: GitHubRepo) => {
+          const response = await api.getPullRequestsForRepo({
+            owner: repo.owner.login,
+            repo: repo.name,
+          });
+
+          if (!response.success) return [];
+
+          return response.data.map(pullRequest => ({
+            ...pullRequest,
+            repo: repo.name,
+          }));
+        });
+
+        const pullRequests = (await Promise.all(promises)).flat();
+        setPullRequests(pullRequests);
+      } catch (error) {
+        console.error(
+          'Failed to fetch pull requests:',
+          error instanceof Error ? error.message : error
         );
+      }
+    };
 
-        return Promise.all(promises);
-      });
-
-    promises
-      .then(pullRequests => {
-        if (!pullRequests) {
-          console.warn('Missing response data');
-          return;
-        }
-        const combined = pullRequests.flat();
-        setPullRequests(combined);
-      })
-      .catch(error => {
-        console.log({ error });
-      });
-  }, [user, isAuthenticated]);
+    setPullRequests(undefined);
+    fetchPullRequests();
+  }, [user, isAuthenticated, fetchUserRepos]);
 
   return pullRequests;
 }
