@@ -17,17 +17,31 @@ export const apiHandlers = (
   getAllReposForUsername: (owner: string) =>
     requestHandler<GitHubRepo[]>(`/users/${owner}/repos`),
 
+  // TODO: pagination
   getPullRequestsForRepo: ({
     owner,
     repo,
-    state,
+    state = 'open',
   }: {
     owner: string;
     repo: string;
-    state: 'open' | 'closed';
+    state?: 'open' | 'closed';
   }) =>
     requestHandler<GitHubPullRequest[]>(
       `/repos/${owner}/${repo}/pulls?state=${state}`
+    ),
+
+  getPullRequestFiles: ({
+    owner,
+    repo,
+    pull_number,
+  }: {
+    owner: string;
+    repo: string;
+    pull_number: number;
+  }) =>
+    requestHandler<GitHubPullRequestFiles[]>(
+      `/repos/${owner}/${repo}/pulls/${pull_number}/files?per_page=100`
     ),
 
   getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
