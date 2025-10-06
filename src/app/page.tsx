@@ -2,7 +2,7 @@ import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
 import SortIcon from '@/icons/SortIcon';
 import FilterIcon from '@/icons/FilterIcon';
 import StatsCard from '@/components/StatsCard/StatsCard';
-import {AverageMergeTimeWidget} from '@/components/AverageMergeTimeWidget';
+import { AverageMergeTimeWidget } from '@/components/AverageMergeTimeWidget';
 
 export default function HomePage() {
   return (

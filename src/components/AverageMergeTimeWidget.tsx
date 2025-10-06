@@ -25,9 +25,12 @@ export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
     };
 
     window.addEventListener('repoChanged', handleRepoChange as EventListener);
-    
+
     return () => {
-      window.removeEventListener('repoChanged', handleRepoChange as EventListener);
+      window.removeEventListener(
+        'repoChanged',
+        handleRepoChange as EventListener
+      );
     };
   }, []);
 
@@ -46,7 +49,7 @@ export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
 
     // Parse the repo string (assumes format: "owner/repo")
     const [owner, repo] = selectedRepo.split('/');
-    
+
     if (!owner || !repo) {
       setError('Invalid repository format');
       return;
@@ -55,11 +58,11 @@ export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
     try {
       setLoading(true);
       setError(null);
-      
+
       const headers: HeadersInit = {
         Accept: 'application/vnd.github.v3+json',
       };
-      
+
       if (token) {
         headers.Authorization = `Bearer ${token}`;
       }
@@ -79,9 +82,9 @@ export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
       }
 
       const pulls: PullRequest[] = await response.json();
-      
+
       const mergedPRs = pulls.filter(pr => pr.merged_at !== null);
-      
+
       if (mergedPRs.length === 0) {
         setAverageTime(0);
         setLoading(false);
@@ -96,7 +99,7 @@ export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
 
       const totalTime = mergeTimes.reduce((sum, time) => sum + time, 0);
       const avgTimeMs = totalTime / mergeTimes.length;
-      
+
       setAverageTime(avgTimeMs / (1000 * 60 * 60));
       setLoading(false);
     } catch (err) {
@@ -140,19 +143,18 @@ export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
           </div>
         )}
 
-        {!loading && !error && selectedRepo !== 'All Repositories' && averageTime !== null && (
-          <div className="stat mt-4 bg-base-200 rounded-lg">
-            <div className="stat-title">
-              {selectedRepo}
+        {!loading &&
+          !error &&
+          selectedRepo !== 'All Repositories' &&
+          averageTime !== null && (
+            <div className="stat mt-4 bg-base-200 rounded-lg">
+              <div className="stat-title">{selectedRepo}</div>
+              <div className="stat-value text-3xl">
+                {averageTime > 0 ? formatTime(averageTime) : 'No merged PRs'}
+              </div>
+              <div className="stat-desc">Time from creation to merge</div>
             </div>
-            <div className="stat-value text-3xl">
-              {averageTime > 0
-                ? formatTime(averageTime)
-                : 'No merged PRs'}
-            </div>
-            <div className="stat-desc">Time from creation to merge</div>
-          </div>
-        )}
+          )}
       </div>
     </div>
   );
