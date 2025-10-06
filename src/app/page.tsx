@@ -1,4 +1,7 @@
 import LandingPage from '@/components/LandingPage/LandingPage';
+import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
+import SortIcon from '@/icons/SortIcon';
+import FilterIcon from '@/icons/FilterIcon';
 import StatsCard from '@/components/StatsCard/StatsCard';
 import { getServerSession } from '@/lib/auth/getServerSession';
 
@@ -15,24 +18,30 @@ export default async function HomePage() {
     >
       <div
         data-label="MainContents"
-        className="col-span-12 md:col-span-8 xl:col-span-9 row-start-2 md:row-start-1 h-full"
+        className="col-span-12 md:col-span-8 xl:col-span-9 row-start-2 md:row-start-1 flex flex-col min-h-0"
       >
         <div
           data-label="PullsListCard"
-          className="card flex flex-col w-full h-full bg-base-100 p-2"
+          className="card flex flex-col flex-1 min-h-0 w-full"
         >
           <div
             data-label="SearchBar"
-            className="w-full mb-2 px-3 py-2 bg-[red]"
+            className="flex flex-shrink-0 w-full mb-3 gap-2"
           >
-            Search Bar
+            <input
+              type="search"
+              className="input w-full bg-base-content text-neutral focus:outline-none focus:border-accent border-2"
+              placeholder="Search Pull Requests"
+            ></input>
+            <button className="btn btn-accent aspect-square p-0">
+              <SortIcon />
+            </button>
+            <button className="btn btn-accent aspect-square p-0">
+              <FilterIcon />
+            </button>
           </div>
-          <div
-            data-label="PullsList"
-            className="flex-grow w-full px-3 py-2 bg-[blue] overflow-y-auto"
-          >
-            List of Pull Requests
-          </div>
+
+          <PullRequestsList />
         </div>
       </div>
       <aside
