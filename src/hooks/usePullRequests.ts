@@ -3,20 +3,22 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/github/client';
-import { useRepoService } from '@/hooks/useRepoService';
 
 export function usePullRequests() {
   const { user, isAuthenticated } = useAuth();
   const [pullRequests, setPullRequests] =
     useState<(GitHubPullRequest & { repo: string; hasNextPage?: boolean })[]>();
-  const { fetchUserRepos } = useRepoService();
 
   useEffect(() => {
     if (!isAuthenticated || !user) return;
 
     const fetchPullRequests = async () => {
       try {
-        const repos = await fetchUserRepos();
+        const repos = await fetch(`/api/users/${user.id}/repos`).then(
+          response => {
+            return response.json();
+          }
+        );
 
         if (repos.length === 0) return;
 
@@ -47,7 +49,7 @@ export function usePullRequests() {
 
     setPullRequests(undefined);
     fetchPullRequests();
-  }, [user, isAuthenticated, fetchUserRepos]);
+  }, [user, isAuthenticated]);
 
   return pullRequests;
 }
