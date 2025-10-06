@@ -1,35 +1,33 @@
 'use client';
 import StatsCard from '@/components/StatsCard/StatsCard';
-import { useAuth } from '@/hooks/useAuth';
-import { useRepoService } from '@/hooks/useRepoService';
 
+import { usePullRequests } from '@/hooks/usePullRequests';
 import { useEffect, useState } from 'react';
 import { calculateAverageReviewsPerPr } from './calculateAverageReviewsPerPr';
 
 export default function AveragePrReviewsWidget() {
-  const { fetchUserRepos } = useRepoService();
   const [isLoading, setIsLoading] = useState(false);
   const [calculatedAverage, setCalculatedAverage] = useState<string | null>(
     null
   );
-  const { user } = useAuth();
+
+  const pullRequests = usePullRequests();
 
   useEffect(() => {
     calculate();
-  }, [user]);
+  }, [pullRequests]);
 
   const calculate = async () => {
-    if (user) {
-      try {
-        setIsLoading(true);
-        const userRepos = await fetchUserRepos();
-        const calculatedAverage = await calculateAverageReviewsPerPr(userRepos);
-        setCalculatedAverage(calculatedAverage);
-      } catch (error) {
-        console.log('Error fetching average PR reviews:', error);
-      } finally {
-        setIsLoading(false);
-      }
+    if (!pullRequests) return;
+    try {
+      setIsLoading(true);
+      const calculatedAverage =
+        await calculateAverageReviewsPerPr(pullRequests);
+      setCalculatedAverage(calculatedAverage);
+    } catch (error) {
+      console.log('Error fetching average PR reviews:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (

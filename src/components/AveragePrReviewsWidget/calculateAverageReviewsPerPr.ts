@@ -1,21 +1,9 @@
 import { api } from '@/lib/github/client';
 export async function calculateAverageReviewsPerPr(
-  userRepos: GitHubRepo[]
+  pullRequests: GitHubPullRequest[]
 ): Promise<string> {
-  const pullRequests = (await Promise.all(
-    userRepos.map(repo =>
-      api.getPullRequestsForRepo({
-        owner: repo.owner.login,
-        repo: repo.name,
-        state: 'open',
-      })
-    )
-  )) as Array<{ data: GitHubPullRequest[] | null; success: boolean }>;
-
-  const flattenedPullRequests = pullRequests.flatMap(prs => prs.data || []);
-
   const reviewPromises = await Promise.allSettled(
-    flattenedPullRequests.map(pr =>
+    pullRequests.map(pr =>
       api.getReviewsForPullRequest({
         owner: pr.base.repo.owner.login,
         repo: pr.base.repo.name,
@@ -24,7 +12,7 @@ export async function calculateAverageReviewsPerPr(
     )
   );
 
-  return computeAveragePrReviews(reviewPromises, flattenedPullRequests);
+  return computeAveragePrReviews(reviewPromises, pullRequests);
 }
 
 export function computeAveragePrReviews(
