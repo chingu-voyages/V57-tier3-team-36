@@ -38,7 +38,7 @@ export const apiHandlers = (
   ) => {
     const repoQuery = repos.map(repo => `repo:${repo}`).join(' OR ');
     const validUsername = sanitizeToValidUsername(query);
-    4;
+
     const searchQuery = `type:pr (${repoQuery}) ((in:title,body ${query}) OR author:${validUsername})`;
     console.log({ searchQuery });
     return requestHandler<GitHubSearchResponse>(
