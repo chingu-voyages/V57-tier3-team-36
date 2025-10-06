@@ -1,6 +1,6 @@
 'use client';
 
-import { usePullRequests } from '@/hooks/usePullRequests';
+import { usePullRequestsSearch } from '@/hooks/usePullRequestsSearch';
 import SortIcon from '@/icons/SortIcon';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ export default function PRSearchbar() {
   const [query, setQuery] = useState(initialQuery);
   const [dir, setDir] = useState(initialDir);
 
-  const { searchPullRequests } = usePullRequests();
+  const { searchPullRequests } = usePullRequestsSearch();
 
   useEffect(() => {
     setQuery(initialQuery);
