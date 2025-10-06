@@ -11,7 +11,7 @@ export function usePullRequests() {
   const [pullRequests, setPullRequests] =
     useState<(GitHubPullRequest & { repo: string; owner: string })[]>();
   const [pullRequestConflicts, setPullRequestConflicts] =
-    useState<PullRequestConflicts>({});
+    useState<PullRequestConflicts>();
 
   useEffect(() => {
     if (!isAuthenticated || !user) return;
@@ -111,7 +111,6 @@ export function usePullRequests() {
         }
       });
 
-      console.log({ conflicts });
       setPullRequestConflicts(conflicts);
     });
   }, [user, isAuthenticated, pullRequests]);
