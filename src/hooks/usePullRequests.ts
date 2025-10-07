@@ -30,11 +30,7 @@ export function usePullRequests() {
           });
 
           if (!response.success) return [];
-
-          return response.data.map(pullRequest => ({
-            ...pullRequest,
-            repo: repo.name,
-          }));
+          return response.data;
         });
 
         const pullRequests = (await Promise.all(promises)).flat();

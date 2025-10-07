@@ -17,6 +17,7 @@ export async function handleServerRequest<T>(
   const headers = {
     Accept: 'application/vnd.github.v3+json',
     Authorization: bearerToken,
+    'X-GitHub-Api-Version': '2022-11-28',
   };
 
   const fetchOptions = !body
