@@ -1,8 +1,12 @@
-import { AuthButton } from '@/components/Sidebar/AuthButton';
-
+'use client';
+import { useAuth } from '@/hooks/useAuth';
+import { useState } from 'react';
 export default function LandingPage() {
+  const { signIn, isAuthenticated } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  if (isAuthenticated) return null;
   return (
-    <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center justify-center px-6 py-12">
+    <div className=" bg-gray-950 text-white flex flex-col items-center justify-center px-6 py-12 md:h-screen">
       {/* Hero Section */}
       <div className="max-w-4xl text-center">
         <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
@@ -46,11 +50,21 @@ export default function LandingPage() {
 
       {/* Footer CTA */}
       <div className="mt-20 text-center">
-        <p className="text-gray-500 mb-4">
-          Ready to explore your GitHub universe?
-        </p>
-        <div className="flex justify-center">
-          <AuthButton />
+        <div className="mt-20 text-center">
+          <p className="text-gray-500 mb-4">
+            Ready to explore your GitHub universe?
+          </p>
+
+          <button
+            className="btn bg-primary"
+            onClick={() => {
+              signIn();
+              setIsLoading(true);
+            }}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Loading…' : 'Get Started with GitHub'}
+          </button>
         </div>
       </div>
     </div>
