@@ -14,9 +14,11 @@ export async function handleServerRequest<T>(
     throw new Error('Missing user access token');
   }
 
+  const fiveMinutes = 300 as const;
   const headers = {
     Accept: 'application/vnd.github.v3+json',
     Authorization: bearerToken,
+    'Cache-Control': `max-age=${fiveMinutes}`,
     'X-GitHub-Api-Version': '2022-11-28',
   };
 
