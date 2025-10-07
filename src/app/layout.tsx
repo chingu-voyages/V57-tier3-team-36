@@ -35,7 +35,7 @@ export default function RootLayout({
           className="drawer-toggle"
         />
         <Sidebar checkboxId={sidebarCheckboxId} />
-        <div className="drawer-content h-screen overflow-y-auto">
+        <div className="drawer-content h-screen">
           <FloatingSidebarButton
             checkboxId={sidebarCheckboxId}
             buttonClass={hideFloatingButton}
@@ -43,7 +43,7 @@ export default function RootLayout({
 
           <div className="h-screen flex flex-col">
             <Header />
-            <main className="flex-grow px-4 pb-4">{children}</main>
+            <main className="flex-1 min-h-0 px-4 pb-4">{children}</main>
           </div>
 
           <LazyFooter />
