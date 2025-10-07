@@ -14,7 +14,8 @@ declare global {
 
   type GitHubBranch = components['schemas']['short-branch'];
 
-  type GitHubPullRequest = components['schemas']['pull-request'];
+  type GitHubPullRequest = components['schemas']['pull-request'] &
+    components['schemas']['issue-search-result-item'];
 
   type GitHubPullRequestReview = components['schemas']['pull-request-review'];
 }
