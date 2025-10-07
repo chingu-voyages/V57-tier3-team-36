@@ -6,7 +6,10 @@ export default function LandingPage() {
   const [isLoading, setIsLoading] = useState(false);
   if (isAuthenticated) return null;
   return (
-    <div className=" bg-gray-950 text-white flex flex-col items-center justify-center px-6 py-12 md:h-screen">
+    <div
+      data-label="HomePage"
+      className="bg-gray-950 text-white flex flex-col items-center justify-center px-6 py-12 md:h-screen"
+    >
       {/* Hero Section */}
       <div className="max-w-4xl text-center">
         <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
