@@ -1,14 +1,14 @@
 'use client';
 
 import StatsCard from '@/components/StatsCard/StatsCard';
-import { usePullRequests } from '@/hooks/usePullRequests';
+import { useAppContext } from '@/components/AppProvider/AppProvider';
 import { useEffect, useState } from 'react';
 
 export default function NumberOfApprovedPRs() {
   const title = 'Ready PRs' as const;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState<string>('-');
-  const pullRequests = usePullRequests();
+  const { pullRequests } = useAppContext();
 
   useEffect(() => {
     if (!pullRequests) return;

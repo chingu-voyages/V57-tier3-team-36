@@ -1,10 +1,10 @@
 'use client';
 
-import { usePullRequests } from '@/hooks/usePullRequests';
+import { useAppContext } from '@/components/AppProvider/AppProvider';
 import { PullRequestCard } from '@/components/PullRequestsList/PullRequestCard';
 
 export default function PullRequestsList() {
-  const pullRequests = usePullRequests();
+  const { pullRequests } = useAppContext();
 
   return (
     <ul

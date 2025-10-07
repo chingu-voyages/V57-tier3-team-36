@@ -1,7 +1,7 @@
 'use client';
 
 import StatsCard from '@/components/StatsCard/StatsCard';
-import { usePullRequests } from '@/hooks/usePullRequests';
+import { useAppContext } from '@/components/AppProvider/AppProvider';
 import { useEffect, useState } from 'react';
 import { getSecondsSince, formatTime } from '@/components/StatsCard/formatTime';
 
@@ -10,7 +10,7 @@ export default function AvgAgeOfOpenPRs() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState<string>('-');
   const [unit, setUnit] = useState<string>();
-  const pullRequests = usePullRequests();
+  const { pullRequests } = useAppContext();
 
   useEffect(() => {
     if (!pullRequests) return;
