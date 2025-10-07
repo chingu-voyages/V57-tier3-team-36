@@ -2,11 +2,9 @@ type StatsCardProps = {
   title: string;
   value: string;
   subtitle?: string;
-  color?: ColorAttribute;
+  color?: 'positive' | 'negative';
   isBusy?: boolean;
 };
-
-type ColorAttribute = 'positive' | 'negative' | string;
 
 export default function StatsCard({
   title,
@@ -44,9 +42,8 @@ export default function StatsCard({
   );
 }
 
-function getColorAttr(colorAttribute?: ColorAttribute) {
+function getColorAttr(colorAttribute?: StatsCardProps['color']) {
   if (colorAttribute === 'positive') return 'text-success';
   if (colorAttribute === 'negative') return 'text-error';
-  if (colorAttribute === 'neutral') return 'text-warning';
   return 'text-neutral-content';
 }
