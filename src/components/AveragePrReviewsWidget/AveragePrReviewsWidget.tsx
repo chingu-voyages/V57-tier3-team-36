@@ -34,7 +34,6 @@ export default function AveragePrReviewsWidget() {
     <StatsCard
       title="Average Reviews per PR"
       value={calculatedAverage ?? '--'}
-      color="neutral"
       isBusy={isLoading}
     />
   );
