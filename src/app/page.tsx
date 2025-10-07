@@ -3,8 +3,11 @@ import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
 import StatsCard from '@/components/StatsCard/StatsCard';
 import FilterIcon from '@/icons/FilterIcon';
 import SortIcon from '@/icons/SortIcon';
+import { getServerSession } from '@/lib/auth/getServerSession';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { isAuthenticated } = await getServerSession();
+  if (!isAuthenticated) return null;
   return (
     <div
       data-label="HomePage"

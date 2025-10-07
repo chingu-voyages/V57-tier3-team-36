@@ -1,8 +1,11 @@
 'use client';
 
 import RepoDropdown from '@/components/Header/RepoDropdown';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Header() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <header className="w-full p-4">
       <div
@@ -13,7 +16,7 @@ export default function Header() {
           <span className="text-accent">Merge</span>
           <span>Force</span>
         </h1>
-        <RepoDropdown />
+        {isAuthenticated && <RepoDropdown />}
       </div>
     </header>
   );
