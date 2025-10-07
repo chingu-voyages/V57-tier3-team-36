@@ -28,7 +28,7 @@ export const apiHandlers = (
     state?: 'open' | 'closed';
   }) =>
     requestHandler<GitHubPullRequest[]>(
-      `/repos/${owner}/${repo}/pulls?state=${state}`
+      `/repos/${owner}/${repo}/pulls?state=${state}&per_page=100`
     ),
 
   getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
