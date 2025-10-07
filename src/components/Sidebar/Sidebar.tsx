@@ -74,7 +74,7 @@ export default function Sidebar({ checkboxId }: { checkboxId: string }) {
               <AuthButton
                 action={() => {
                   setAuthAction('signin');
-                  signIn();
+                  (signIn as () => void)();
                 }}
                 label="Sign In"
               />
