@@ -11,8 +11,6 @@ import {
   type ReactNode,
 } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { api } from '@/lib/github/client';
-import { handleClientRequest } from '@/lib/github/handleClientRequest';
 import { githubApiPath } from '@/lib/github/constants';
 import { fetchRequest } from '@/lib/request';
 
