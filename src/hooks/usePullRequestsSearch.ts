@@ -9,7 +9,19 @@ export function usePullRequestsSearch() {
   const [_pullRequests, setPullRequests] =
     useState<(GitHubPullRequest & { repo: string })[]>();
 
-  async function searchPullRequests(query: string, dir: string = 'desc') {
+  async function searchPullRequests({
+    query,
+    dir = 'desc',
+    status,
+    involves,
+    review,
+  }: {
+    query: string;
+    dir: string;
+    status: 'open' | 'merged';
+    involves: boolean;
+    review: 'none' | 'approved' | 'changes_requested' | null;
+  }) {
     if (!isAuthenticated || !user) return;
 
     try {
@@ -24,7 +36,10 @@ export function usePullRequestsSearch() {
       const searchResult = await api.getPullRequestsBySearch(
         query,
         repoQuery,
-        dir
+        dir,
+        status,
+        involves,
+        review
       );
 
       if (searchResult.success && searchResult.data.items) {

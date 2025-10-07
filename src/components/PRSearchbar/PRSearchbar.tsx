@@ -1,6 +1,7 @@
 'use client';
 
 import SortIcon from '@/icons/SortIcon';
+import type { PRFilterState } from '@/types/PRFilterState';
 import PRFilter from './PRFilter';
 
 export default function PRSearchbar({
@@ -9,12 +10,16 @@ export default function PRSearchbar({
   onQueryChange,
   onDirChange,
   onSearch,
+  filters,
+  setFilters,
 }: {
   query: string;
   dir: string;
   onQueryChange: (query: string) => void;
   onDirChange: () => void;
   onSearch: (query: string) => void;
+  filters: PRFilterState;
+  setFilters: (filters: PRFilterState) => void;
 }) {
   return (
     <div className="w-full flex gap-2">
@@ -45,7 +50,7 @@ export default function PRSearchbar({
           }}
         />
       </label>
-      <PRFilter />
+      <PRFilter filters={filters} setFilters={setFilters} />
       <button
         className="kbd aspect-square h-full p-0 flex items-center justify-center cursor-pointer"
         onClick={onDirChange}

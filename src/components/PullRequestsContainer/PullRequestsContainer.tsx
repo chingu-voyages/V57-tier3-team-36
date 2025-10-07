@@ -5,104 +5,138 @@ import PRSearchbarSkeleton from '@/components/PRSearchbar/PRSearchbarSkeleton';
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
 import { usePullRequests } from '@/hooks/usePullRequests';
 import { usePullRequestsSearch } from '@/hooks/usePullRequestsSearch';
+import type { PRFilterState } from '@/types/PRFilterState';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 
 export default function PullRequestsContainer() {
+  // hooks
   const basePRs = usePullRequests();
   const { searchPullRequests } = usePullRequestsSearch();
-
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // states
   const [pullRequests, setPullRequests] = useState(basePRs ?? []);
   const [query, setQuery] = useState(searchParams.get('q') || '');
   const [dir, setDir] = useState(searchParams.get('dir') || 'desc');
+  const [filters, setFilters] = useState<PRFilterState>({
+    prStatus: (searchParams.get('status') as 'open' | 'merged') || 'open',
+    involvesMe: searchParams.get('involves') === 'true',
+    reviewProgress:
+      (searchParams.get('review') as
+        | 'none'
+        | 'approved'
+        | 'changes_requested'
+        | null) || null,
+  });
   const [isLoading, setIsLoading] = useState(false);
 
+  // on load, set the pull requests
   useEffect(() => {
-    const sorted = [...(basePRs ?? [])].sort((a, b) => {
+    setPullRequests(basePRs ?? []);
+  }, [basePRs]);
+
+  // sync the state with the url
+  useEffect(() => {
+    const paramQ = searchParams.get('q') || '';
+    const paramDir = searchParams.get('dir') || 'desc';
+    const paramStatus =
+      (searchParams.get('status') as 'open' | 'merged') || 'open';
+    const paramInvolves = searchParams.get('involves') === 'true';
+    const paramReview =
+      (searchParams.get('review') as
+        | 'none'
+        | 'approved'
+        | 'changes_requested'
+        | null) || null;
+
+    if (paramQ !== query) setQuery(paramQ);
+    if (paramDir !== dir) setDir(paramDir);
+
+    setFilters(prev => {
+      const next = {
+        prStatus: paramStatus,
+        involvesMe: paramInvolves,
+        reviewProgress: paramReview,
+      };
+      if (
+        prev.prStatus !== next.prStatus ||
+        prev.involvesMe !== next.involvesMe ||
+        prev.reviewProgress !== next.reviewProgress
+      ) {
+        return next;
+      }
+      return prev;
+    });
+  }, [searchParams]);
+
+  const fetchSearchData = async () => {
+    const isDefaultFilters =
+      filters.prStatus === 'open' &&
+      filters.involvesMe === false &&
+      filters.reviewProgress === null;
+
+    if (!query.trim() && isDefaultFilters) {
+      setPullRequests(basePRs ?? []);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await searchPullRequests({
+        query,
+        dir,
+        status: filters.prStatus,
+        involves: filters.involvesMe,
+        review: filters.reviewProgress,
+      });
+      setPullRequests(Array.isArray(response) ? response : []);
+    } catch (error) {
+      console.error('Error searching pull requests:', error);
+      setPullRequests([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // on update of state, update the url and fetch the data
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (query.trim()) params.set('q', query.trim());
+    params.set('status', filters.prStatus);
+    params.set('involves', String(filters.involvesMe));
+    if (filters.reviewProgress) {
+      params.set('review', filters.reviewProgress);
+    } else {
+      params.delete('review');
+    }
+    params.set('dir', dir);
+
+    const newUrl = `?${params.toString()}`;
+    const currentUrl = `?${searchParams.toString()}`;
+
+    if (newUrl !== currentUrl) {
+      router.push(newUrl);
+    }
+
+    fetchSearchData();
+  }, [filters, query, dir]);
+
+  const sortedPRs = useMemo(() => {
+    if (!pullRequests.length) return [];
+    return [...pullRequests].sort((a, b) => {
       const aTime = new Date(a.updated_at).getTime();
       const bTime = new Date(b.updated_at).getTime();
       return dir === 'asc' ? aTime - bTime : bTime - aTime;
     });
-    setPullRequests(sorted ?? []);
-  }, [basePRs]);
+  }, [pullRequests, dir]);
 
-  useEffect(() => {
-    const paramQ = searchParams.get('q') || '';
-    const paramDir = searchParams.get('dir') || 'desc';
-    if (paramQ !== query) setQuery(paramQ);
-    if (paramDir !== dir) setDir(paramDir);
-  }, [searchParams]);
+  const handleSearch = (newQuery: string) => setQuery(newQuery.trim());
 
-  useEffect(() => {
-    if (!pullRequests.length) return;
-    setPullRequests(prev => {
-      const sorted = [...prev].sort((a, b) => {
-        const aTime = new Date(a.updated_at).getTime();
-        const bTime = new Date(b.updated_at).getTime();
-        return dir === 'asc' ? aTime - bTime : bTime - aTime;
-      });
-      return sorted;
-    });
-  }, [dir]);
-
-  const handleSearch = async (newQuery: string) => {
-    const trimmed = newQuery.trim();
-
-    if (!trimmed) {
-      setPullRequests([...(basePRs ?? [])]);
-
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete('q');
-      router.push(`?${params.toString()}`);
-      return;
-    }
-
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('q', trimmed);
-    params.delete('dir');
-    params.set('dir', dir);
-    router.push(`?${params.toString()}`);
-
-    setIsLoading(true);
-    try {
-      const response = await searchPullRequests(trimmed, dir);
-
-      if (Array.isArray(response)) {
-        setPullRequests([...response]);
-      } else {
-        console.log(response);
-        setPullRequests([]);
-      }
-    } catch (error) {
-      console.error('Error searching pull requests:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const toggleSort = async () => {
-    const newDir = dir === 'asc' ? 'desc' : 'asc';
-    setDir(newDir);
-
-    const params = new URLSearchParams(searchParams.toString());
-    if (query.trim()) params.set('q', query);
-    params.delete('dir');
-    params.set('dir', newDir);
-    router.push(`?${params.toString()}`);
-
-    if (!query.trim()) return;
-
-    try {
-      setIsLoading(true);
-      const response = await searchPullRequests(query, newDir);
-      if (Array.isArray(response)) setPullRequests([...response]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const toggleSort = () => setDir(dir === 'asc' ? 'desc' : 'asc');
 
   return (
     <>
@@ -117,13 +151,15 @@ export default function PullRequestsContainer() {
             onQueryChange={setQuery}
             onDirChange={toggleSort}
             onSearch={handleSearch}
+            filters={filters}
+            setFilters={setFilters}
           />
         </Suspense>
       </div>
       {isLoading ? (
         <div className="skeleton w-full flex-1 min-h-0 rounded-box outline outline-offset-[-1px]"></div>
       ) : (
-        <PullRequestsList pullRequests={pullRequests} />
+        <PullRequestsList pullRequests={sortedPRs} />
       )}
     </>
   );
