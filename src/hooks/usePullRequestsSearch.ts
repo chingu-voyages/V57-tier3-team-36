@@ -27,7 +27,7 @@ export function usePullRequestsSearch() {
         dir
       );
 
-      if (searchResult.success && searchResult.data.items.length > 0) {
+      if (searchResult.success && searchResult.data.items) {
         const limit = 5;
         const limitedItems = searchResult.data.items.slice(0, limit);
 
@@ -39,7 +39,8 @@ export function usePullRequestsSearch() {
                 ''
               );
               const prResponse = await fetch(`/api/github${relativeUrl}`);
-              return await prResponse.json();
+              const prJson = await prResponse.json();
+              return prJson.data;
             }
             return null;
           })

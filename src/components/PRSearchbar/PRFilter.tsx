@@ -17,7 +17,7 @@ export default function PRFilter() {
 
   return (
     <div className="dropdown dropdown-bottom dropdown-end">
-      <div tabIndex={0} role="button" className="btn m-1 btn-outline">
+      <div tabIndex={0} role="button" className="btn btn-outline">
         Filters
       </div>
       <div

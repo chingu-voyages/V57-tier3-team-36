@@ -1,10 +1,5 @@
-import PRSearchbar from '@/components/PRSearchbar/PRSearchbar';
-import PRSearchbarSkeleton from '@/components/PRSearchbar/PRSearchbarSkeleton';
-import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
-import SortIcon from '@/icons/SortIcon';
-import FilterIcon from '@/icons/FilterIcon';
+import PullRequestsContainer from '@/components/PullRequestsContainer/PullRequestsContainer';
 import StatsCard from '@/components/StatsCard/StatsCard';
-import { Suspense } from 'react';
 
 export default function HomePage() {
   return (
@@ -20,22 +15,7 @@ export default function HomePage() {
           data-label="PullsListCard"
           className="card flex flex-col flex-1 min-h-0 w-full"
         >
-          <div
-            data-label="SearchBar"
-            className="flex flex-shrink-0 w-full mb-3 gap-2"
-          >
-            <Suspense fallback={<PRSearchbarSkeleton />}>
-              <PRSearchbar />
-            </Suspense>
-          </div>
-          <div
-            data-label="PullsList"
-            className="flex-grow w-full px-3 py-2 bg-[blue] overflow-y-auto"
-          >
-            List of Pull Requests
-          </div>
-
-          <PullRequestsList />
+          <PullRequestsContainer />
         </div>
       </div>
       <aside

@@ -1,6 +1,5 @@
 import type { handleClientRequest } from '@/lib/github/handleClientRequest';
 import type { handleServerRequest } from '@/lib/github/handleServerRequest';
-import sanitizeToValidUsername from '@/utils/sanitizeUsername';
 
 export const apiHandlers = (
   requestHandler: typeof handleClientRequest | typeof handleServerRequest
@@ -38,10 +37,10 @@ export const apiHandlers = (
     dir: string = 'desc'
   ) => {
     const repoQuery = repos.map(repo => `repo:${repo}`).join(' OR ');
-    const validUsername = sanitizeToValidUsername(query);
+    // const validUsername = sanitizeToValidUsername(query.trim());
 
-    const searchQuery = `type:pr (${repoQuery}) ((in:title,body ${query}) OR author:${validUsername})`;
-    console.log({ searchQuery });
+    const searchQuery = `(${repoQuery}) type:pr state:open in:title,body ${query}`;
+
     return requestHandler<GitHubSearchResponse>(
       `/search/issues?q=${encodeURIComponent(searchQuery)}&sort=updated&order=${dir}&advanced_search=true`
     );
