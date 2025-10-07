@@ -32,23 +32,16 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   const [repos, setRepos] = useState<RepoEntities>({});
   const [pullRequests, setPullRequests] = useState<PullRequestEntities>({});
 
-  const addRepo = useCallback(() => {}, []);
-  const removeRepo = useCallback(() => {}, []);
-
-  const shouldFetch = useRef<boolean>(true);
-
-  // when isAuthenticated is true, fetch repos & pull requests
-  useEffect(() => {
-    if (!shouldFetch.current || !isAuthenticated || !user) return;
-    shouldFetch.current = false;
-
-    // Limited to the first page of up to 100 results
-    const fetchPullRequests = async ({
+  // (!) Limited to the first page of up to 100 results
+  const fetchPullRequests = useCallback(
+    async ({
       repoOwner,
       repoName,
+      callback,
     }: {
       repoOwner: string;
       repoName: string;
+      callback: (current: PullRequestEntities) => void;
     }) => {
       const baseUrl =
         `${process.env.NEXT_PUBLIC_BASE_URL}${githubApiPath}` as const;
@@ -70,18 +63,19 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         data: GitHubPullRequest[];
       } = await response.json();
 
-      const pullRequestEntities = pullRequestsResponse.data.reduce(
-        (previousValue, currentValue) => {
-          previousValue[currentValue.id] = currentValue;
-          return previousValue;
-        },
-        {} as PullRequestEntities
-      );
+      callback(pullRequestsResponse.data);
+    },
+    []
+  );
 
-      setPullRequests(pullRequestEntities);
-    };
-
-    const fetchRepos = async (userId: string) => {
+  const fetchRepos = useCallback(
+    async ({
+      userId,
+      callback,
+    }: {
+      userId: string;
+      callback: (current: RepoEntities) => void;
+    }) => {
       const reposResponse = await fetch(`/api/users/${userId}/repos`);
       const reposData: GitHubRepo[] = await reposResponse.json();
 
@@ -90,20 +84,124 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         return previousValue;
       }, {} as RepoEntities);
 
+      callback(repoEntities);
+    },
+    []
+  );
+
+  const addPullRequests = useCallback(
+    (pullRequestEntities: PullRequestEntities) => {
+      setPullRequests(current => {
+        const draft = { ...current };
+        Object.values(pullRequestEntities).forEach(pullRequest => {
+          draft[pullRequest.id] = pullRequest;
+        });
+        return draft;
+      });
+    },
+    []
+  );
+
+  const addRepo = useCallback(
+    async (githubRepoId: string) => {
+      if (!isAuthenticated || !user) return;
+
+      const response = await fetch(`/api/users/${user.id}/repos`, {
+        method: 'POST',
+        body: JSON.stringify({ githubRepoId }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        console.error('Failed to add repo');
+        // If we fail here, do not proceed.
+        return;
+      }
+
+      const createRepoResponse: {
+        success: boolean;
+        data: GitHubRepo;
+      } = await response.json();
+      const newRepo = createRepoResponse.data;
+
+      // Add repo to state directly (skip refetching all user repos)
+      setRepos(current => ({
+        ...current,
+        [newRepo.id]: newRepo,
+      }));
+
+      // Fetch pull requests for new repo
+      // Add pull requests to state directly
+      fetchPullRequests({
+        repoOwner: newRepo.owner.login,
+        repoName: newRepo.name,
+        callback: addPullRequests,
+      });
+    },
+    [isAuthenticated, user, addPullRequests, fetchPullRequests]
+  );
+
+  const removeRepo = useCallback(
+    async (githubRepoId: string) => {
+      if (!isAuthenticated || !user) return;
+      const response = await fetch(
+        `/api/users/${user.id}/repos/${githubRepoId}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (!response.ok) {
+        console.error('Failed to remove repo');
+        // If we fail here, do not proceed.
+        return;
+      }
+
+      // TODO: Remove repo from state directly
+      // setRepos(current => ({
+      //   ...current,
+      //   [newRepo.id]: newRepo,
+      // }));
+
+      // TODO: Remove pull requests from state directly
+      // fetchPullRequests({
+      //   repoOwner: newRepo.owner.login,
+      //   repoName: newRepo.name,
+      //   callback: addPullRequests,
+      // });
+    },
+    [isAuthenticated, user]
+  );
+
+  const shouldFetch = useRef<boolean>(true);
+
+  // when isAuthenticated is true, fetch repos & pull requests
+  useEffect(() => {
+    if (!shouldFetch.current || !isAuthenticated || !user) return;
+    shouldFetch.current = false;
+
+    const reposCallback = (repoEntities: RepoEntities) => {
       setRepos(repoEntities);
       setPullRequests({});
 
-      for (const repoData of reposData) {
+      for (const repoData of Object.values(repoEntities)) {
         fetchPullRequests({
           repoOwner: repoData.owner.login,
           repoName: repoData.name,
+          callback: addPullRequests,
         });
       }
     };
 
     // fetch repos and pull requests
-    fetchRepos(user.id);
-  }, [isAuthenticated, user]);
+    (async () => {
+      await fetchRepos({
+        userId: user.id,
+        callback: reposCallback,
+      });
+    })();
+  }, [isAuthenticated, user, fetchRepos, fetchPullRequests, addPullRequests]);
 
   // when isAuthenticated is falsey, clear repos & pull requests
   useEffect(() => {
@@ -111,9 +209,6 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     setRepos({});
     setPullRequests({});
   }, [isAuthenticated]);
-
-  // on addRepo/removeRepo ... ? either fetch/refetch or modify in place
-  // shouldFetch.current = false;
 
   const memo = useMemo(
     () => ({
