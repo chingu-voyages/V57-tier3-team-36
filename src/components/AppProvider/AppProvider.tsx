@@ -14,9 +14,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { githubApiPath } from '@/lib/github/constants';
 import { fetchRequest } from '@/lib/request';
 
-type RepoEntities = { [id: string]: GitHubRepo };
-type PullRequestEntities = { [id: string]: GitHubPullRequest };
-
 type ContextValue = {
   repos?: GitHubRepo[];
   pullRequests?: GitHubPullRequest[];
@@ -29,8 +26,10 @@ const AppContext = createContext<ContextValue>({});
 export default function AppProvider({ children }: { children: ReactNode }) {
   const { user, isAuthenticated } = useAuth();
 
-  const [repos, setRepos] = useState<RepoEntities>({});
-  const [pullRequests, setPullRequests] = useState<PullRequestEntities>({});
+  const [repos, setRepos] = useState<Entities<GitHubRepo>>({});
+  const [pullRequests, setPullRequests] = useState<Entities<GitHubPullRequest>>(
+    {}
+  );
 
   // (!) Limited to the first page of up to 100 results
   const fetchPullRequests = useCallback(
@@ -41,7 +40,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     }: {
       repoOwner: string;
       repoName: string;
-      callback: (current: PullRequestEntities) => void;
+      callback: (current: Entities<GitHubPullRequest>) => void;
     }) => {
       const baseUrl =
         `${process.env.NEXT_PUBLIC_BASE_URL}${githubApiPath}` as const;
@@ -63,7 +62,15 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         data: GitHubPullRequest[];
       } = await response.json();
 
-      callback(pullRequestsResponse.data);
+      const entities = pullRequestsResponse.data.reduce(
+        (previousValue, currentValue) => {
+          previousValue[currentValue.id.toString()] = currentValue;
+          return previousValue;
+        },
+        {} as Entities<GitHubPullRequest>
+      );
+
+      callback(entities);
     },
     []
   );
@@ -74,15 +81,15 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       callback,
     }: {
       userId: string;
-      callback: (current: RepoEntities) => void;
+      callback: (current: Entities<GitHubRepo>) => void;
     }) => {
       const reposResponse = await fetch(`/api/users/${userId}/repos`);
       const reposData: GitHubRepo[] = await reposResponse.json();
 
       const repoEntities = reposData.reduce((previousValue, currentValue) => {
-        previousValue[currentValue.id] = currentValue;
+        previousValue[currentValue.id.toString()] = currentValue;
         return previousValue;
-      }, {} as RepoEntities);
+      }, {} as Entities<GitHubRepo>);
 
       callback(repoEntities);
     },
@@ -90,11 +97,11 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const addPullRequests = useCallback(
-    (pullRequestEntities: PullRequestEntities) => {
+    (pullRequestEntities: Entities<GitHubPullRequest>) => {
       setPullRequests(current => {
         const draft = { ...current };
         Object.values(pullRequestEntities).forEach(pullRequest => {
-          draft[pullRequest.id] = pullRequest;
+          draft[pullRequest.id.toString()] = pullRequest;
         });
         return draft;
       });
@@ -128,7 +135,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       // Add repo to state directly (skip refetching all user repos)
       setRepos(current => ({
         ...current,
-        [newRepo.id]: newRepo,
+        [newRepo.id.toString()]: newRepo,
       }));
 
       // Fetch pull requests for new repo
@@ -174,8 +181,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         );
         // loop through array of ids and delete each one
         pullRequestsToRemove.forEach(pullRequest => {
-          // FIXME are the ids numbers or strings?!
-          delete draft[pullRequest.id];
+          delete draft[pullRequest.id.toString()];
         });
         return draft;
       });
@@ -190,7 +196,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     if (!shouldFetch.current || !isAuthenticated || !user) return;
     shouldFetch.current = false;
 
-    const reposCallback = (repoEntities: RepoEntities) => {
+    const reposCallback = (repoEntities: Entities<GitHubRepo>) => {
       setRepos(repoEntities);
       setPullRequests({});
 

@@ -18,6 +18,8 @@ declare global {
     components['schemas']['issue-search-result-item'];
 
   type GitHubPullRequestReview = components['schemas']['pull-request-review'];
+
+  type Entities<T> = { [id: string]: T };
 }
 
 export {};
