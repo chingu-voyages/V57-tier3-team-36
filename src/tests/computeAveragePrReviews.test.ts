@@ -1,5 +1,5 @@
 import { computeAveragePrReviews } from '@/components/AveragePrReviewsWidget/calculateAverageReviewsPerPr';
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 const testCases = [
   {
@@ -97,7 +97,7 @@ test.describe('computeAveragePrReviews function', () => {
     ({ description, reviewPromises, pullRequests, expectedAverage }) => {
       const average = computeAveragePrReviews(reviewPromises, pullRequests);
       test(`should compute the average number of reviews per PR correctly: ${description}`, () => {
-        test.expect(average).toBe(expectedAverage);
+        expect(average).toBe(expectedAverage);
       });
     }
   );
