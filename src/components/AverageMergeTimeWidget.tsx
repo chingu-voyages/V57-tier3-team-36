@@ -1,12 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-type PullRequest = {
-  created_at: string;
-  merged_at: string | null;
-  state: string;
-};
+import { useEffect, useState, useMemo } from 'react';
+import { usePullRequests } from '@/hooks/usePullRequests';
+import { useRepoService } from '@/hooks/useRepoService';
 
 type AverageMergeTimeWidgetProps = {
   token?: string;
@@ -15,75 +11,54 @@ type AverageMergeTimeWidgetProps = {
 export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
   const [selectedRepo, setSelectedRepo] = useState<string>('All Repositories');
   const [averageTime, setAverageTime] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  // Listen for repo changes from the header dropdown
+  const pullRequests = usePullRequests();
+  const { fetchUserRepos } = useRepoService();
+
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
+
+  // Fetch user repos once (so we can display repo names)
+  useEffect(() => {
+    const loadRepos = async () => {
+      try {
+        const userRepos = await fetchUserRepos();
+        setRepos(userRepos);
+      } catch (err) {
+        console.error('Failed to fetch repos:', err);
+      }
+    };
+    loadRepos();
+  }, []);
+
+  // Listen for repo selection events from dropdown
   useEffect(() => {
     const handleRepoChange = (event: CustomEvent) => {
       setSelectedRepo(event.detail.repo);
     };
-
     window.addEventListener('repoChanged', handleRepoChange as EventListener);
-
     return () => {
-      window.removeEventListener(
-        'repoChanged',
-        handleRepoChange as EventListener
-      );
+      window.removeEventListener('repoChanged', handleRepoChange as EventListener);
     };
   }, []);
 
+  // Compute average merge time whenever repo or pull requests change
   useEffect(() => {
-    if (selectedRepo && selectedRepo !== 'All Repositories') {
-      fetchMergedPRs();
-    } else {
-      // Reset when "All Repositories" is selected
+    if (!pullRequests) return;
+    if (selectedRepo === 'All Repositories') {
       setAverageTime(null);
       setError(null);
-    }
-  }, [selectedRepo]);
-
-  const fetchMergedPRs = async () => {
-    if (!selectedRepo || selectedRepo === 'All Repositories') return;
-
-    // Parse the repo string (assumes format: "owner/repo")
-    const [owner, repo] = selectedRepo.split('/');
-
-    if (!owner || !repo) {
-      setError('Invalid repository format');
       return;
     }
 
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
-      setError(null);
-
-      const headers: HeadersInit = {
-        Accept: 'application/vnd.github.v3+json',
-      };
-
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
-
-      const response = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/pulls?state=closed&per_page=100&sort=updated&direction=desc`,
-        { headers }
-      );
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error('Repository not found');
-        } else if (response.status === 401) {
-          throw new Error('Invalid token');
-        }
-        throw new Error(`GitHub API error: ${response.status}`);
-      }
-
-      const pulls: PullRequest[] = await response.json();
-
-      const mergedPRs = pulls.filter(pr => pr.merged_at !== null);
+      // Filter PRs for the selected repo
+      const filteredPRs = pullRequests.filter(pr => pr.repo === selectedRepo);
+      const mergedPRs = filteredPRs.filter(pr => pr.merged_at !== null);
 
       if (mergedPRs.length === 0) {
         setAverageTime(0);
@@ -98,26 +73,22 @@ export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
       });
 
       const totalTime = mergeTimes.reduce((sum, time) => sum + time, 0);
-      const avgTimeMs = totalTime / mergeTimes.length;
+      const avgTimeMs = totalTime / mergedPRs.length;
 
-      setAverageTime(avgTimeMs / (1000 * 60 * 60));
+      setAverageTime(avgTimeMs / (1000 * 60 * 60)); // Convert to hours
       setLoading(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch data');
+      setError(err instanceof Error ? err.message : 'Failed to calculate average');
       setLoading(false);
     }
-  };
+  }, [selectedRepo, pullRequests]);
 
   const formatTime = (hours: number) => {
-    if (hours < 1) {
-      return `${Math.round(hours * 60)} minutes`;
-    } else if (hours < 24) {
-      return `${hours.toFixed(1)} hours`;
-    } else {
-      const days = Math.floor(hours / 24);
-      const remainingHours = Math.round(hours % 24);
-      return `${days}d ${remainingHours}h`;
-    }
+    if (hours < 1) return `${Math.round(hours * 60)} minutes`;
+    if (hours < 24) return `${hours.toFixed(1)} hours`;
+    const days = Math.floor(hours / 24);
+    const remainingHours = Math.round(hours % 24);
+    return `${days}d ${remainingHours}h`;
   };
 
   return (
