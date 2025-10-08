@@ -39,7 +39,10 @@ export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
     };
     window.addEventListener('repoChanged', handleRepoChange as EventListener);
     return () => {
-      window.removeEventListener('repoChanged', handleRepoChange as EventListener);
+      window.removeEventListener(
+        'repoChanged',
+        handleRepoChange as EventListener
+      );
     };
   }, []);
 
@@ -78,7 +81,9 @@ export function AverageMergeTimeWidget({ token }: AverageMergeTimeWidgetProps) {
       setAverageTime(avgTimeMs / (1000 * 60 * 60)); // Convert to hours
       setLoading(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to calculate average');
+      setError(
+        err instanceof Error ? err.message : 'Failed to calculate average'
+      );
       setLoading(false);
     }
   }, [selectedRepo, pullRequests]);
