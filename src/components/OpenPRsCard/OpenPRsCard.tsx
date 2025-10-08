@@ -12,13 +12,13 @@ export default function OpenPrsStatsCard({
   data = reposJson as Repo[],
   repoName,
   title = 'Open PRs',
-  color = 'neutral',
+  color,
   subtitle,
 }: {
   data?: Repo[];
   repoName?: string;
   title?: string;
-  color?: string;
+  color?: 'positive' | 'negative';
   subtitle?: string;
 }) {
   const [value, setValue] = useState<number | null>(null);
