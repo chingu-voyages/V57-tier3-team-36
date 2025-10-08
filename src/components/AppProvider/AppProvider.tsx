@@ -14,8 +14,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { githubApiPath } from '@/lib/github/constants';
 import { fetchRequest } from '@/lib/request';
 
-type RepoEntities = { [id: GitHubRepo['id']]: GitHubRepo };
-type PullRequestEntities = { [id: GitHubPullRequest['id']]: GitHubPullRequest };
+type RepoEntities = { [id: string]: GitHubRepo };
+type PullRequestEntities = { [id: string]: GitHubPullRequest };
 
 type ContextValue = {
   repos?: GitHubRepo[];
@@ -158,18 +158,27 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      // TODO: Remove repo from state directly
-      // setRepos(current => ({
-      //   ...current,
-      //   [newRepo.id]: newRepo,
-      // }));
+      // Remove repo from state directly
+      setRepos(current => {
+        const draft = { ...current };
+        delete draft[githubRepoId];
+        return draft;
+      });
 
       // TODO: Remove pull requests from state directly
-      // fetchPullRequests({
-      //   repoOwner: newRepo.owner.login,
-      //   repoName: newRepo.name,
-      //   callback: addPullRequests,
-      // });
+      setPullRequests(current => {
+        const draft = { ...current };
+        // filter on object.values to get an array of ids,
+        const pullRequestsToRemove = Object.values(draft).filter(
+          pullRequest => pullRequest.base.repo.id.toString() === githubRepoId
+        );
+        // loop through array of ids and delete each one
+        pullRequestsToRemove.forEach(pullRequest => {
+          // FIXME are the ids numbers or strings?!
+          delete draft[pullRequest.id];
+        });
+        return draft;
+      });
     },
     [isAuthenticated, user]
   );
