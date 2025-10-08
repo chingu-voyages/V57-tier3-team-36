@@ -6,7 +6,7 @@ import { usePullRequests } from '@/hooks/usePullRequests';
 import { usePullRequestsSearch } from '@/hooks/usePullRequestsSearch';
 import type { PRFilterState } from '@/types/PRFilterState';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export default function PullRequestsContainer() {
   // hooks
@@ -104,31 +104,29 @@ export default function PullRequestsContainer() {
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
-    if (query.trim()) {
-      params.set('q', query.trim());
-    } else {
-      params.delete('q');
-    }
-    if (filters.prStatus) {
-      params.set('status', filters.prStatus);
-    } else {
-      params.delete('status');
-    }
-    if (filters.involvesMe) {
-      params.set('involves', String(filters.involvesMe));
-    } else {
-      params.delete('involves');
-    }
-    if (filters.reviewProgress) {
-      params.set('review', filters.reviewProgress);
-    } else {
-      params.delete('review');
-    }
-    params.set('dir', dir);
+    if (query.trim()) params.set('q', query.trim());
+    else params.delete('q');
 
-    const newUrl = `?${params.toString()}`;
+    if (filters.prStatus) params.set('status', filters.prStatus);
+    else params.delete('status');
+
+    if (filters.involvesMe) params.set('involves', String(filters.involvesMe));
+    else params.delete('involves');
+
+    if (filters.reviewProgress) params.set('review', filters.reviewProgress);
+    else params.delete('review');
+
+    const currentDir = dir;
+    params.delete('dir');
+
+    const orderedParams = new URLSearchParams();
+    for (const [key, value] of params.entries()) {
+      orderedParams.append(key, value);
+    }
+    orderedParams.append('dir', currentDir);
+
+    const newUrl = `?${orderedParams.toString()}`;
     const currentUrl = `?${searchParams.toString()}`;
-
     if (newUrl !== currentUrl) {
       router.push(newUrl);
     }
@@ -138,9 +136,20 @@ export default function PullRequestsContainer() {
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
-    if (params.get('dir') !== dir) {
-      params.set('dir', dir);
-      router.push(`?${params.toString()}`);
+
+    const currentDir = dir;
+    params.delete('dir');
+
+    const orderedParams = new URLSearchParams();
+    for (const [key, value] of params.entries()) {
+      orderedParams.append(key, value);
+    }
+    orderedParams.append('dir', currentDir);
+
+    const newUrl = `?${orderedParams.toString()}`;
+    const currentUrl = `?${searchParams.toString()}`;
+    if (newUrl !== currentUrl) {
+      router.push(newUrl);
     }
   }, [dir]);
 
@@ -153,7 +162,10 @@ export default function PullRequestsContainer() {
     });
   }, [pullRequests, dir]);
 
-  const handleSearch = (newQuery: string) => setQuery(newQuery.trim());
+  const handleSearch = useCallback(
+    (newQuery: string) => setQuery(newQuery.trim()),
+    []
+  );
   const toggleSort = () => setDir(dir === 'asc' ? 'desc' : 'asc');
 
   return (

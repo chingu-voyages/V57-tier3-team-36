@@ -30,7 +30,7 @@ export default function PRSearchbar({
     if (inputValue.trim() === '' && query !== '') {
       onSearch('');
     }
-  }, [inputValue]);
+  }, [inputValue, query, onSearch]);
 
   return (
     <div className="w-full flex gap-2">

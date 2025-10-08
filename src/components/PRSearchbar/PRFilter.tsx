@@ -31,6 +31,9 @@ export default function PRFilter({
       involvesMe: false,
       reviewProgress: null,
     });
+    setPrStatusInput('open');
+    setInvolvesMeInput(false);
+    setReviewProgressInput(null);
   };
   const applyFilters = () => {
     setFilters({

@@ -1,12 +1,9 @@
 'use client';
 
 import RepoDropdown from '@/components/Header/RepoDropdown';
-import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 
 export default function Header() {
-  const { isAuthenticated } = useAuth();
-
   return (
     <header className="w-full p-4">
       <div
