@@ -4,20 +4,15 @@ import StatsCard from '@/components/StatsCard/StatsCard';
 import { useAppContext } from '@/components/AppProvider/AppProvider';
 import { useEffect, useState } from 'react';
 
-export default function NumberOfApprovedPRs() {
-  const title = 'Ready PRs' as const;
+export default function OpenPullRequests() {
+  const title = 'Open PRs' as const;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState<string>('-');
   const { pullRequests } = useAppContext();
 
   useEffect(() => {
     if (!pullRequests) return;
-
-    const total = pullRequests.reduce((sum, obj) => {
-      return obj.mergeable ? sum + 1 : sum;
-    }, 0);
-
-    setValue(total.toString());
+    setValue(pullRequests.length.toString());
     setIsLoading(false);
   }, [pullRequests]);
 
