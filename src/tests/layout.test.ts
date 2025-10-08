@@ -20,7 +20,6 @@ test.describe('HomePage Layout Tests', () => {
       await expect(page).toHaveScreenshot(`homepage-${name}.png`, {
         animations: 'disabled' as const,
         mask: [
-          page.locator('[data-label="HomePage"]'),
           page.locator('[data-label="PullsListCard"]'),
           page.locator('[data-label="StatsCards"]'),
           page.locator('[data-label="HeaderContents"]'),

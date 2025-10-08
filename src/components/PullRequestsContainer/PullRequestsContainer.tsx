@@ -2,6 +2,7 @@
 
 import PRSearchbar from '@/components/PRSearchbar/PRSearchbar';
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
+import { useAuth } from '@/hooks/useAuth';
 import { usePullRequests } from '@/hooks/usePullRequests';
 import { usePullRequestsSearch } from '@/hooks/usePullRequestsSearch';
 import type { PRFilterState } from '@/types/PRFilterState';
@@ -14,6 +15,7 @@ export default function PullRequestsContainer() {
   const { searchPullRequests } = usePullRequestsSearch();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useAuth();
 
   // states
   const [pullRequests, setPullRequests] = useState(basePRs ?? []);
@@ -78,6 +80,47 @@ export default function PullRequestsContainer() {
 
     if (!query.trim() && isDefaultFilters) {
       setPullRequests(basePRs ?? []);
+      return;
+    }
+
+    if (basePRs && basePRs.length < 100) {
+      const filteredPRs = basePRs.filter(pr => {
+        const matchesQuery = query.trim()
+          ? pr.title.toLowerCase().includes(query.trim().toLowerCase())
+          : true;
+        const matchesStatus = filters.prStatus
+          ? pr.state === filters.prStatus
+          : true;
+        const matchesInvolves = filters.involvesMe
+          ? pr.user.login === user?.name
+          : true;
+        // approximate client-side filtering for review status without making a network request
+        const matchesReview =
+          filters.reviewProgress === null
+            ? true
+            : (() => {
+                if (filters.reviewProgress === 'none') {
+                  return (
+                    pr.review_comments === 0 &&
+                    (!pr.requested_reviewers ||
+                      pr.requested_reviewers.length === 0)
+                  );
+                }
+                if (filters.reviewProgress === 'approved') {
+                  return pr.merged_at !== null;
+                }
+                if (filters.reviewProgress === 'changes_requested') {
+                  return pr.review_comments > 0 && pr.state === 'open';
+                }
+                return true;
+              })();
+
+        return (
+          matchesQuery && matchesStatus && matchesInvolves && matchesReview
+        );
+      });
+
+      setPullRequests([...filteredPRs]);
       return;
     }
 
