@@ -1,8 +1,11 @@
 import PullRequestsContainer from '@/components/PullRequestsContainer/PullRequestsContainer';
 import StatsCard from '@/components/StatsCard/StatsCard';
+import { getServerSession } from '@/lib/auth/getServerSession';
 import { Suspense } from 'react';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { isAuthenticated } = await getServerSession();
+  if (!isAuthenticated) return null;
   return (
     <div
       data-label="HomePage"

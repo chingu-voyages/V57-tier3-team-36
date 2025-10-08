@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '@/hooks/useAuth';
 import HamburgerIcon from '@/icons/HamburgerIcon';
 import { useRef } from 'react';
 
@@ -10,8 +11,11 @@ export default function FloatingSidebarButton({
   buttonClass: string;
   checkboxId: string;
 }) {
+  const { isAuthenticated } = useAuth();
+
   const ref = useRef<HTMLLabelElement>(null);
 
+  if (!isAuthenticated) return null;
   return (
     <>
       <label
