@@ -1,5 +1,6 @@
 import PullRequestsContainer from '@/components/PullRequestsContainer/PullRequestsContainer';
 import StatsCard from '@/components/StatsCard/StatsCard';
+import { Suspense } from 'react';
 
 export default function HomePage() {
   return (
@@ -15,7 +16,9 @@ export default function HomePage() {
           data-label="PullsListCard"
           className="card flex flex-col flex-1 min-h-0 w-full"
         >
-          <PullRequestsContainer />
+          <Suspense fallback={null}>
+            <PullRequestsContainer />
+          </Suspense>
         </div>
       </div>
       <aside

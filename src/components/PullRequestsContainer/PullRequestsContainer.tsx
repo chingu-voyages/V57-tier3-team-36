@@ -1,13 +1,12 @@
 'use client';
 
 import PRSearchbar from '@/components/PRSearchbar/PRSearchbar';
-import PRSearchbarSkeleton from '@/components/PRSearchbar/PRSearchbarSkeleton';
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
 import { usePullRequests } from '@/hooks/usePullRequests';
 import { usePullRequestsSearch } from '@/hooks/usePullRequestsSearch';
 import type { PRFilterState } from '@/types/PRFilterState';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function PullRequestsContainer() {
   // hooks
@@ -144,17 +143,15 @@ export default function PullRequestsContainer() {
         data-label="SearchBar"
         className="flex flex-shrink-0 w-full mb-3 gap-2"
       >
-        <Suspense fallback={<PRSearchbarSkeleton />}>
-          <PRSearchbar
-            query={query}
-            dir={dir}
-            onQueryChange={setQuery}
-            onDirChange={toggleSort}
-            onSearch={handleSearch}
-            filters={filters}
-            setFilters={setFilters}
-          />
-        </Suspense>
+        <PRSearchbar
+          query={query}
+          dir={dir}
+          onQueryChange={setQuery}
+          onDirChange={toggleSort}
+          onSearch={handleSearch}
+          filters={filters}
+          setFilters={setFilters}
+        />
       </div>
       {isLoading ? (
         <div className="skeleton w-full flex-1 min-h-0 rounded-box outline outline-offset-[-1px]"></div>
