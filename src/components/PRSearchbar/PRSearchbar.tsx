@@ -2,12 +2,12 @@
 
 import SortIcon from '@/icons/SortIcon';
 import type { PRFilterState } from '@/types/PRFilterState';
+import { useEffect, useState } from 'react';
 import PRFilter from './PRFilter';
 
 export default function PRSearchbar({
   query,
   dir,
-  onQueryChange,
   onDirChange,
   onSearch,
   filters,
@@ -15,12 +15,23 @@ export default function PRSearchbar({
 }: {
   query: string;
   dir: string;
-  onQueryChange: (query: string) => void;
   onDirChange: () => void;
   onSearch: (query: string) => void;
   filters: PRFilterState;
   setFilters: (filters: PRFilterState) => void;
 }) {
+  const [inputValue, setInputValue] = useState(query);
+
+  useEffect(() => {
+    setInputValue(query);
+  }, [query]);
+
+  useEffect(() => {
+    if (inputValue.trim() === '' && query !== '') {
+      onSearch('');
+    }
+  }, [inputValue]);
+
   return (
     <div className="w-full flex gap-2">
       <label className="input w-full">
@@ -44,9 +55,11 @@ export default function PRSearchbar({
           type="search"
           className="grow"
           placeholder="Search"
-          onChange={e => onQueryChange(e.target.value)}
+          onChange={e => setInputValue(e.target.value)}
           onKeyDown={e => {
-            if (e.key === 'Enter') onSearch(query);
+            if (e.key === 'Enter') {
+              onSearch(inputValue);
+            }
           }}
         />
       </label>

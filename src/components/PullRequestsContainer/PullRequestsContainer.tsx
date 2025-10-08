@@ -104,9 +104,21 @@ export default function PullRequestsContainer() {
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
-    if (query.trim()) params.set('q', query.trim());
-    params.set('status', filters.prStatus);
-    params.set('involves', String(filters.involvesMe));
+    if (query.trim()) {
+      params.set('q', query.trim());
+    } else {
+      params.delete('q');
+    }
+    if (filters.prStatus) {
+      params.set('status', filters.prStatus);
+    } else {
+      params.delete('status');
+    }
+    if (filters.involvesMe) {
+      params.set('involves', String(filters.involvesMe));
+    } else {
+      params.delete('involves');
+    }
     if (filters.reviewProgress) {
       params.set('review', filters.reviewProgress);
     } else {
@@ -122,7 +134,15 @@ export default function PullRequestsContainer() {
     }
 
     fetchSearchData();
-  }, [filters, query, dir]);
+  }, [filters, query]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (params.get('dir') !== dir) {
+      params.set('dir', dir);
+      router.push(`?${params.toString()}`);
+    }
+  }, [dir]);
 
   const sortedPRs = useMemo(() => {
     if (!pullRequests.length) return [];
@@ -134,7 +154,6 @@ export default function PullRequestsContainer() {
   }, [pullRequests, dir]);
 
   const handleSearch = (newQuery: string) => setQuery(newQuery.trim());
-
   const toggleSort = () => setDir(dir === 'asc' ? 'desc' : 'asc');
 
   return (
@@ -146,7 +165,6 @@ export default function PullRequestsContainer() {
         <PRSearchbar
           query={query}
           dir={dir}
-          onQueryChange={setQuery}
           onDirChange={toggleSort}
           onSearch={handleSearch}
           filters={filters}

@@ -1,6 +1,7 @@
 'use client';
 
 import RepoDropdown from '@/components/Header/RepoDropdown';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -9,10 +10,12 @@ export default function Header() {
         data-label="HeaderContents"
         className="w-full flex items-center justify-between gap-4"
       >
-        <h1 className="text-2xl font-bold tracking-tight">
-          <span className="text-accent">Merge</span>
-          <span>Force</span>
-        </h1>
+        <Link href="/" className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold tracking-tight">
+            <span className="text-accent">Merge</span>
+            <span>Force</span>
+          </h1>
+        </Link>
         <RepoDropdown />
       </div>
     </header>
