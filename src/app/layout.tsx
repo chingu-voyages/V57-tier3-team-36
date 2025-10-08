@@ -1,8 +1,9 @@
-import Header from '@/components/Header/Header';
 import LazyFooter from '@/components/Footer/LazyFooter';
+import Header from '@/components/Header/Header';
 import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
 import Sidebar from '@/components/Sidebar/Sidebar';
 
+import LandingPage from '@/components/LandingPage/LandingPage';
 import './globals.css';
 
 if (
@@ -43,9 +44,11 @@ export default function RootLayout({
 
           <div className="h-screen flex flex-col">
             <Header />
-            <main className="flex-1 min-h-0 px-4 pb-4">{children}</main>
-            <main className="flex-grow px-4 pb-4">{children}</main>
-            <LazyFooter />
+            <main className="flex-1 min-h-0 px-4 pb-4">
+              {children}
+              <LandingPage />
+              <LazyFooter />
+            </main>
           </div>
         </div>
       </body>
