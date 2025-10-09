@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function Header() {
   const { isAuthenticated } = useAuth();
   return (
-    <header className="w-full p-4">
+    <header className="w-full p-4 h-20">
       <div
         data-label="HeaderContents"
         className="w-full flex items-center justify-between gap-4"

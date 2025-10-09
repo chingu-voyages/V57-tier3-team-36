@@ -1,12 +1,11 @@
 import AveragePrReviewsWidget from '@/components/AveragePrReviewsWidget/AveragePrReviewsWidget';
 import PullRequestsContainer from '@/components/PullRequestsContainer/PullRequestsContainer';
-import StatsCard from '@/components/StatsCard/StatsCard';
-import { getServerSession } from '@/lib/auth/getServerSession';
+import AvgAgeOfOpenPRs from '@/components/StatsCard/AvgAgeOfOpenPRs';
+import OpenPullRequests from '@/components/StatsCard/OpenPullRequests';
+import PercentOfDraftPRs from '@/components/StatsCard/PercentOfDraftPRs';
 import { Suspense } from 'react';
 
 export default async function HomePage() {
-  const { isAuthenticated } = await getServerSession();
-  if (!isAuthenticated) return null;
   return (
     <div
       data-label="HomePage"
@@ -29,14 +28,10 @@ export default async function HomePage() {
         data-label="StatsCards"
         className="grid gap-3 grid-cols-2 sm:grid-cols-4 md:grid-cols-1 col-span-12 md:col-span-4 xl:col-span-3 row-start-1"
       >
-        <StatsCard title="Open PRs" value="24" />
+        <OpenPullRequests />
         <AveragePrReviewsWidget />
-        <StatsCard
-          title="Avg Time To First Review"
-          subtitle="Last 30 days"
-          value="4.2h"
-        />
-        <StatsCard title="Avg Time To Merge" value="18.5h" />
+        <AvgAgeOfOpenPRs />
+        <PercentOfDraftPRs />
       </aside>
     </div>
   );
