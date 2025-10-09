@@ -3,7 +3,13 @@
 import { PullRequestCard } from '@/components/PullRequestsList/PullRequestCard';
 import { useAppContext } from '@/hooks/useAppContext';
 
-export default function PullRequestsList() {
+export default function PullRequestsList({
+  processedPullRequests,
+  isProcessing,
+}: {
+  processedPullRequests: GitHubPullRequest[];
+  isProcessing: boolean;
+}) {
   const { pullRequests, isLoadingPullRequests } = useAppContext();
 
   return (
@@ -11,10 +17,10 @@ export default function PullRequestsList() {
       data-label="PullRequestsList"
       className="menu flex flex-col flex-1 w-full min-h-0 rounded-box outline outline-offset-[-1px] p-0 divide-y flex-nowrap overflow-y-auto"
     >
-      {isLoadingPullRequests ? (
-        <div className="skeleton h-full w-full"></div>
+      {isProcessing || isLoadingPullRequests ? (
+        <li className="skeleton h-full w-full" />
       ) : (
-        pullRequests?.map(props => (
+        (processedPullRequests || pullRequests)?.map(props => (
           <PullRequestCard key={props.id} {...props} />
         ))
       )}

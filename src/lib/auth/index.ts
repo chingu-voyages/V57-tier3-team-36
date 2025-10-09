@@ -1,6 +1,6 @@
+import { db } from '@/db';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { db } from '@/db';
 
 export const auth = betterAuth({
   baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL as string,
@@ -24,10 +24,24 @@ export const auth = betterAuth({
       maxAge: 5 * 60, // Cache duration in seconds
     },
   },
+  user: {
+    additionalFields: {
+      login: {
+        type: 'string',
+        required: true,
+        input: false,
+      },
+    },
+  },
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      mapProfileToUser: profile => {
+        return {
+          login: profile.login,
+        };
+      },
     },
   },
   advanced: {

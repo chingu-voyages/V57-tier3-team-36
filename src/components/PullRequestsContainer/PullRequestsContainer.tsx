@@ -1,19 +1,21 @@
 'use client';
 
 import PRSearchbar from '@/components/PRSearchbar/PRSearchbar';
+import filterBasePRs from '@/components/PullRequestsContainer/filterBasePRs';
+import isDefaultFilters from '@/components/PullRequestsContainer/isDefaultFilters';
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
 import { useAppContext } from '@/hooks/useAppContext';
 import { useAuth } from '@/hooks/useAuth';
 import { usePullRequestsSearch } from '@/hooks/usePullRequestsSearch';
 import type { PRFilterState } from '@/types/PRFilterState';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import updateSearchParams from './updateSearchParams';
 
 export default function PullRequestsContainer() {
   // hooks
   const { pullRequests: basePRs } = useAppContext();
   const { searchPullRequests } = usePullRequestsSearch();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { user } = useAuth();
 
@@ -32,6 +34,8 @@ export default function PullRequestsContainer() {
         | null) || null,
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
 
   // on load, set the pull requests
   useEffect(() => {
@@ -72,60 +76,40 @@ export default function PullRequestsContainer() {
     });
   }, [searchParams]);
 
-  const fetchSearchData = async () => {
-    const isDefaultFilters =
-      filters.prStatus === 'open' &&
-      filters.involvesMe === false &&
-      filters.reviewProgress === null;
+  // optimization
+  const filteredPRs = useMemo(() => {
+    return filterBasePRs(basePRs ?? [], filters, query, user?.login ?? '');
+  }, [basePRs, filters, query, user]);
 
-    if (!query.trim() && isDefaultFilters) {
+  const prevQueryFilterRef = useRef<{
+    filters: PRFilterState;
+    query: string;
+  } | null>(null);
+
+  const fetchSearchData = useCallback(async () => {
+    // Check if the query and filters are the same as before
+    const sameAsBefore =
+      prevQueryFilterRef.current &&
+      prevQueryFilterRef.current.query === query &&
+      JSON.stringify(prevQueryFilterRef.current.filters) ===
+        JSON.stringify(filters);
+    if (sameAsBefore) {
+      return;
+    }
+    prevQueryFilterRef.current = { filters, query };
+
+    if (isDefaultFilters(filters, query)) {
       setPullRequests(basePRs ?? []);
       return;
     }
 
+    // if less than 100 PRs, don't search
     if (basePRs && basePRs.length < 100 && filters.prStatus !== 'merged') {
-      const filteredPRs = basePRs.filter(pr => {
-        const matchesQuery = query.trim()
-          ? pr.title.toLowerCase().includes(query.trim().toLowerCase())
-          : true;
-        const matchesStatus = filters.prStatus
-          ? pr.state === filters.prStatus
-          : true;
-        const matchesInvolves = filters.involvesMe
-          ? pr.user.login === user?.name
-          : true;
-        // approximate client-side filtering for review status without making a network request
-        const matchesReview =
-          filters.reviewProgress === null
-            ? true
-            : (() => {
-                if (filters.reviewProgress === 'none') {
-                  return (
-                    pr.review_comments === 0 &&
-                    (!pr.requested_reviewers ||
-                      pr.requested_reviewers.length === 0)
-                  );
-                }
-                if (filters.reviewProgress === 'approved') {
-                  return pr.merged_at !== null;
-                }
-                if (filters.reviewProgress === 'changes_requested') {
-                  return pr.review_comments > 0 && pr.state === 'open';
-                }
-                return true;
-              })();
-
-        return (
-          matchesQuery && matchesStatus && matchesInvolves && matchesReview
-        );
-      });
-
       setPullRequests([...filteredPRs]);
       return;
     }
-
+    // otherwise, search
     setIsLoading(true);
-
     try {
       const response = await searchPullRequests({
         query,
@@ -141,60 +125,16 @@ export default function PullRequestsContainer() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filters, query, basePRs, user, searchPullRequests]);
 
-  // on update of state, update the url and fetch the data
+  // on update of state, update the url
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
+    updateSearchParams({ query, filters, dir, searchParams, router });
+  }, [filters, query, dir]);
 
-    if (query.trim()) params.set('q', query.trim());
-    else params.delete('q');
-
-    if (filters.prStatus) params.set('status', filters.prStatus);
-    else params.delete('status');
-
-    if (filters.involvesMe) params.set('involves', String(filters.involvesMe));
-    else params.delete('involves');
-
-    if (filters.reviewProgress) params.set('review', filters.reviewProgress);
-    else params.delete('review');
-
-    const currentDir = dir;
-    params.delete('dir');
-
-    const orderedParams = new URLSearchParams();
-    for (const [key, value] of params.entries()) {
-      orderedParams.append(key, value);
-    }
-    orderedParams.append('dir', currentDir);
-
-    const newUrl = `?${orderedParams.toString()}`;
-    const currentUrl = `?${searchParams.toString()}`;
-    if (newUrl !== currentUrl) {
-      router.push(newUrl);
-    }
-
+  useEffect(() => {
     fetchSearchData();
-  }, [filters, query]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    const currentDir = dir;
-    params.delete('dir');
-
-    const orderedParams = new URLSearchParams();
-    for (const [key, value] of params.entries()) {
-      orderedParams.append(key, value);
-    }
-    orderedParams.append('dir', currentDir);
-
-    const newUrl = `?${orderedParams.toString()}`;
-    const currentUrl = `?${searchParams.toString()}`;
-    if (newUrl !== currentUrl) {
-      router.push(newUrl);
-    }
-  }, [dir]);
+  }, [query, filters]);
 
   const sortedPRs = useMemo(() => {
     if (!pullRequests.length) return [];
@@ -226,7 +166,10 @@ export default function PullRequestsContainer() {
           setFilters={setFilters}
         />
       </div>
-      <PullRequestsList />
+      <PullRequestsList
+        processedPullRequests={sortedPRs}
+        isProcessing={isLoading}
+      />
     </>
   );
 }
