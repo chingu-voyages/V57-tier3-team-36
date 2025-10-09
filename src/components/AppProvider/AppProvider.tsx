@@ -24,8 +24,11 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   const [pullRequests, setPullRequests] = useState<Entities<GitHubPullRequest>>(
     {}
   );
+
   const [isLoadingRepos, setIsLoadingRepos] = useState<boolean>();
   const [isLoadingPullRequests, setIsLoadingPullRequests] = useState<boolean>();
+
+  const [selectedRepo, setSelectedRepo] = useState<string>();
 
   const addRepo = useCallback(
     async (githubRepoId: string) => {
@@ -160,14 +163,20 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     setPullRequests({});
     setIsLoadingRepos(undefined);
     setIsLoadingPullRequests(undefined);
+    setSelectedRepo(undefined);
   }, [isAuthenticated]);
 
   const memo = useMemo(
     () => ({
-      repos: Object.values(repos),
-      pullRequests: Object.values(pullRequests),
+      repos: selectedRepo ? [repos[selectedRepo]] : Object.values(repos),
+      pullRequests: selectedRepo
+        ? Object.values(pullRequests).filter(
+            pullRequest => pullRequest.base.repo.id.toString() !== selectedRepo
+          )
+        : Object.values(pullRequests),
       addRepo,
       removeRepo,
+      selectRepo: (value: string | undefined) => setSelectedRepo(value),
       isLoadingRepos: isLoadingRepos === true,
       isLoadingPullRequests:
         isLoadingRepos === true || isLoadingPullRequests === true,
@@ -180,6 +189,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       removeRepo,
       isLoadingRepos,
       isLoadingPullRequests,
+      selectedRepo,
     ]
   );
 

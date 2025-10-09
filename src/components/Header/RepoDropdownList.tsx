@@ -4,12 +4,8 @@ import { useAuth } from '@/hooks/useAuth';
 import DeleteIcon from '@/icons/DeleteIcon';
 import { useAppContext } from '@/hooks/useAppContext';
 
-export default function RepoDropdownList({
-  setSelectedRepo,
-}: {
-  setSelectedRepo: React.Dispatch<React.SetStateAction<GitHubRepo | undefined>>;
-}) {
-  const { repos, removeRepo, isLoadingRepos } = useAppContext();
+export default function RepoDropdownList() {
+  const { repos, removeRepo, isLoadingRepos, selectRepo } = useAppContext();
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) return null;
@@ -34,7 +30,7 @@ export default function RepoDropdownList({
         <li
           key={repo.id}
           onClick={() => {
-            setSelectedRepo(repo);
+            selectRepo?.(repo.id.toString());
           }}
         >
           <div className="flex justify-between items-center">

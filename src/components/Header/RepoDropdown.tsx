@@ -2,22 +2,22 @@
 
 import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
 import RepoDropdownList from '@/components/Header/RepoDropdownList';
-import { useState } from 'react';
 import { useAppContext } from '@/hooks/useAppContext';
 
 export default function RepoDropdown() {
-  const { repos, isLoadingRepos, modalRef } = useAppContext();
-  const [selectedRepo, setSelectedRepo] = useState<GitHubRepo>();
+  const { repos, isLoadingRepos, modalRef, selectRepo } = useAppContext();
+
   const noneAvailable = !isLoadingRepos && repos && repos.length === 0;
+  const singleRepo = !isLoadingRepos && repos && repos.length === 1;
 
   return (
     <div data-label="RepoDropdown" className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn m-1">
         {noneAvailable
           ? 'Select Repository'
-          : !selectedRepo
-            ? 'All Repositories'
-            : selectedRepo.name}
+          : singleRepo
+            ? repos[0].name
+            : 'All Repositories'}
       </div>
       <ul
         tabIndex={0}
@@ -26,12 +26,12 @@ export default function RepoDropdown() {
         <li
           className="border-b-2 border-gray-200"
           onClick={() => {
-            setSelectedRepo(undefined);
+            selectRepo?.(undefined);
           }}
         >
           <a>All Repositories</a>
         </li>
-        <RepoDropdownList setSelectedRepo={setSelectedRepo} />
+        <RepoDropdownList />
         <li
           className="text-primary border-t-2 border-gray-200"
           onClick={() => modalRef?.current?.showModal()}
@@ -39,11 +39,7 @@ export default function RepoDropdown() {
           <a>+ Add Repository</a>
         </li>
       </ul>
-      {/* <AddRepoModal
-        trackedRepoIds={trackedRepos.map(repo => repo.id)}
-        setTrackedRepos={setTrackedRepos}
-        setCurrentRepo={setCurrentRepo}
-      /> */}
+      <AddRepoModal />
     </div>
   );
 }

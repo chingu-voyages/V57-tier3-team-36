@@ -45,7 +45,7 @@ export default async function HomePage() {
         className="grid gap-3 grid-cols-2 sm:grid-cols-4 md:grid-cols-1 col-span-12 md:col-span-4 xl:col-span-3 row-start-1"
       >
         <OpenPullRequests />
-        <AveragePrReviewsWidget />
+        {/* <AveragePrReviewsWidget /> */}
         <AvgAgeOfOpenPRs />
         <PercentOfDraftPRs />
       </aside>
