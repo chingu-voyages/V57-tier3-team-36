@@ -17,6 +17,8 @@ declare global {
   type GitHubPullRequest = components['schemas']['pull-request'];
 
   type GitHubPullRequestReview = components['schemas']['pull-request-review'];
+
+  type Entities<T> = { [id: string]: T };
 }
 
 export {};

@@ -2,8 +2,9 @@ import LazyFooter from '@/components/Footer/LazyFooter';
 import Header from '@/components/Header/Header';
 import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
 import Sidebar from '@/components/Sidebar/Sidebar';
+import AppProvider from '@/components/AppProvider/AppProvider';
+import AppLoader from '@/components/AppLoader/AppLoader';
 
-import LandingPage from '@/components/LandingPage/LandingPage';
 import './globals.css';
 
 if (
@@ -29,29 +30,28 @@ export default function RootLayout({
 
   return (
     <html lang="en" className="h-screen">
-      <body className={`drawer ${showSidebar} h-screen bg-base-300`}>
-        <input
-          id={sidebarCheckboxId}
-          type="checkbox"
-          className="drawer-toggle"
-        />
-        <Sidebar checkboxId={sidebarCheckboxId} />
-        <div className="drawer-content h-screen">
-          <FloatingSidebarButton
-            checkboxId={sidebarCheckboxId}
-            buttonClass={hideFloatingButton}
+      <AppProvider>
+        <AppLoader sidebarClass={`drawer ${showSidebar}`}>
+          <input
+            id={sidebarCheckboxId}
+            type="checkbox"
+            className="drawer-toggle"
           />
+          <Sidebar checkboxId={sidebarCheckboxId} />
+          <div className="drawer-content h-screen">
+            <FloatingSidebarButton
+              checkboxId={sidebarCheckboxId}
+              buttonClass={hideFloatingButton}
+            />
 
-          <div className="h-screen flex flex-col">
-            <Header />
-            <main className="flex-1 min-h-0 px-4 pb-4">
-              {children}
-              <LandingPage />
-              <LazyFooter />
-            </main>
+            <div className="h-screen flex flex-col">
+              <Header />
+              <main className="flex-1 min-h-0 px-4 pb-4">{children}</main>
+            </div>
+            <LazyFooter />
           </div>
-        </div>
-      </body>
+        </AppLoader>
+      </AppProvider>
     </html>
   );
 }

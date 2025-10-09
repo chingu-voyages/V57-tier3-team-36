@@ -10,7 +10,7 @@ export function formatTime(seconds: number) {
   const days = hours / 24;
   const weeks = days / 7;
 
-  const toString = (value: number) => value.toFixed(1).toString();
+  const toString = (value: number) => Math.round(value).toString();
 
   if (weeks > 3) {
     return ['+3', 'wks'] as const;
