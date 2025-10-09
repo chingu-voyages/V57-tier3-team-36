@@ -44,7 +44,7 @@ test.describe('User Repos API', () => {
 
       // Verify our created repo is in the list
       const foundRepo = reposData.find(
-        (repo: Repo) => repo.id.toString() === testRepoId
+        (repo: Repo) => repo.id.toString() === testRepoId.toString()
       );
       expect(foundRepo).toBeDefined();
     });
@@ -62,7 +62,7 @@ test.describe('User Repos API', () => {
       const reposData = await reposAfterDelete.json();
 
       const repoStillExists = reposData.some(
-        (repo: Repo) => repo.id.toString() === testRepoId
+        (repo: Repo) => repo.id.toString() === testRepoId.toString()
       );
       expect(repoStillExists).toBeFalsy();
     });
