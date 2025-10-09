@@ -2,8 +2,8 @@
 
 import PRSearchbar from '@/components/PRSearchbar/PRSearchbar';
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
+import { useAppContext } from '@/hooks/useAppContext';
 import { useAuth } from '@/hooks/useAuth';
-import { usePullRequests } from '@/hooks/usePullRequests';
 import { usePullRequestsSearch } from '@/hooks/usePullRequestsSearch';
 import type { PRFilterState } from '@/types/PRFilterState';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -11,7 +11,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export default function PullRequestsContainer() {
   // hooks
-  const basePRs = usePullRequests();
+  const { pullRequests: basePRs } = useAppContext();
   const { searchPullRequests } = usePullRequestsSearch();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -226,7 +226,7 @@ export default function PullRequestsContainer() {
           setFilters={setFilters}
         />
       </div>
-      <PullRequestsList pullRequests={sortedPRs} isLoading={isLoading} />
+      <PullRequestsList />
     </>
   );
 }
