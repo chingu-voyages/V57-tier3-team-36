@@ -8,10 +8,6 @@ interface PullRequestsListProps {
 export default function PullRequestsList({
   pullRequests,
 }: PullRequestsListProps) {
-  //   console.log(
-  //     'PR keys:',
-  //     pullRequests.map(pr => pr.id)
-  //   );
   return (
     <>
       <ul

@@ -83,7 +83,7 @@ export default function PullRequestsContainer() {
       return;
     }
 
-    if (basePRs && basePRs.length < 100) {
+    if (basePRs && basePRs.length < 100 && filters.prStatus !== 'merged') {
       const filteredPRs = basePRs.filter(pr => {
         const matchesQuery = query.trim()
           ? pr.title.toLowerCase().includes(query.trim().toLowerCase())
@@ -227,7 +227,11 @@ export default function PullRequestsContainer() {
         />
       </div>
       {isLoading ? (
-        <div className="skeleton w-full flex-1 min-h-0 rounded-box outline outline-offset-[-1px]"></div>
+        <div className="skeleton flex-1 min-h-0 rounded-box outline outline-offset-1" />
+      ) : !sortedPRs || sortedPRs.length === 0 ? (
+        <div className="flex-1 min-h-0 rounded-box outline outline-offset-1">
+          <p className="m-4 text-center">No pull requests found</p>
+        </div>
       ) : (
         <PullRequestsList pullRequests={sortedPRs} />
       )}

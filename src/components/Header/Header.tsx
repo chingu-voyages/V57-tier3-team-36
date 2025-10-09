@@ -1,9 +1,11 @@
 'use client';
 
 import RepoDropdown from '@/components/Header/RepoDropdown';
+import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 
 export default function Header() {
+  const { isAuthenticated } = useAuth();
   return (
     <header className="w-full p-4">
       <div
@@ -16,7 +18,7 @@ export default function Header() {
             <span>Force</span>
           </h1>
         </Link>
-        <RepoDropdown />
+        {isAuthenticated && <RepoDropdown />}
       </div>
     </header>
   );
