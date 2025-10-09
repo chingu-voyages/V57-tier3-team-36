@@ -13,16 +13,15 @@ Optionally, users can interact with an AI assistant (powered by Google Gemini) t
 - 🏠 **Home Page:** Describes the app purpose and usage.
 - 🔓 **Open PRs:** Displays all open PRs for a selected GitHub repo.
 - ✅ **Closed PRs:** Displays all closed or merged PRs.
-- 💾 **Save JSON:** Option to download GitHub API responses for offline testing.
 - 🔍 **Filtering:** Filter PRs by username or other criteria.
-- 🤖 **AI Help Chat (optional):** Ask in-app questions like “How do I filter results?”
 - ⚠️ **Error Handling:** Clear, user-friendly validation messages.
 - 📱 **Responsive UI:** Works across desktop, tablet, and mobile devices.
 
 ## Tech Stack
 
 - **Frontend:** Next.js, React, TypeScript
-- **Styling:** CSS Modules, TailwindCSS, DaisyUI, Prettier
+- **Styling:** CSS Modules, TailwindCSS, DaisyUI
+- **Linting** Prettier
 - **Database:** PostgreSQL via Neon
 - **Authentication:** GitHub OAuth (Better Auth)
 - **Deployment:** Vercel
@@ -155,23 +154,20 @@ Import components like: `import { Button } from '@/components/Button/Button'`
 ## How to Use
 
 1. Visit the deployed app at [your-vercel-url-here].
-2. Use the navigation bar to switch between:
-   - Home
+2. Sign In using GitHub
+3. Hit "Select Repository" at the top right to add what repository you want to search up.
+4. From there you can find the repository's:
    - Open PRs
-   - Closed PRs
-3. Select a repository from the dropdown.
-4. View or filter PR results.
+   - Average Reviews per PR
+   - Average Time to First Review
+5. Search for a certain PR from the search bar atop.
 
 ## Acceptance Criteria
 
 - Users can select a GitHub repository and view both open and closed PRs.
 - Each PR shows: number, title (linked to GitHub), author, reviewers, creation date, and last action.
-- JSON results from the GitHub API can be saved locally for testing.
 - The UI displays clear error messages for invalid input.
 - The interface is responsive and visually distinct.
-- If AI chat is implemented:
-  - The chat window opens when the icon is clicked.
-  - User questions and AI responses are displayed clearly.
 
 ## Learn More
 
