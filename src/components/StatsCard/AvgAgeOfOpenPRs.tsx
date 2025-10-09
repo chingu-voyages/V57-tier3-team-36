@@ -1,7 +1,7 @@
 'use client';
 
 import StatsCard from '@/components/StatsCard/StatsCard';
-import { useAppContext } from '@/components/AppProvider/AppProvider';
+import { useAppContext } from '@/hooks/useAppContext';
 import { useEffect, useState } from 'react';
 import { getSecondsSince, formatTime } from '@/components/StatsCard/formatTime';
 
@@ -10,10 +10,10 @@ export default function AvgAgeOfOpenPRs() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState<string>('-');
   const [unit, setUnit] = useState<string>();
-  const { pullRequests } = useAppContext();
+  const { pullRequests, isLoadingPullRequests } = useAppContext();
 
   useEffect(() => {
-    if (!pullRequests) return;
+    if (isLoadingPullRequests || !pullRequests) return;
 
     const totalSeconds = pullRequests.reduce((sum, obj) => {
       return sum + getSecondsSince(obj.created_at);
@@ -25,9 +25,14 @@ export default function AvgAgeOfOpenPRs() {
     setUnit(label);
 
     setIsLoading(false);
-  }, [pullRequests]);
+  }, [pullRequests, isLoadingPullRequests]);
 
   return (
-    <StatsCard title={title} subtitle={unit} value={value} isBusy={isLoading} />
+    <StatsCard
+      title={title}
+      subtitle={unit}
+      value={value}
+      isBusy={isLoading || isLoadingPullRequests}
+    />
   );
 }
