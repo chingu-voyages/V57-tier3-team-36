@@ -226,17 +226,7 @@ export default function PullRequestsContainer() {
           setFilters={setFilters}
         />
       </div>
-      {isLoading ? (
-        <div className="menu flex flex-col flex-1 w-full min-h-0 rounded-box outline outline-offset-1 p-0 divide-y overflow-hidden">
-          <div className="skeleton h-full w-full rounded-box" />
-        </div>
-      ) : !sortedPRs || sortedPRs.length === 0 ? (
-        <div className="menu flex flex-col flex-1 w-full min-h-0 rounded-box outline outline-offset-1 p-0 divide-y overflow-y-auto">
-          <p className="m-4 text-center">No pull requests found</p>
-        </div>
-      ) : (
-        <PullRequestsList pullRequests={sortedPRs} />
-      )}
+      <PullRequestsList pullRequests={sortedPRs} isLoading={isLoading} />
     </>
   );
 }
