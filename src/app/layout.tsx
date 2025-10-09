@@ -3,8 +3,8 @@ import Header from '@/components/Header/Header';
 import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import AppProvider from '@/components/AppProvider/AppProvider';
+import AppLoader from '@/components/AppLoader/AppLoader';
 
-import LandingPage from '@/components/LandingPage/LandingPage';
 import './globals.css';
 
 if (
@@ -30,8 +30,8 @@ export default function RootLayout({
 
   return (
     <html lang="en" className="h-screen">
-      <body className={`drawer ${showSidebar} h-screen bg-base-300`}>
-        <AppProvider>
+      <AppProvider>
+        <AppLoader sidebarClass={`drawer ${showSidebar}`}>
           <input
             id={sidebarCheckboxId}
             type="checkbox"
@@ -48,11 +48,10 @@ export default function RootLayout({
               <Header />
               <main className="flex-1 min-h-0 px-4 pb-4">{children}</main>
             </div>
-
             <LazyFooter />
           </div>
-        </AppProvider>
-      </body>
+        </AppLoader>
+      </AppProvider>
     </html>
   );
 }
