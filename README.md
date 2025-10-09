@@ -1,6 +1,28 @@
-# App Name Goes Here
+# MergeForce
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Overview
+**MergeForce** is a web application that helps development teams track the status of open and closed GitHub Pull Requests (PRs) across their repositories.  
+It retrieves data from the GitHub REST API to display PR details, reviewers, and activity history in a clean, interactive dashboard.  
+Optionally, users can interact with an AI assistant (powered by Google Gemini) to learn how to use the app or understand its features.
+
+## Features
+- 🏠 **Home Page:** Describes the app purpose and usage.
+- 🔓 **Open PRs:** Displays all open PRs for a selected GitHub repo.
+- ✅ **Closed PRs:** Displays all closed or merged PRs.
+- 💾 **Save JSON:** Option to download GitHub API responses for offline testing.
+- 🔍 **Filtering:** Filter PRs by username or other criteria.
+- ⚠️ **Error Handling:** Clear, user-friendly validation messages.
+- 📱 **Responsive UI:** Works across desktop, tablet, and mobile devices.
+
+## Tech Stack
+- **Frontend:** Next.js, React, TypeScript
+- **Styling:** CSS Modules, TailwindCSS, DaisyUI, Prettier
+- **Database:** PostgreSQL via Neon
+- **Authentication:** GitHub OAuth (Better Auth)
+- **Deployment:** Vercel
+
 
 ## Local Development Setup
 
@@ -126,6 +148,25 @@ Import components like: `import { Button } from '@/components/Button/Button'`
 - Clear component boundaries and ownership
 - No extra boilerplate files
 - Teammate preferences (voted 3-1-1 in favor of this option)
+
+## How to Use
+1. Visit the deployed app at [your-vercel-url-here].
+2. Use the navigation bar to switch between:
+   - Home
+   - Open PRs
+   - Closed PRs
+3. Select a repository from the dropdown.
+4. View or filter PR results.
+
+
+## Acceptance Criteria
+- Users can select a GitHub repository and view both open and closed PRs.
+- Each PR shows: number, title (linked to GitHub), author, reviewers, creation date, and last action.
+- JSON results from the GitHub API can be saved locally for testing.
+- The UI displays clear error messages for invalid input.
+- The interface is responsive and visually distinct.
+
+
 
 ## Learn More
 
