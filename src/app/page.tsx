@@ -1,3 +1,4 @@
+import AveragePrReviewsWidget from '@/components/AveragePrReviewsWidget/AveragePrReviewsWidget';
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
 import SortIcon from '@/icons/SortIcon';
 import FilterIcon from '@/icons/FilterIcon';
@@ -5,7 +6,9 @@ import AvgAgeOfOpenPRs from '@/components/StatsCard/AvgAgeOfOpenPRs';
 import OpenPullRequests from '@/components/StatsCard/OpenPullRequests';
 import PercentOfDraftPRs from '@/components/StatsCard/PercentOfDraftPRs';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { isAuthenticated } = await getServerSession();
+  if (!isAuthenticated) return null;
   return (
     <div
       data-label="HomePage"

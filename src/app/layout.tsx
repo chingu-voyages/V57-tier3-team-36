@@ -1,9 +1,10 @@
-import Header from '@/components/Header/Header';
 import LazyFooter from '@/components/Footer/LazyFooter';
+import Header from '@/components/Header/Header';
 import FloatingSidebarButton from '@/components/Sidebar/FloatingSidebarButton';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import AppProvider from '@/components/AppProvider/AppProvider';
 
+import LandingPage from '@/components/LandingPage/LandingPage';
 import './globals.css';
 
 if (

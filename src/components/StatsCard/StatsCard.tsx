@@ -17,22 +17,26 @@ export default function StatsCard({
     <div className="stats shadow w-full h-full">
       <div className="stat overflow-hidden">
         <div className="stat-title md:text-2xl text-wrap">{title}</div>
-        {isBusy ? (
-          <div className="flex justify-center items-center">
-            <span className="loading loading-spinner loading-lg"></span>
-          </div>
-        ) : (
-          <div className="flex justify-center gap-1">
-            <div className="stat-value md:text-7xl">{value}</div>
-            {subtitle && (
-              <div
-                className={`stat-desc ${getColorAttr(color)} md:text-xl text-wrap`}
-              >
-                {subtitle}
-              </div>
+        <div className="flex justify-center gap-1 relative min-h-[4.5rem]">
+          {/* Always render the value container to reserve space */}
+          <div className="stat-value md:text-7xl flex items-center justify-center w-full">
+            {isBusy ? (
+              <span className="loading loading-spinner loading-xl" />
+            ) : (
+              value
             )}
           </div>
-        )}
+          {/* Always render the subtitle container to reserve space */}
+          <div
+            className={`stat-desc ${getColorAttr(color)} md:text-xl text-wrap`}
+            style={{
+              visibility: subtitle ? 'visible' : 'hidden',
+              minHeight: '1.5rem',
+            }}
+          >
+            {subtitle || ''}
+          </div>
+        </div>
       </div>
     </div>
   );
