@@ -16,20 +16,20 @@ test.describe('User Repos API', () => {
 
     if (!testUserId) throw Error('User not authenticated');
 
-    const testRepoId = '10270250'; // this is the React repo id (any public id is fine)
+    const testRepoId = 10270250; // this is the React repo id (any public id is fine)
 
     await test.step('1. Create new user repo', async () => {
       const createRepoResponse = await request.post(
         `/api/users/${testUserId}/repos`,
         {
           data: {
-            githubRepoId: testRepoId,
+            githubRepoId: testRepoId.toString(),
           },
         }
       );
       expect(createRepoResponse.ok()).toBeTruthy();
       const createRepoData = await createRepoResponse.json();
-      expect(createRepoData).toHaveProperty('githubRepoId', testRepoId);
+      expect(createRepoData).toHaveProperty('id', testRepoId);
     });
 
     await test.step('2. Get all repos for a user', async () => {
