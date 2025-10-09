@@ -95,7 +95,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         Object.values(draft).forEach(pullRequest => {
           const id = pullRequest.base.repo.id.toString();
           if (id === githubRepoId) {
-            delete draft[id];
+            delete draft[pullRequest.id.toString()];
           }
         });
 
