@@ -9,6 +9,7 @@ export type AppContextValue = {
   removeRepo: (githubRepoId: string) => void;
   isLoadingRepos: boolean;
   isLoadingPullRequests: boolean;
+  modalRef:  React.RefObject<HTMLDialogElement | null>;
 };
 
 export const AppContext = createContext<AppContextValue | null>(null);

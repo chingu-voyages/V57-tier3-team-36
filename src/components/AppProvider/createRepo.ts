@@ -12,13 +12,12 @@ export async function createRepo({
       'Content-Type': 'application/json',
     },
   });
+
   if (!response.ok) {
     return null;
   }
 
-  const createRepoResponse: {
-    success: boolean;
-    data: GitHubRepo;
-  } = await response.json();
-  return createRepoResponse.data;
+  const createRepoResponse: GitHubRepo = await response.json();
+
+  return createRepoResponse;
 }
