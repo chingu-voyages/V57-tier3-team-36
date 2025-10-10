@@ -24,24 +24,10 @@ export const auth = betterAuth({
       maxAge: 5 * 60, // Cache duration in seconds
     },
   },
-  user: {
-    additionalFields: {
-      login: {
-        type: 'string',
-        required: true,
-        input: false,
-      },
-    },
-  },
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-      mapProfileToUser: profile => {
-        return {
-          login: profile.login,
-        };
-      },
     },
   },
   advanced: {
