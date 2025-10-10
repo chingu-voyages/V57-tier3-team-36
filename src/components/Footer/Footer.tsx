@@ -35,7 +35,12 @@ const teamMembers: TeamMember[] = [
     linkedin: 'https://www.linkedin.com/in/hyunwoo-kim/',
     imageName: 'Hyun.jpg',
   },
-  { name: 'Sattyik Kundu', github: 'https://github.com/SattyikKundu' },
+  {
+    name: 'Sattyik Kundu',
+    github: 'https://github.com/SattyikKundu',
+    linkedin: 'https://www.linkedin.com/in/sattyikkundu/',
+    imageName: 'Sattyik.jpg',
+  },
 ];
 
 // Default avatar component for members without images
