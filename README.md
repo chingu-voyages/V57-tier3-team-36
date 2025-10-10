@@ -166,6 +166,7 @@ Import components like: `import { Button } from '@/components/Button/Button'`
 
 - Users can select a GitHub repository and view both open and closed PRs.
 - Each PR shows: number, title (linked to GitHub), author, reviewers, creation date, and last action.
+  - PR cards link to their corresponding github page.
 - The UI displays clear error messages for invalid input.
 - The interface is responsive and visually distinct.
 
@@ -183,6 +184,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+https://v57-tier3-team-36.vercel.app/
 
 ## Team Documents
 
@@ -203,6 +206,5 @@ Meeting Agenda templates (located in the `/docs` directory in this repo):
 - Sattyik Kundu: [Github](https://github.com/SattyikKundu)
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Vincent Bui: [Github](https://github.com/VincentBui0) / [LinkedIn](https://www.linkedin.com/in/vincent-bui0/)
-- Peter Tasca: [Github](https://github.com/tascapeter514) / [LinkedIn](https://www.linkedin.com/in/peter-tasca/)
 - Kelly Ripple: [GitHub](https://github.com/kripple) / [LinkedIn](https://www.linkedin.com/in/kellymripple) / [Portfolio](https://kellyripple.com/)
 - Hyun Woo Kim: [GitHub](https://github.com/hynwkm) / [LinkedIn](https://www.linkedin.com/in/hyunwoo-kim/)
