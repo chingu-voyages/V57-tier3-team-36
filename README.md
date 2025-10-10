@@ -13,16 +13,15 @@ Optionally, users can interact with an AI assistant (powered by Google Gemini) t
 - 🏠 **Home Page:** Describes the app purpose and usage.
 - 🔓 **Open PRs:** Displays all open PRs for a selected GitHub repo.
 - ✅ **Closed PRs:** Displays all closed or merged PRs.
-- 💾 **Save JSON:** Option to download GitHub API responses for offline testing.
 - 🔍 **Filtering:** Filter PRs by username or other criteria.
-- 🤖 **AI Help Chat (optional):** Ask in-app questions like “How do I filter results?”
 - ⚠️ **Error Handling:** Clear, user-friendly validation messages.
 - 📱 **Responsive UI:** Works across desktop, tablet, and mobile devices.
 
 ## Tech Stack
 
 - **Frontend:** Next.js, React, TypeScript
-- **Styling:** CSS Modules, TailwindCSS, DaisyUI, Prettier
+- **Styling:** CSS Modules, TailwindCSS, DaisyUI
+- **Linting** Prettier
 - **Database:** PostgreSQL via Neon
 - **Authentication:** GitHub OAuth (Better Auth)
 - **Deployment:** Vercel
@@ -155,23 +154,21 @@ Import components like: `import { Button } from '@/components/Button/Button'`
 ## How to Use
 
 1. Visit the deployed app at [your-vercel-url-here].
-2. Use the navigation bar to switch between:
-   - Home
+2. Sign In using GitHub
+3. Hit "Select Repository" at the top right to add what repository you want to search up.
+4. From there you can find the repository's:
    - Open PRs
-   - Closed PRs
-3. Select a repository from the dropdown.
-4. View or filter PR results.
+   - Average Reviews per PR
+   - Average Time to First Review
+5. Search for a certain PR from the search bar atop.
 
 ## Acceptance Criteria
 
 - Users can select a GitHub repository and view both open and closed PRs.
 - Each PR shows: number, title (linked to GitHub), author, reviewers, creation date, and last action.
-- JSON results from the GitHub API can be saved locally for testing.
+  - PR cards link to their corresponding github page.
 - The UI displays clear error messages for invalid input.
 - The interface is responsive and visually distinct.
-- If AI chat is implemented:
-  - The chat window opens when the icon is clicked.
-  - User questions and AI responses are displayed clearly.
 
 ## Learn More
 
@@ -187,6 +184,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+https://v57-tier3-team-36.vercel.app/
 
 ## Team Documents
 
@@ -207,6 +206,5 @@ Meeting Agenda templates (located in the `/docs` directory in this repo):
 - Sattyik Kundu: [Github](https://github.com/SattyikKundu)
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Vincent Bui: [Github](https://github.com/VincentBui0) / [LinkedIn](https://www.linkedin.com/in/vincent-bui0/)
-- Peter Tasca: [Github](https://github.com/tascapeter514) / [LinkedIn](https://www.linkedin.com/in/peter-tasca/)
 - Kelly Ripple: [GitHub](https://github.com/kripple) / [LinkedIn](https://www.linkedin.com/in/kellymripple) / [Portfolio](https://kellyripple.com/)
 - Hyun Woo Kim: [GitHub](https://github.com/hynwkm) / [LinkedIn](https://www.linkedin.com/in/hyunwoo-kim/)
