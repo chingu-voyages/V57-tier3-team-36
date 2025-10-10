@@ -28,7 +28,7 @@ export default function AddRepoModal() {
       setRepos(reposResult);
       setIsFetching(false);
     })();
-  });
+  }, [isAuthenticated]);
 
   const filteredResults =
     inputValue === ''
