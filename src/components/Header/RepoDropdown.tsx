@@ -5,19 +5,17 @@ import RepoDropdownList from '@/components/Header/RepoDropdownList';
 import { useAppContext } from '@/hooks/useAppContext';
 
 export default function RepoDropdown() {
-  const { repos, isLoadingRepos, modalRef, selectRepo } = useAppContext();
-
-  const noneAvailable = !isLoadingRepos && repos && repos.length === 0;
-  const singleRepo = !isLoadingRepos && repos && repos.length === 1;
+  const { repos, modalRef, selectRepo, selectedRepo } = useAppContext();
+  const label = selectedRepo
+    ? selectedRepo.name
+    : repos && repos.length > 1
+      ? 'All Repositories'
+      : 'Select Repository';
 
   return (
     <div data-label="RepoDropdown" className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn m-1">
-        {noneAvailable
-          ? 'Select Repository'
-          : singleRepo
-            ? repos[0].name
-            : 'All Repositories'}
+        {label}
       </div>
       <ul
         tabIndex={0}

@@ -26,24 +26,26 @@ export default function RepoDropdownList() {
 
   return (
     <>
-      {repos?.map(repo => (
-        <li
-          key={repo.id}
-          onClick={() => {
-            selectRepo?.(repo.id.toString());
-          }}
-        >
-          <div className="flex justify-between items-center">
-            <a>{repo.name}</a>
-            <div
-              className="cursor-pointer  hover:text-red-500"
-              onClick={() => removeRepo?.(repo.id.toString())}
-            >
-              <DeleteIcon />
+      {repos?.map(repo =>
+        !repo ? null : (
+          <li
+            key={repo.id}
+            onClick={() => {
+              selectRepo?.(repo.id.toString());
+            }}
+          >
+            <div className="flex justify-between items-center">
+              <a>{repo.name}</a>
+              <div
+                className="cursor-pointer  hover:text-red-500"
+                onClick={() => removeRepo?.(repo.id.toString())}
+              >
+                <DeleteIcon />
+              </div>
             </div>
-          </div>
-        </li>
-      ))}
+          </li>
+        )
+      )}
     </>
   );
 }

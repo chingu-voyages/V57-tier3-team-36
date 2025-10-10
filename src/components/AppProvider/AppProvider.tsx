@@ -168,7 +168,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
 
   const memo = useMemo(
     () => ({
-      repos: selectedRepo ? [repos[selectedRepo]] : Object.values(repos),
+      repos: Object.values(repos),
       pullRequests: selectedRepo
         ? Object.values(pullRequests).filter(
             pullRequest => pullRequest.base.repo.id.toString() !== selectedRepo
@@ -176,6 +176,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         : Object.values(pullRequests),
       addRepo,
       removeRepo,
+      selectedRepo: selectedRepo ? repos[selectedRepo] : undefined,
       selectRepo: (value: string | undefined) => setSelectedRepo(value),
       isLoadingRepos: isLoadingRepos === true,
       isLoadingPullRequests:
