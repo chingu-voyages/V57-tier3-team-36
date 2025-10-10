@@ -2,6 +2,12 @@ import { api } from '@/lib/github/client';
 export async function calculateAverageReviewsPerPr(
   pullRequests: GitHubPullRequest[]
 ): Promise<string> {
+  // Try to limit the number of concurrent requests to avoid rate limiting
+  const MAX_PULL_REQUESTS = 20;
+  if (pullRequests.length > MAX_PULL_REQUESTS) {
+    pullRequests = pullRequests.slice(0, MAX_PULL_REQUESTS);
+  }
+
   const reviewPromises = await Promise.allSettled(
     pullRequests.map(pr =>
       api.getReviewsForPullRequest({
