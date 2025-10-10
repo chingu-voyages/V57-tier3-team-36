@@ -31,6 +31,31 @@ export const apiHandlers = (
       `/repos/${owner}/${repo}/pulls?state=${state}&per_page=100`
     ),
 
+  getPullRequestsBySearch: (
+    query: string,
+    repos: string[],
+    dir: string = 'desc',
+    status: 'open' | 'merged' = 'open',
+    involves: boolean = false,
+    review: 'none' | 'approved' | 'changes_requested' | null = null
+  ) => {
+    const repoQuery = repos.map(repo => `repo:${repo}`).join(' OR ');
+
+    const parts = [
+      `(${repoQuery})`,
+      'type:pr',
+      status === 'open' ? 'state:open' : 'is:merged',
+      involves ? 'involves:@me' : '',
+      review ? `review:${review}` : '',
+      'in:title,body',
+      query?.trim() || '',
+    ];
+    const searchQuery = parts.filter(Boolean).join(' ');
+
+    return requestHandler<GitHubSearchResponse>(
+      `/search/issues?q=${encodeURIComponent(searchQuery)}&sort=updated&order=${dir}&advanced_search=true`
+    );
+  },
   getContributorsForRepo: ({ owner, repo }: { owner: string; repo: string }) =>
     requestHandler<GitHubContributor[]>(`/repos/${owner}/${repo}/contributors`),
 

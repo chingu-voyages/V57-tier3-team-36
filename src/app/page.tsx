@@ -1,10 +1,9 @@
 import AveragePrReviewsWidget from '@/components/AveragePrReviewsWidget/AveragePrReviewsWidget';
-import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
-import SortIcon from '@/icons/SortIcon';
-import FilterIcon from '@/icons/FilterIcon';
+import PullRequestsContainer from '@/components/PullRequestsContainer/PullRequestsContainer';
 import AvgAgeOfOpenPRs from '@/components/StatsCard/AvgAgeOfOpenPRs';
 import OpenPullRequests from '@/components/StatsCard/OpenPullRequests';
 import PercentOfDraftPRs from '@/components/StatsCard/PercentOfDraftPRs';
+import { Suspense } from 'react';
 
 export default async function HomePage() {
   return (
@@ -20,24 +19,9 @@ export default async function HomePage() {
           data-label="PullsListCard"
           className="card flex flex-col flex-1 min-h-0 w-full"
         >
-          <div
-            data-label="SearchBar"
-            className="flex flex-shrink-0 w-full mb-3 gap-2"
-          >
-            <input
-              type="search"
-              className="input w-full bg-base-content text-neutral focus:outline-none focus:border-accent border-2"
-              placeholder="Search Pull Requests"
-            ></input>
-            <button className="btn btn-accent aspect-square p-0">
-              <SortIcon />
-            </button>
-            <button className="btn btn-accent aspect-square p-0">
-              <FilterIcon />
-            </button>
-          </div>
-
-          <PullRequestsList />
+          <Suspense fallback={null}>
+            <PullRequestsContainer />
+          </Suspense>
         </div>
       </div>
       <aside
