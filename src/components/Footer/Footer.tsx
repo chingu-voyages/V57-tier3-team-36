@@ -35,8 +35,8 @@ const teamMembers: TeamMember[] = [
     linkedin: 'https://www.linkedin.com/in/hyunwoo-kim/',
     imageName: 'Hyun.jpg',
   },
-  { 
-    name: 'Sattyik Kundu', 
+  {
+    name: 'Sattyik Kundu',
     github: 'https://github.com/SattyikKundu',
     linkedin: 'https://www.linkedin.com/in/sattyikkundu/',
     imageName: 'Sattyik.jpg',
