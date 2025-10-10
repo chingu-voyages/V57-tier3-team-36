@@ -171,7 +171,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       repos: Object.values(repos),
       pullRequests: selectedRepo
         ? Object.values(pullRequests).filter(
-            pullRequest => pullRequest.base.repo.id.toString() !== selectedRepo
+            pullRequest => pullRequest.base.repo.id.toString() === selectedRepo
           )
         : Object.values(pullRequests),
       addRepo,
