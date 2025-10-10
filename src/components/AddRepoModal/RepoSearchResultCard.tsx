@@ -8,12 +8,13 @@ export function RepoSearchResultCard({
   description,
   url,
 }: {
-  id: number | null;
+  id: number;
   name: string;
   description: string | null;
   url: string;
 }) {
-  const { addRepo, removeRepo, isLoadingRepos, selectedRepo } = useAppContext();
+  const { repos, addRepo, removeRepo, isLoadingRepos } = useAppContext();
+  const isUserRepo = repos && repos.some(repo => repo.id === id);
 
   return (
     <div className="card card-border bg-base-100">
@@ -28,22 +29,21 @@ export function RepoSearchResultCard({
             <button className="btn btn-disabled">
               <span className="loading loading-dots" />
             </button>
-          ) : selectedRepo?.id === id ? (
+          ) : isUserRepo ? (
             <div className="group">
               <button
-                className="btn btn-success"
-                onClick={() => removeRepo?.(id!.toString())}
+                className="btn btn-error"
+                onClick={() => removeRepo?.(id.toString())}
               >
-                <span className="block group-hover:hidden">Selected</span>
-                <span className="hidden group-hover:block">Deselect</span>
+                - Remove
               </button>
             </div>
           ) : (
             <button
-              className="btn btn-primary"
-              onClick={() => addRepo?.(id!.toString())}
+              className="btn btn-success"
+              onClick={() => addRepo?.(id.toString())}
             >
-              + Select
+              + Add
             </button>
           )}
         </div>
