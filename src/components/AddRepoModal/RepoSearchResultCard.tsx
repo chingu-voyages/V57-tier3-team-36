@@ -1,54 +1,19 @@
 'use client';
 
-import { useRepoService } from '@/hooks/useRepoService';
-import { useState } from 'react';
+import { useAppContext } from '@/hooks/useAppContext';
 
 export function RepoSearchResultCard({
   id,
   name,
   description,
-  tracked,
-  setTrackedRepos,
-  setCurrentRepo,
   url,
 }: {
   id: number | null;
   name: string;
   description: string | null;
-  tracked: boolean;
-  setTrackedRepos: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
-  setCurrentRepo: React.Dispatch<React.SetStateAction<GitHubRepo[]>>;
   url: string;
 }) {
-  const { createUserRepo, fetchUserRepos, deleteUserRepo } = useRepoService();
-  const [loading, setLoading] = useState(false);
-
-  const onSelected = async (id: string) => {
-    try {
-      setLoading(true);
-      await createUserRepo(id);
-      const repos = await fetchUserRepos();
-      setTrackedRepos([...repos]);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteRepo = async (repoId: string) => {
-    try {
-      setLoading(true);
-      await deleteUserRepo(repoId);
-      const repos = await fetchUserRepos();
-
-      setTrackedRepos([...repos]);
-      setCurrentRepo([...repos]);
-
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { addRepo, removeRepo, isLoadingRepos, selectedRepo } = useAppContext();
 
   return (
     <div className="card card-border bg-base-100">
@@ -59,15 +24,15 @@ export function RepoSearchResultCard({
           <p>{url}</p>
         </div>
         <div className="card-actions shrink-0">
-          {loading ? (
+          {isLoadingRepos ? (
             <button className="btn btn-disabled">
               <span className="loading loading-dots" />
             </button>
-          ) : tracked ? (
+          ) : selectedRepo?.id === id ? (
             <div className="group">
               <button
                 className="btn btn-success"
-                onClick={() => deleteRepo(id!.toString())}
+                onClick={() => removeRepo?.(id!.toString())}
               >
                 <span className="block group-hover:hidden">Selected</span>
                 <span className="hidden group-hover:block">Deselect</span>
@@ -76,7 +41,7 @@ export function RepoSearchResultCard({
           ) : (
             <button
               className="btn btn-primary"
-              onClick={() => onSelected?.(id!.toString())}
+              onClick={() => addRepo?.(id!.toString())}
             >
               + Select
             </button>

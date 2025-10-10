@@ -46,12 +46,13 @@ export async function POST(
       await insertUserRepoEntry(user_id, existingTrackedGitHubRepo.id);
     }
 
-    return NextResponse.json(
-      {
-        githubRepoId,
-      },
-      { status: 201 }
-    );
+    // Create a github API
+    const api = await createApi();
+
+    // Fetch data for newly created repo
+    const newRepo = await api.getRepoById(githubRepoId);
+
+    return NextResponse.json(newRepo, { status: 201 });
   } catch (error) {
     if (error instanceof Error) {
       console.error('Error in POST /api/users/[user_id]/repos:', error.message);

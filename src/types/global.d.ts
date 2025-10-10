@@ -17,6 +17,16 @@ declare global {
   type GitHubPullRequest = components['schemas']['pull-request'];
 
   type GitHubPullRequestReview = components['schemas']['pull-request-review'];
+
+  type Entities<T> = { [id: string]: T };
+
+  type GitHubSearchResult = components['schemas']['issue-search-result-item'];
+
+  interface GitHubSearchResponse {
+    total_count: number;
+    incomplete_results: boolean;
+    items: GitHubSearchResult[];
+  }
 }
 
 export {};
