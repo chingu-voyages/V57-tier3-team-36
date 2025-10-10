@@ -18,17 +18,22 @@ import { deleteRepo } from '@/components/AppProvider/deleteRepo';
 
 export default function AppProvider({ children }: { children: ReactNode }) {
   const { user, isAuthenticated } = useAuth();
+  const modalRef = useRef<HTMLDialogElement>(null);
 
   const [repos, setRepos] = useState<Entities<GitHubRepo>>({});
   const [pullRequests, setPullRequests] = useState<Entities<GitHubPullRequest>>(
     {}
   );
+
   const [isLoadingRepos, setIsLoadingRepos] = useState<boolean>();
   const [isLoadingPullRequests, setIsLoadingPullRequests] = useState<boolean>();
+
+  const [selectedRepo, setSelectedRepo] = useState<string>();
 
   const addRepo = useCallback(
     async (githubRepoId: string) => {
       if (!isAuthenticated || !user) return;
+      setIsLoadingRepos(true);
 
       const newRepo = await createRepo({ userId: user.id, githubRepoId });
       if (!newRepo) {
@@ -42,6 +47,8 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         ...current,
         [newRepo.id.toString()]: newRepo,
       }));
+      setIsLoadingPullRequests(true);
+      setIsLoadingRepos(false);
 
       // Fetch pull requests for new repo
       const newPullRequests = await fetchPullRequests({
@@ -57,6 +64,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         });
         return draft;
       });
+      setIsLoadingPullRequests(false);
     },
     [isAuthenticated, user]
   );
@@ -64,6 +72,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   const removeRepo = useCallback(
     async (githubRepoId: string) => {
       if (!isAuthenticated || !user) return;
+      setIsLoadingRepos(true);
 
       const deleted = deleteRepo({ userId: user.id, githubRepoId });
       if (!deleted) {
@@ -78,6 +87,8 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         delete draft[githubRepoId];
         return draft;
       });
+      setIsLoadingPullRequests(true);
+      setIsLoadingRepos(false);
 
       // Remove pull requests from state directly
       setPullRequests(current => {
@@ -87,12 +98,13 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         Object.values(draft).forEach(pullRequest => {
           const id = pullRequest.base.repo.id.toString();
           if (id === githubRepoId) {
-            delete draft[id];
+            delete draft[pullRequest.id.toString()];
           }
         });
 
         return draft;
       });
+      setIsLoadingPullRequests(false);
     },
     [isAuthenticated, user]
   );
@@ -151,17 +163,25 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     setPullRequests({});
     setIsLoadingRepos(undefined);
     setIsLoadingPullRequests(undefined);
+    setSelectedRepo(undefined);
   }, [isAuthenticated]);
 
   const memo = useMemo(
     () => ({
       repos: Object.values(repos),
-      pullRequests: Object.values(pullRequests),
+      pullRequests: selectedRepo
+        ? Object.values(pullRequests).filter(
+            pullRequest => pullRequest.base.repo.id.toString() !== selectedRepo
+          )
+        : Object.values(pullRequests),
       addRepo,
       removeRepo,
+      selectedRepo: selectedRepo ? repos[selectedRepo] : undefined,
+      selectRepo: (value: string | undefined) => setSelectedRepo(value),
       isLoadingRepos: isLoadingRepos === true,
       isLoadingPullRequests:
         isLoadingRepos === true || isLoadingPullRequests === true,
+      modalRef,
     }),
     [
       repos,
@@ -170,6 +190,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       removeRepo,
       isLoadingRepos,
       isLoadingPullRequests,
+      selectedRepo,
     ]
   );
 

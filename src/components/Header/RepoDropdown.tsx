@@ -2,31 +2,20 @@
 
 import AddRepoModal from '@/components/AddRepoModal/AddRepoModal';
 import RepoDropdownList from '@/components/Header/RepoDropdownList';
-import { useEffect, useRef, useState } from 'react';
+import { useAppContext } from '@/hooks/useAppContext';
 
 export default function RepoDropdown() {
-  const [trackedRepos, setTrackedRepos] = useState<GitHubRepo[]>([]);
-  const [currentRepo, setCurrentRepo] = useState<GitHubRepo[]>([]);
-  const modalRef = useRef<HTMLDialogElement>(null);
-
-  const handleRepoClick = (repo: GitHubRepo[]) => {
-    setCurrentRepo(_prevRepos => [...repo]);
-  };
-
-  useEffect(() => {
-    if (trackedRepos.length > 0 && currentRepo.length === 0) {
-      setCurrentRepo(trackedRepos);
-    }
-  }, [trackedRepos]);
+  const { repos, modalRef, selectRepo, selectedRepo } = useAppContext();
+  const label = selectedRepo
+    ? selectedRepo.name
+    : repos && repos.length > 1
+      ? 'All Repositories'
+      : 'Select Repository';
 
   return (
-    <div className="dropdown dropdown-end">
+    <div data-label="RepoDropdown" className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn m-1">
-        {currentRepo.length === 0
-          ? 'Select Repository'
-          : currentRepo.length > 1
-            ? 'All Repositories'
-            : currentRepo[0].name}
+        {label}
       </div>
       <ul
         tabIndex={0}
@@ -34,16 +23,13 @@ export default function RepoDropdown() {
       >
         <li
           className="border-b-2 border-gray-200"
-          onClick={() => handleRepoClick(trackedRepos)}
+          onClick={() => {
+            selectRepo?.(undefined);
+          }}
         >
           <a>All Repositories</a>
         </li>
-        <RepoDropdownList
-          onClick={handleRepoClick}
-          repos={trackedRepos}
-          setRepos={setTrackedRepos}
-          setCurrentRepo={setCurrentRepo}
-        />
+        <RepoDropdownList />
         <li
           className="text-primary border-t-2 border-gray-200"
           onClick={() => modalRef?.current?.showModal()}
@@ -51,12 +37,7 @@ export default function RepoDropdown() {
           <a>+ Add Repository</a>
         </li>
       </ul>
-      <AddRepoModal
-        trackedRepoIds={trackedRepos.map(repo => repo.id)}
-        setTrackedRepos={setTrackedRepos}
-        setCurrentRepo={setCurrentRepo}
-        modalRef={modalRef}
-      />
+      <AddRepoModal />
     </div>
   );
 }

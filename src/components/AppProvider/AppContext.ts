@@ -7,8 +7,11 @@ export type AppContextValue = {
   pullRequests: GitHubPullRequest[];
   addRepo: (githubRepoId: string) => void;
   removeRepo: (githubRepoId: string) => void;
+  selectedRepo: GitHubRepo | undefined;
+  selectRepo: (repoId: string | undefined) => void;
   isLoadingRepos: boolean;
   isLoadingPullRequests: boolean;
+  modalRef: React.RefObject<HTMLDialogElement | null>;
 };
 
 export const AppContext = createContext<AppContextValue | null>(null);
