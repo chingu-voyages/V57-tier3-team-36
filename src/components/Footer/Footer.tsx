@@ -30,12 +30,6 @@ const teamMembers: TeamMember[] = [
     imageName: 'David.jpg',
   },
   {
-    name: 'Peter Tasca',
-    github: 'https://github.com/tascapeter514',
-    linkedin: 'https://www.linkedin.com/in/peter-tasca/',
-    imageName: 'Peter.jpg',
-  },
-  {
     name: 'Hyun Woo Kim',
     github: 'https://github.com/hynwkm',
     linkedin: 'https://www.linkedin.com/in/hyunwoo-kim/',
