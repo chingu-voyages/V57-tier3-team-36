@@ -10,6 +10,7 @@
     "lint": "prettier --check . && eslint",
     "tsc": "tsc --noEmit",
     "test": "playwright test --project=chromium",
+    "test:update": "playwright test --project=chromium --update-snapshots",
     "test:setup": "playwright test --project=setup",
     "setup:msw": "msw init public/ --save",
     "setup:playwright": "playwright install chromium",
