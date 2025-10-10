@@ -4,7 +4,7 @@ export default function filterBasePRs(
   basePRs: GitHubPullRequest[],
   filters: PRFilterState,
   query: string,
-  login: string
+  email: string
 ) {
   if (!basePRs) return [];
 
@@ -17,7 +17,9 @@ export default function filterBasePRs(
       ? pr.state === filters.prStatus
       : true;
 
-    const matchesInvolves = filters.involvesMe ? pr.user.login === login : true;
+    console.log(pr.user.email, email);
+    // const matchesInvolves = filters.involvesMe ? pr.user.email === email : true;
+    const matchesInvolves = true; // TODO
 
     // imitate matching by review progress as otherwise would require more API calls
     const matchesReview = (() => {
