@@ -34,7 +34,7 @@ export function RepoSearchResultCard({
             <div className="group">
               <button
                 className="btn btn-success"
-                onClick={() => removeRepo?.(id!.toString())}
+                onClick={() => removeRepo?.(id.toString())}
               >
                 <span className="block group-hover:hidden">Added</span>
                 <span className="hidden group-hover:block">Remove</span>
