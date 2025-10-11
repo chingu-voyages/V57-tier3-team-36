@@ -13,8 +13,9 @@ export function RepoSearchResultCard({
   description: string | null;
   url: string;
 }) {
-  const { repos, addRepo, removeRepo, isLoadingRepos } = useAppContext();
-  const isUserRepo = repos && repos.some(repo => repo.id === id);
+  const { addRepo, removeRepo, isLoadingRepos, repos } = useAppContext();
+
+  const isAdded = repos?.some(repo => repo.id === id);
 
   return (
     <div className="card card-border bg-base-100">
@@ -29,13 +30,16 @@ export function RepoSearchResultCard({
             <button className="btn btn-disabled">
               <span className="loading loading-dots" />
             </button>
-          ) : isUserRepo ? (
-            <button
-              className="btn btn-secondary"
-              onClick={() => removeRepo?.(id.toString())}
-            >
-              - Remove
-            </button>
+          ) : isAdded ? (
+            <div className="group">
+              <button
+                className="btn btn-success"
+                onClick={() => removeRepo?.(id!.toString())}
+              >
+                <span className="block group-hover:hidden">Added</span>
+                <span className="hidden group-hover:block">Remove</span>
+              </button>
+            </div>
           ) : (
             <button
               className="btn btn-primary"

@@ -42,7 +42,12 @@ export default function PRSearchbar({
           className="grow"
           placeholder="Search"
           onChange={e => setInputValue(e.target.value)}
-          onSubmit={e => onSearch(inputValue)}
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              onSearch(inputValue);
+            }
+          }}
         />
       </label>
       <PRFilter filters={filters} setFilters={setFilters} />
