@@ -78,7 +78,7 @@ export default function PullRequestsContainer() {
 
   // optimization
   const filteredPRs = useMemo(() => {
-    return filterBasePRs(basePRs ?? [], filters, query, user?.email ?? '');
+    return filterBasePRs(basePRs ?? [], filters, query);
   }, [basePRs, filters, query, user]);
 
   const prevQueryFilterRef = useRef<{

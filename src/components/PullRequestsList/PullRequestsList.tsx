@@ -20,7 +20,7 @@ export default function PullRequestsList({
       {isProcessing || isLoadingPullRequests ? (
         <li className="skeleton h-full w-full" />
       ) : (
-        (processedPullRequests || pullRequests)?.map(props => (
+        [...processedPullRequests, ...(pullRequests || [])].map(props => (
           <PullRequestCard key={props.id} {...props} />
         ))
       )}
