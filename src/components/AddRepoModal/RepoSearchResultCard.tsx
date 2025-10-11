@@ -30,17 +30,15 @@ export function RepoSearchResultCard({
               <span className="loading loading-dots" />
             </button>
           ) : isUserRepo ? (
-            <div className="group">
-              <button
-                className="btn btn-error"
-                onClick={() => removeRepo?.(id.toString())}
-              >
-                - Remove
-              </button>
-            </div>
+            <button
+              className="btn btn-secondary"
+              onClick={() => removeRepo?.(id.toString())}
+            >
+              - Remove
+            </button>
           ) : (
             <button
-              className="btn btn-success"
+              className="btn btn-primary"
               onClick={() => addRepo?.(id.toString())}
             >
               + Add
