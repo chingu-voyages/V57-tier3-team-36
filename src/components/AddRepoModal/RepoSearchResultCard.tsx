@@ -13,7 +13,9 @@ export function RepoSearchResultCard({
   description: string | null;
   url: string;
 }) {
-  const { addRepo, removeRepo, isLoadingRepos, selectedRepo } = useAppContext();
+  const { addRepo, removeRepo, isLoadingRepos, repos } = useAppContext();
+
+  const isAdded = repos?.some(repo => repo.id === id);
 
   return (
     <div className="card card-border bg-base-100">
@@ -28,7 +30,7 @@ export function RepoSearchResultCard({
             <button className="btn btn-disabled">
               <span className="loading loading-dots" />
             </button>
-          ) : selectedRepo?.id === id ? (
+          ) : isAdded ? (
             <div className="group">
               <button
                 className="btn btn-success"
