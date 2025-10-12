@@ -31,14 +31,21 @@ export const apiHandlers = (
       `/repos/${owner}/${repo}/pulls?state=${state}&per_page=100`
     ),
 
-  getPullRequestsBySearch: (
-    query: string,
-    repos: string[],
-    dir: string = 'desc',
-    status: 'open' | 'merged' = 'open',
-    involves: boolean = false,
-    review: 'none' | 'approved' | 'changes_requested' | null = null
-  ) => {
+  getPullRequestsBySearch: ({
+    query,
+    repos,
+    dir = 'desc',
+    status = 'open',
+    involves = false,
+    review = null,
+  }: {
+    query: string;
+    repos: string[];
+    dir?: string;
+    status?: 'open' | 'merged';
+    involves?: boolean;
+    review?: 'none' | 'approved' | 'changes_requested' | null;
+  }) => {
     const repoQuery = repos.map(repo => `repo:${repo}`).join(' OR ');
 
     const parts = [

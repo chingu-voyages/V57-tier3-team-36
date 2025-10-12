@@ -163,8 +163,14 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     setPullRequests({});
     setIsLoadingRepos(undefined);
     setIsLoadingPullRequests(undefined);
-    setSelectedRepo(undefined);
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    const reposArray = Object.values(repos);
+    if (reposArray && reposArray.length === 1) {
+      setSelectedRepo(reposArray[0].id.toString());
+    }
+  }, [repos]);
 
   const memo = useMemo(
     () => ({

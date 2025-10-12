@@ -1,155 +1,120 @@
 'use client';
 
-import PRSearchbar from '@/components/PRSearchbar/PRSearchbar';
-import filterBasePRs from '@/components/PullRequestsContainer/filterBasePRs';
-import isDefaultFilters from '@/components/PullRequestsContainer/isDefaultFilters';
 import PullRequestsList from '@/components/PullRequestsList/PullRequestsList';
 import { useAppContext } from '@/hooks/useAppContext';
 import { useAuth } from '@/hooks/useAuth';
-import { usePullRequestsSearch } from '@/hooks/usePullRequestsSearch';
 import type { PRFilterState } from '@/types/PRFilterState';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import updateSearchParams from './updateSearchParams';
+import { searchPullRequests } from './searchPullRequests';
+import SearchIcon from '@/icons/SearchIcon';
+import SortIcon from '@/icons/SortIcon';
+import ResetIcon from '@/icons/ResetIcon';
+import cn from '@/utils/twcn';
+import { getFilters } from './getFilters';
 
 export default function PullRequestsContainer() {
   // hooks
-  const { pullRequests: basePRs } = useAppContext();
-  const { searchPullRequests } = usePullRequestsSearch();
+  const { pullRequests, repos, isLoadingPullRequests } = useAppContext();
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   // states
-  const [pullRequests, setPullRequests] = useState(basePRs ?? []);
-  const [query, setQuery] = useState(searchParams.get('q') || '');
-  const [dir, setDir] = useState(searchParams.get('dir') || 'desc');
-  const [filters, setFilters] = useState<PRFilterState>({
-    prStatus: (searchParams.get('status') as 'open' | 'merged') || 'open',
-    involvesMe: searchParams.get('involves') === 'true',
-    reviewProgress:
-      (searchParams.get('review') as
-        | 'none'
-        | 'approved'
-        | 'changes_requested'
-        | null) || null,
-  });
-  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchResults, setSearchResults] = useState<GitHubPullRequest[]>();
+  const [query, setQuery] = useState<string>(searchParams.get('q') || '');
+  const [sortDirection, setSortDirection] = useState<string>(
+    searchParams.get('sortDirection') || 'desc'
+  );
+  const [searchMode, setSearchMode] = useState<'search' | 'filter'>();
+
+  useEffect(() => {
+    setSearchMode(undefined);
+  }, [repos, pullRequests]);
+
+  const filtersState = getFilters(searchParams);
+  const [filters, setFilters] = useState<PRFilterState>(filtersState);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
 
-  // on load, set the pull requests
-  useEffect(() => {
-    setPullRequests(basePRs ?? []);
-  }, [basePRs]);
+  const handleSearch = (mode: 'search' | 'filter') => {
+    const fetchSearchData = async () => {
+      if (!isAuthenticated || !repos) return;
 
-  // sync the state with the url
-  useEffect(() => {
-    const paramQ = searchParams.get('q') || '';
-    const paramDir = searchParams.get('dir') || 'desc';
-    const paramStatus =
-      (searchParams.get('status') as 'open' | 'merged') || 'open';
-    const paramInvolves = searchParams.get('involves') === 'true';
-    const paramReview =
-      (searchParams.get('review') as
-        | 'none'
-        | 'approved'
-        | 'changes_requested'
-        | null) || null;
-
-    if (paramQ !== query) setQuery(paramQ);
-    if (paramDir !== dir) setDir(paramDir);
-
-    setFilters(prev => {
-      const next = {
-        prStatus: paramStatus,
-        involvesMe: paramInvolves,
-        reviewProgress: paramReview,
-      };
-      if (
-        prev.prStatus !== next.prStatus ||
-        prev.involvesMe !== next.involvesMe ||
-        prev.reviewProgress !== next.reviewProgress
-      ) {
-        return next;
-      }
-      return prev;
-    });
-  }, [searchParams]);
-
-  // optimization
-  const filteredPRs = useMemo(() => {
-    return filterBasePRs(basePRs ?? [], filters, query, user?.email ?? '');
-  }, [basePRs, filters, query, user]);
-
-  const prevQueryFilterRef = useRef<{
-    filters: PRFilterState;
-    query: string;
-  } | null>(null);
-
-  const fetchSearchData = useCallback(async () => {
-    // Check if the query and filters are the same as before
-    const sameAsBefore =
-      prevQueryFilterRef.current &&
-      prevQueryFilterRef.current.query === query &&
-      JSON.stringify(prevQueryFilterRef.current.filters) ===
-        JSON.stringify(filters);
-    if (sameAsBefore) {
-      return;
-    }
-    prevQueryFilterRef.current = { filters, query };
-
-    if (isDefaultFilters(filters, query)) {
-      setPullRequests(basePRs ?? []);
-      return;
-    }
-
-    // if less than 100 PRs, don't search
-    if (basePRs && basePRs.length < 100 && filters.prStatus !== 'merged') {
-      setPullRequests([...filteredPRs]);
-      return;
-    }
-    // otherwise, search
-    setIsLoading(true);
-    try {
-      const response = await searchPullRequests({
+      const params = {
         query,
-        dir,
+        dir: sortDirection,
         status: filters.prStatus,
         involves: filters.involvesMe,
         review: filters.reviewProgress,
-      });
-      setPullRequests(Array.isArray(response) ? response : []);
-    } catch (error) {
-      console.error('Error searching pull requests:', error);
-      setPullRequests([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [filters, query, basePRs, user, searchPullRequests]);
+        repos,
+      };
+      setIsLoading(true);
 
-  // on update of state, update the url
-  useEffect(() => {
-    updateSearchParams({ query, filters, dir, searchParams, router });
-  }, [filters, query, dir]);
+      try {
+        const response = await searchPullRequests(params);
+        setSearchResults(response);
+        if (response && response.length > 0) {
+          setSearchMode(mode);
+        }
+      } catch (error) {
+        console.error('Error searching pull requests:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  useEffect(() => {
     fetchSearchData();
-  }, [query, filters]);
+  };
 
-  const sortedPRs = useMemo(() => {
-    if (!pullRequests.length) return [];
-    return [...pullRequests].sort((a, b) => {
-      const aTime = new Date(a.updated_at).getTime();
-      const bTime = new Date(b.updated_at).getTime();
-      return dir === 'asc' ? aTime - bTime : bTime - aTime;
-    });
-  }, [pullRequests, dir]);
+  const sortedPRs = (pullRequests || []).sort((a, b) => {
+    const aTime = new Date(a.updated_at).getTime();
+    const bTime = new Date(b.updated_at).getTime();
+    return sortDirection === 'asc' ? aTime - bTime : bTime - aTime;
+  });
 
-  const handleSearch = useCallback(
-    (newQuery: string) => setQuery(newQuery.trim()),
-    []
+  const sortedSearchResults = (searchResults || []).sort((a, b) => {
+    const aTime = new Date(a.updated_at).getTime();
+    const bTime = new Date(b.updated_at).getTime();
+    return sortDirection === 'asc' ? aTime - bTime : bTime - aTime;
+  });
+
+  const combined = Object.values(
+    [...(searchResults || []), ...(pullRequests || [])].reduce((all, pr) => {
+      const id = pr.id.toString();
+      if (!(id in all)) {
+        all[id] = pr;
+      }
+      return all;
+    }, {} as Entities<GitHubPullRequest>)
   );
-  const toggleSort = () => setDir(dir === 'asc' ? 'desc' : 'asc');
+
+  const onChangeQuery = (value: string) => {
+    setQuery(value);
+    updateSearchParams({
+      query: value,
+      filters,
+      dir: sortDirection,
+      searchParams,
+      router,
+    });
+  };
+
+  const toggleSort = () => {
+    const value = sortDirection === 'asc' ? 'desc' : 'asc';
+    setSortDirection(value);
+    updateSearchParams({
+      query,
+      filters,
+      dir: value,
+      searchParams,
+      router,
+    });
+  };
 
   return (
     <>
@@ -157,18 +122,202 @@ export default function PullRequestsContainer() {
         data-label="SearchBar"
         className="flex flex-shrink-0 w-full mb-3 gap-2"
       >
-        <PRSearchbar
-          query={query}
-          dir={dir}
-          onDirChange={toggleSort}
-          onSearch={handleSearch}
-          filters={filters}
-          setFilters={setFilters}
-        />
+        <div className="w-full flex gap-2">
+          <label className="input w-full">
+            <SearchIcon />
+            <input
+              type="search"
+              className="grow"
+              placeholder="Search"
+              onChange={e => {
+                if (isLoading) return;
+                const value = e.target.value.trim();
+                onChangeQuery(value);
+                if (value.length < 3) return;
+                handleSearch('search');
+              }}
+            />
+          </label>
+          <div className="relative" ref={dropdownRef}>
+            <div
+              role="button"
+              className="btn btn-outline cursor-pointer"
+              onClick={() => setOpen(current => !current)}
+            >
+              Filters
+            </div>
+            <div
+              className={cn(
+                'absolute right-0 mt-2 bg-base-100 shadow-md rounded-box w-96 p-4 flex flex-col border border-base-300 z-50 transition-all duration-150 ease-in-out',
+                open
+                  ? 'opacity-100 scale-100 pointer-events-auto'
+                  : 'opacity-0 scale-95 pointer-events-none'
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold text-neutral-content">
+                  Status
+                </div>
+                <div className="join">
+                  <input
+                    className="join-item btn btn-sm btn-outline w-16"
+                    type="radio"
+                    name="status"
+                    aria-label="Open"
+                    checked={filters.prStatus === 'open'}
+                    onChange={() =>
+                      setFilters(current => {
+                        if (current.prStatus === 'open') return current;
+                        return { ...current, prStatus: 'open' };
+                      })
+                    }
+                  />
+                  <input
+                    className="join-item btn btn-sm btn-outline w-16"
+                    type="radio"
+                    name="status"
+                    aria-label="Merged"
+                    checked={filters.prStatus === 'merged'}
+                    onChange={() => {
+                      setFilters(current => {
+                        if (current.prStatus === 'merged') return current;
+                        return { ...current, prStatus: 'merged' };
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="divider m-0" />
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold text-neutral-content">
+                  Involving Me
+                </div>
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-lg checkbox-primary [&:checked]:shadow-none"
+                  checked={filters.involvesMe}
+                  onChange={e => {
+                    setFilters(current => {
+                      const value = e.target.checked;
+                      if (current.involvesMe === value) return current;
+                      return { ...current, involvesMe: value };
+                    });
+                  }}
+                />
+              </div>
+              <div className="divider m-0" />
+              <div className="flex flex-col gap-2">
+                <div className="text-sm font-semibold text-neutral-content">
+                  Review Progress
+                </div>
+                <form
+                  className="filter"
+                  onReset={e => {
+                    e.preventDefault();
+                    setFilters(current => {
+                      if (current.reviewProgress === null) return current;
+                      return {
+                        ...current,
+                        reviewProgress: null,
+                      };
+                    });
+                  }}
+                >
+                  <input className="btn btn-square" type="reset" value="×" />
+                  <input
+                    className="btn text-xs"
+                    type="radio"
+                    name="review progress"
+                    aria-label="Not Reviewed"
+                    checked={filters.reviewProgress === 'none'}
+                    onChange={() => {
+                      setFilters(current => {
+                        if (current.reviewProgress === 'none') return current;
+                        return {
+                          ...current,
+                          reviewProgress: 'none',
+                        };
+                      });
+                    }}
+                  />
+                  <input
+                    className="btn text-xs"
+                    type="radio"
+                    name="review progress"
+                    aria-label="Approved"
+                    checked={filters.reviewProgress === 'approved'}
+                    onChange={() => {
+                      setFilters(current => {
+                        if (current.reviewProgress === 'approved')
+                          return current;
+                        return {
+                          ...current,
+                          reviewProgress: 'approved',
+                        };
+                      });
+                    }}
+                  />
+                  <input
+                    className="btn  text-xs"
+                    type="radio"
+                    name="review progress"
+                    aria-label="Changes Requested"
+                    checked={filters.reviewProgress === 'changes_requested'}
+                    onChange={() => {
+                      setFilters(current => {
+                        if (current.reviewProgress === 'changes_requested')
+                          return current;
+                        return {
+                          ...current,
+                          reviewProgress: 'changes_requested',
+                        };
+                      });
+                    }}
+                  />
+                </form>
+              </div>
+              <div className="divider m-0" />
+              <div className="flex flex gap-2">
+                <button
+                  disabled={isLoading}
+                  className="btn flex-1 btn-primary btn-outline"
+                  onClick={() => handleSearch('filter')}
+                >
+                  Apply Filters
+                </button>
+                <button
+                  className="btn flex-1 btn-secondary btn-outline"
+                  onClick={() => {
+                    setFilters(filtersState);
+                    setSearchMode(undefined);
+                  }}
+                >
+                  Clear Filters
+                  <ResetIcon />
+                </button>
+              </div>
+            </div>
+          </div>
+          <button
+            className="kbd aspect-square h-full p-0 flex items-center justify-center cursor-pointer"
+            onClick={toggleSort}
+            disabled={searchMode === 'search'}
+          >
+            <SortIcon
+              down={searchMode === 'search' ? true : sortDirection === 'desc'}
+            />
+          </button>
+        </div>
       </div>
       <PullRequestsList
-        processedPullRequests={sortedPRs}
-        isProcessing={isLoading}
+        pullRequests={
+          searchMode === 'search'
+            ? combined
+            : searchMode === 'filter'
+              ? sortedSearchResults
+              : sortedPRs
+        }
+        isLoading={isLoadingPullRequests === true}
       />
     </>
   );

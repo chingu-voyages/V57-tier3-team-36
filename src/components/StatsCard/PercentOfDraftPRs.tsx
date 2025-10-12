@@ -7,18 +7,22 @@ import { useEffect, useState } from 'react';
 export default function PercentOfDraftPRs() {
   const title = 'Draft PRs' as const;
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [value, setValue] = useState<string>('-');
+  const [value, setValue] = useState<number>();
   const { pullRequests, isLoadingPullRequests } = useAppContext();
 
   useEffect(() => {
     if (isLoadingPullRequests || !pullRequests) return;
 
-    const total = pullRequests.reduce((sum, obj) => {
-      return obj.draft ? sum + 1 : sum;
-    }, 0);
+    if (pullRequests.length === 0) {
+      setValue(0);
+    } else {
+      const total = pullRequests.reduce((sum, obj) => {
+        return obj.draft ? sum + 1 : sum;
+      }, 0);
 
-    const avg = Math.round((total / pullRequests.length) * 100);
-    setValue(`${avg}%`);
+      const avg = Math.round((total / pullRequests.length) * 100);
+      setValue(avg);
+    }
 
     setIsLoading(false);
   }, [pullRequests, isLoadingPullRequests]);
@@ -26,7 +30,7 @@ export default function PercentOfDraftPRs() {
   return (
     <StatsCard
       title={title}
-      value={value}
+      value={value === undefined ? '-' : `${value}%`}
       isBusy={isLoading || isLoadingPullRequests}
     />
   );

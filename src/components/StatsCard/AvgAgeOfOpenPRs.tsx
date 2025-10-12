@@ -15,14 +15,18 @@ export default function AvgAgeOfOpenPRs() {
   useEffect(() => {
     if (isLoadingPullRequests || !pullRequests) return;
 
-    const totalSeconds = pullRequests.reduce((sum, obj) => {
-      return sum + getSecondsSince(obj.created_at);
-    }, 0);
+    if (pullRequests.length === 0) {
+      setValue('n/a');
+    } else {
+      const totalSeconds = pullRequests.reduce((sum, obj) => {
+        return sum + getSecondsSince(obj.created_at);
+      }, 0);
 
-    const avg = totalSeconds / pullRequests.length;
-    const [timeValue, label] = formatTime(avg);
-    setValue(timeValue);
-    setUnit(label);
+      const avg = totalSeconds / pullRequests.length;
+      const [timeValue, label] = formatTime(avg);
+      setValue(timeValue);
+      setUnit(label);
+    }
 
     setIsLoading(false);
   }, [pullRequests, isLoadingPullRequests]);

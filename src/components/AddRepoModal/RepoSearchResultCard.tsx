@@ -8,7 +8,7 @@ export function RepoSearchResultCard({
   description,
   url,
 }: {
-  id: number | null;
+  id: number;
   name: string;
   description: string | null;
   url: string;
@@ -34,7 +34,7 @@ export function RepoSearchResultCard({
             <div className="group">
               <button
                 className="btn btn-success"
-                onClick={() => removeRepo?.(id!.toString())}
+                onClick={() => removeRepo?.(id.toString())}
               >
                 <span className="block group-hover:hidden">Added</span>
                 <span className="hidden group-hover:block">Remove</span>
@@ -43,7 +43,7 @@ export function RepoSearchResultCard({
           ) : (
             <button
               className="btn btn-primary"
-              onClick={() => addRepo?.(id!.toString())}
+              onClick={() => addRepo?.(id.toString())}
             >
               + Add
             </button>
