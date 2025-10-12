@@ -38,7 +38,6 @@ export default function PullRequestsContainer() {
   const [filters, setFilters] = useState<PRFilterState>(filtersState);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const previousSearchRef = useRef<string>('');
 
   const router = useRouter();
 
@@ -54,12 +53,6 @@ export default function PullRequestsContainer() {
         review: filters.reviewProgress,
         repos,
       };
-      if (previousSearchRef.current === JSON.stringify({ ...params })) {
-        console.info('duplicate request detected');
-        return;
-      }
-
-      previousSearchRef.current = JSON.stringify({ ...params });
       setIsLoading(true);
 
       try {
@@ -284,7 +277,10 @@ export default function PullRequestsContainer() {
                 </button>
                 <button
                   className="btn flex-1 btn-secondary btn-outline"
-                  onClick={() => setFilters(filtersState)}
+                  onClick={() => {
+                    setFilters(filtersState);
+                    setSearchMode(undefined);
+                  }}
                 >
                   Clear Filters
                   <ResetIcon />
