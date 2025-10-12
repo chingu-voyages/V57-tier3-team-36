@@ -83,6 +83,16 @@ export default function PullRequestsContainer() {
     return sortDirection === 'asc' ? aTime - bTime : bTime - aTime;
   });
 
+  const combined = Object.values(
+    [...(searchResults || []), ...(pullRequests || [])].reduce((all, pr) => {
+      const id = pr.id.toString();
+      if (!(id in all)) {
+        all[id] = pr;
+      }
+      return all;
+    }, {} as Entities<GitHubPullRequest>)
+  );
+
   const onChangeQuery = (value: string) => {
     setQuery(value);
     updateSearchParams({
@@ -302,7 +312,7 @@ export default function PullRequestsContainer() {
       <PullRequestsList
         pullRequests={
           searchMode === 'search'
-            ? [...(searchResults || []), ...(pullRequests || [])]
+            ? combined
             : searchMode === 'filter'
               ? sortedSearchResults
               : sortedPRs
