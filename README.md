@@ -158,7 +158,7 @@ Meeting Agenda templates (located in the `/docs` directory in this repo):
 
 ## Team Members
 
-- Sattyik Kundu: [Github](https://github.com/SattyikKundu)
+- Sattyik Kundu: [Github](https://github.com/SattyikKundu) / [LinkedIn](https://www.linkedin.com/in/sattyikkundu/)
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Vincent Bui: [Github](https://github.com/VincentBui0) / [LinkedIn](https://www.linkedin.com/in/vincent-bui0/)
 - Peter Tasca: [Github](https://github.com/tascapeter514) / [LinkedIn](https://www.linkedin.com/in/peter-tasca/)
