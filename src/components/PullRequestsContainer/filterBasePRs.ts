@@ -4,7 +4,6 @@ export default function filterBasePRs(
   basePRs: GitHubPullRequest[],
   filters: PRFilterState,
   query: string,
-  // email: string
 ) {
   if (!basePRs) return [];
 
@@ -17,7 +16,6 @@ export default function filterBasePRs(
       ? pr.state === filters.prStatus
       : true;
 
-    // console.log(pr.user.email, email);
     // const matchesInvolves = filters.involvesMe ? pr.user.email === email : true;
     const matchesInvolves = true; // TODO
 
