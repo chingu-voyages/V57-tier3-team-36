@@ -119,8 +119,8 @@ export default function PullRequestsContainer() {
               type="search"
               className="grow"
               placeholder="Search"
-              disabled={isLoading}
               onChange={e => {
+                if (isLoading) return;
                 const value = e.target.value.trim();
                 onChangeQuery(value);
                 if (value.length < 3) return;
