@@ -1,6 +1,30 @@
-# App Name Goes Here
+# MergeForce
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Project Overview
+
+**MergeForce** is a web application that helps development teams track the status of open and closed GitHub Pull Requests (PRs) across their repositories.  
+It retrieves data from the GitHub REST API to display PR details, reviewers, and activity history in a clean, interactive dashboard.  
+Optionally, users can interact with an AI assistant (powered by Google Gemini) to learn how to use the app or understand its features.
+
+## Features
+
+- 🏠 **Home Page:** Describes the app purpose and usage.
+- 🔓 **Open PRs:** Displays all open PRs for a selected GitHub repo.
+- ✅ **Closed PRs:** Displays all closed or merged PRs.
+- 🔍 **Filtering:** Filter PRs by username or other criteria.
+- ⚠️ **Error Handling:** Clear, user-friendly validation messages.
+- 📱 **Responsive UI:** Works across desktop, tablet, and mobile devices.
+
+## Tech Stack
+
+- **Frontend:** Next.js, React, TypeScript
+- **Styling:** CSS Modules, TailwindCSS, DaisyUI
+- **Linting** Prettier
+- **Database:** PostgreSQL via Neon
+- **Authentication:** GitHub OAuth (Better Auth)
+- **Deployment:** Vercel
 
 ## Local Development Setup
 
@@ -127,6 +151,25 @@ Import components like: `import { Button } from '@/components/Button/Button'`
 - No extra boilerplate files
 - Teammate preferences (voted 3-1-1 in favor of this option)
 
+## How to Use
+
+1. Visit the deployed app at [your-vercel-url-here].
+2. Sign In using GitHub
+3. Hit "Select Repository" at the top right to add what repository you want to search up.
+4. From there you can find the repository's:
+   - Open PRs
+   - Average Reviews per PR
+   - Average Time to First Review
+5. Search for a certain PR from the search bar atop.
+
+## Acceptance Criteria
+
+- Users can select a GitHub repository and view both open and closed PRs.
+- Each PR shows: number, title (linked to GitHub), author, reviewers, creation date, and last action.
+  - PR cards link to their corresponding github page.
+- The UI displays clear error messages for invalid input.
+- The interface is responsive and visually distinct.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -141,6 +184,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+https://v57-tier3-team-36.vercel.app/
 
 ## Team Documents
 
@@ -161,6 +206,5 @@ Meeting Agenda templates (located in the `/docs` directory in this repo):
 - Sattyik Kundu: [Github](https://github.com/SattyikKundu) / [LinkedIn](https://www.linkedin.com/in/sattyikkundu/)
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Vincent Bui: [Github](https://github.com/VincentBui0) / [LinkedIn](https://www.linkedin.com/in/vincent-bui0/)
-- Peter Tasca: [Github](https://github.com/tascapeter514) / [LinkedIn](https://www.linkedin.com/in/peter-tasca/)
 - Kelly Ripple: [GitHub](https://github.com/kripple) / [LinkedIn](https://www.linkedin.com/in/kellymripple) / [Portfolio](https://kellyripple.com/)
 - Hyun Woo Kim: [GitHub](https://github.com/hynwkm) / [LinkedIn](https://www.linkedin.com/in/hyunwoo-kim/)

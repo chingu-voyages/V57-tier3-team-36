@@ -62,7 +62,7 @@ export default function Footer() {
         <div className="flex justify-between items-center mb-8 pb-4 border-b border-base-300">
           <h2 className="text-2xl font-bold text-base-content">Team Credits</h2>
           <a
-            href="https://github.com/chingu-voyages/V56-tier3-team-37"
+            href="https://github.com/chingu-voyages/V57-tier3-team-36"
             target="_blank"
             rel="noopener noreferrer"
             className="text-base-content hover:text-primary transition-colors"
